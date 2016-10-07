@@ -20,6 +20,16 @@
 			text-decoration: none;
 			background: #333;
 		}
+		&.logo {
+			border-left: 0;
+			img {
+				height: 45px;
+				width: 45px;
+			}
+			&:hover {
+				background: black;
+			}
+		}
 		a {
 			color: white;
 			&:hover {

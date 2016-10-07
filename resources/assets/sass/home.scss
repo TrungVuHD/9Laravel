@@ -1,4 +1,9 @@
 .home-item {
+	&:first-child {
+		.title {
+			margin-top: 0;
+		}
+	}
 	>a {
 		text-decoration: none;
 	}
@@ -17,6 +22,9 @@
 			color: #999;
 			cursor: pointer;
 		}
+	}
+	.img-responsive {
+		margin: 0 auto;
 	}
 	.social-section {
 		padding-bottom: 30px;

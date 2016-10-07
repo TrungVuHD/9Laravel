@@ -24,15 +24,18 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
 
 			this.$body = $("body, html");
 			this.$pageContainer = $('.page-container');
-			this.$sections = $(".sections-wrapper");
+			this.$sections = $(".main-sections-wrapper");
 			this.$sectionsList = this.$sections.find('.sections-list');
 			this.$search = $(".search.menu-item");
 			this.$searchInput = $('.menu-search-input');
+			this.$avatarSubMenuWrapper = $(".menu-avatar");
+			this.$avatarSubMenu = this.$avatarSubMenuWrapper.find(".menu-avatar");
 		},
 		bindEvents: function () {
 
 			this.$sections.on('click', this, this.toggleSections );
 			this.$search.on('click', this, this.toggleSearch );
+			this.$avatarSubMenuWrapper.on('click', this, this.toggleProfileSettings );
 			this.$pageContainer.on('click', $.proxy(this.hideMenuInteractions,this));
 			this.$body.on('click', $.proxy(this.hideMenuInteractions,this));
 		},
@@ -45,6 +48,11 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
 
 			event.stopPropagation();
 			event.data.$searchInput.removeClass('hidden');
+		},		
+		toggleProfileSettings: function (event) {
+
+			event.stopPropagation();
+			event.data.$avatarSubMenu.removeClass('hidden');
 		},
 		hideMenuInteractions: function () {
 
@@ -54,6 +62,10 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
 
 			if(!this.$searchInput.hasClass('hidden')) {
 				this.$searchInput.addClass('hidden');
+			}
+
+			if(!this.$avatarSubMenu.hasClass('hidden')) {
+				this.$avatarSubMenu.addClass('hidden');
 			}
 		}
 	};

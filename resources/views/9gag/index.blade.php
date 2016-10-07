@@ -259,3 +259,7 @@
 	</div>
 
 @endsection
+
+@section('sidebar')
+	@include('includes.sidebar')
+@endsection

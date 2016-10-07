@@ -11,11 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('9gag.index');
-});
-
-Route::get('/gag', 'PostsController@show');
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/', 'PostsController@index');
+Route::get('/gag', 'PostsController@show');
+Route::get('/trending', 'PostsController@trendingIndex');
+Route::get('/fresh', 'PostsController@freshIndex');
+
+Route::get('/settings', 'SettingsController@showAccount');
+Route::get('/settings/account', 'SettingsController@showAccount');
+Route::get('/settings/password', 'SettingsController@showPassword');
+Route::get('/settings/profile', 'SettingsController@showProfile');
+Route::get('/settings/my-profile', 'SettingsController@showMyProfile');

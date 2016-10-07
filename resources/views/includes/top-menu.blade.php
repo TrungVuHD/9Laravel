@@ -3,25 +3,25 @@
 		<div class="left-side">
 				
 			<div class="logo menu-item">
-				
+				<img src="{{ url('/img/logo.png') }}" alt="" />
 			</div>
 
-			<div class="hot menu-item active">
-				<a href="">
+			<div class="hot menu-item @if($request->is('/')) active @endif">
+				<a href="{{ url('/') }}">
 					Hot
 				</a>
 			</div>
-			<div class="trending menu-item">
-				<a href="">			
+			<div class="trending menu-item @if($request->is('trending')) active @endif">
+				<a href="{{ url('/trending') }}">			
 					Trending
 				</a>
 			</div>
-			<div class="fresh menu-item">
-				<a href="">				
+			<div class="fresh menu-item @if($request->is('fresh')) active @endif">
+				<a href="{{ url('/fresh') }}">				
 					Fresh
 				</a>
 			</div>
-			<div class="sections-wrapper menu-item">
+			<div class="sections-wrapper menu-item main-sections-wrapper">
 				Sections <span class="caret"></span>
 				<ul class="sections-list hidden">
 					<li>
@@ -101,10 +101,27 @@
 						<i class="fa fa-bell" aria-hidden="true"></i>
 					</a>
 				</div>
-				<div class="menu-avatar">
+				<div class="menu-avatar sections-wrapper">
 					<img class="img-responsive" src="http://avatars-cdn.9gag.com/avatar/default_82_100_v0.jpg" alt="">
-					<ul class="avatar-sub-menu">
-						
+					<ul class="sections-list hidden">
+						<li>
+							<a href="">Funny</a>	
+						</li>					
+						<li>
+							<a href="">Funny</a>	
+						</li>					
+						<li>
+							<a href="">Funny</a>	
+						</li>					
+						<li>
+							<a href="">Funny</a>	
+						</li>					
+						<li>
+							<a href="">Funny</a>	
+						</li>					
+						<li>
+							<a href="">Funny</a>	
+						</li>
 					</ul>
 				</div>
 				<div class="sign-up menu-item" data-toggle="modal" data-target="#upload-modal">
