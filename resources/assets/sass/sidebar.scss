@@ -1,0 +1,25 @@
+.sidebar {
+	margin-top: 25px;
+}
+.sidebar-item {
+	display: block;
+	cursor: pointer;
+	margin-bottom: 20px;
+	text-decoration: none;
+	&:hover,
+	&:link {	
+		text-decoration: none;
+		p {
+			color: #09f;
+		}
+	}
+	p {
+		font-weight: bold;
+		font-size: 13px;
+		color: black;
+		&:hover,
+		&:link {
+			text-decoration: none;
+		}
+	}
+}

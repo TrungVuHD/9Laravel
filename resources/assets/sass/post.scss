@@ -1,0 +1,236 @@
+.detail-home-item {
+	.social-section {
+		padding-bottom: 10px;
+		border-bottom: 0;
+		.social-link {
+			float: none;
+			display: inline-block;
+			&.facebook {
+				margin-left: 10px;
+			}
+		}
+		.social-item {
+			display: block;
+			float: left;
+			&:hover {
+				text-decoration: none !important;
+			}
+			&.thumbs-up {
+				border-radius: 2px 0 0 2px;
+				border-right-color: white;
+				&:hover {
+					border-right-color: #999;
+				}
+			}
+			&.thumbs-down {
+				border-radius: 0 2px 2px 0; 
+			}
+		}
+		.thumbs-up {
+			width: auto;
+			margin-right: 0;
+			padding: 0 10px;
+			span {
+				position: relative;
+				top: -2px;
+				font-size: 16px;
+				color: #999;
+			}
+		}
+	}
+	.next-post {
+		height: 35px;
+		line-height: 35px;
+		padding: 0 10px;
+		background-color: #ff3c1f;
+		position: relative;
+		border-radius: 3px 0 0 3px;
+		color: white;
+		float: right;
+		&:after {
+			content: " ";
+			display: block;
+			position: absolute;
+			right: -17px;
+			top: 0;
+			width: 0;
+			height: 0;
+			border-top: 17px solid transparent;
+			border-bottom: 17px solid transparent;
+			border-left: 17px solid #ff3c1f;
+		}
+	}
+	.report-post {
+		display: block;
+		text-align: right;
+		font-size: 11px;
+		color: #999;
+		margin-top: 10px;
+		&:hover {
+			color: black;
+		}
+	}
+}
+.share-section {
+	margin-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+	.share-network {
+		display: block;
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+		color: white;
+		font-weight: bold;
+		border-radius: 4px;
+		cursor: pointer;
+		&:hover {
+			text-decoration: none;
+		}
+		&.facebook {
+			background-color: #3b5998;
+			margin-right: -10px;
+		}
+		&.twitter {
+			background-color: #21c2ff;
+			margin-left: -10px;
+		}
+	}
+}
+.comments-section {
+	margin-top: 45px;
+	.no-comments {
+		font-size: 16px;
+		line-height: 20px;
+		padding: 12px 0;
+		display: inline-block;
+		margin: 0;
+		font-weight: bold;
+	}
+	.comments-head {
+		border-bottom: 1px solid #DDD;
+	}
+	.comment-sort {
+		color: #999;
+		font-size: 13px;
+		line-height: 20px;
+		padding: 12px;
+		font-weight: bold;
+		padding-bottom: 25px;
+		&.active,
+		&:hover {
+			border-bottom: 1px solid blue;
+			text-decoration: none;
+			color: black;
+		}
+	}
+	.comments-body {
+		margin-top: 20px;
+		position: relative;
+		.comments-avatar {
+			width: 50px;
+			height: 50px;
+			background: #CCC;
+			color: white;
+			position: absolute;
+			top: 0;
+			left: 0;
+			text-align: center;
+			.fa {
+				font-size: 48px;
+			}
+		}
+		.comments-text {
+			width: 100%;
+			padding-left: 60px;
+			height: 90px;
+			textarea {
+				border: 1px solid #ccc;
+				border-bottom: 0;
+				width: 100%;
+				height: 50px;
+				padding: 10px;
+				resize: none;
+				font-size: 12px;
+				display: block;
+			}
+		}
+	}
+	.bottom-text {
+		height: 40px;
+		border: 1px solid #CCC;
+		border-top: 1px solid #eee;
+		.fa {
+			font-size: 20px;
+			color: #999;
+			margin-left: 10px;
+			margin-top: 8px;
+		}
+		.btn {
+			background-color: #33adff;
+			border-color: #33adff;
+			padding: 5px 12px;
+			margin-right: 6px;
+			line-height: 15px;
+			margin-left: 10px;
+		}
+		.no-characters {
+			color: #999;
+			line-height: 40px;
+			font-size: 10px;
+		}
+	}
+}
+.comment {
+	position: relative;
+	margin-top: 10px;
+	&.comment-small {
+		.comment-avatar {
+			width: 30px;
+			height: 30px;
+			left: 20px;
+			top: 0;
+		}
+	}
+	.comment-avatar {
+		width: 50px;
+		height: 50px;
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+	.comment-description {
+		width: 100%;
+		padding-left: 60px;
+		font-size: 13px;
+		.author {
+			color: black;
+			font-weight: bold;
+		}
+		.desc {
+			color: #999;
+			font-size: 12px;
+			margin-bottom: 4px;
+		}
+		.message {
+			margin-bottom: 4px;
+		}
+		.reply {
+			a {
+				font-weight: bold;
+				color: #999;
+				&:hover {
+					text-decoration: none;
+					.fa {
+						color: #777;
+					}
+				}
+			}
+			.fa {
+				color: #ccc;
+				margin: 0 5px;
+				font-size: 14px;
+			}
+		}
+	}
+}
