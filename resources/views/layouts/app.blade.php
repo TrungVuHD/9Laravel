@@ -18,6 +18,7 @@
             @include('includes.sidebar')
         </div>
     </div>
+    @include('includes.modals')
     <script src="{{ elixir('js/scripts.min.js') }}"></script>
 </body>
 </html>

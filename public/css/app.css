@@ -6643,4 +6643,45 @@ button.close {
       margin: 0 5px;
       font-size: 14px; }
 
+#upload-modal {
+  text-align: center; }
+  #upload-modal .modal-header {
+    border-bottom: 0; }
+  #upload-modal .well {
+    height: 240px;
+    position: relative;
+    cursor: pointer; }
+    #upload-modal .well:hover {
+      background-color: #eee; }
+    #upload-modal .well .content {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%; }
+    #upload-modal .well .fa {
+      color: #999;
+      font-size: 100px; }
+  #upload-modal .additional-upload-method {
+    position: relative;
+    height: 120px;
+    border: 1px solid #CCC;
+    border-radius: 6px;
+    cursor: pointer; }
+    #upload-modal .additional-upload-method:hover {
+      background: #f4f4f4; }
+    #upload-modal .additional-upload-method .content {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%; }
+    #upload-modal .additional-upload-method .fa {
+      color: #999;
+      font-size: 60px; }
+    #upload-modal .additional-upload-method a,
+    #upload-modal .additional-upload-method p {
+      color: #999; }
+      #upload-modal .additional-upload-method a:hover,
+      #upload-modal .additional-upload-method p:hover {
+        text-decoration: none; }
+
 /*# sourceMappingURL=app.css.map */
