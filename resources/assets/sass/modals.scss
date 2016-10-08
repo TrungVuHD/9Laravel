@@ -55,3 +55,57 @@
 		}
 	}
 }
+#set-title-modal {
+	.top-section {
+		position: relative;
+		width: 100%;
+		height: 160px;
+		border: 1px solid #ddd;
+		padding: 20px;
+	}
+	textarea {
+		width: 100%;
+		border: 0;
+		resize: none;
+		height: 100%;
+		padding-left: 120px;
+		&:focus {
+			border: 0;
+			outline: 0;
+		}
+	}
+	.form-group {
+		border: 1px solid #ddd;
+		margin: 0;
+		padding: 6px 20px;
+		border-top: 0;
+	}
+	.right-input {
+		float: right;
+	}
+	.modal-footer {
+		border: 0;
+	}
+}
+#upload-url-input, 
+#attribute-input {
+	width: 100%;
+	border: 0;
+	&:focus {
+		border: 0;
+		outline: 0;
+	}
+}
+#set-title-image-preview {
+	position: absolute;
+	width: 96px;
+	height: 96px;
+	top: 20px;
+	left: 20px;
+}
+#upload-url-modal {
+	.modal-body {
+		border-left: 1px solid #e5e5e5;
+		border-right: 1px solid #e5e5e5;
+	}
+}

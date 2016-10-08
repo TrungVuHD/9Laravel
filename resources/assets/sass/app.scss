@@ -1,5 +1,6 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "node_modules/font-awesome/scss/font-awesome";
+@import "../js/libraries/FileDrop-master/filedrop";
 @import "general";
 @import "top-menu";
 @import "sidebar";
@@ -7,3 +8,5 @@
 @import "post";
 @import "modals";
 @import "admin";
+
+

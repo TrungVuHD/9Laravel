@@ -8332,6 +8332,43 @@ button.close {
   overflow: visible;
   clip: auto; }
 
+/***
+  Styles below are only required if you're using <iframe> fallback in
+  addition to HTML5 drag & drop (only working in Firefox/Chrome/Opera 15+).
+  You can @import this file and override individual styles. Drag & drop zone
+  can be styled in absolutely any way you want so there are no defaults.
+ ***/
+/* Essential FileDrop zone element configuration: */
+.fd-zone {
+  position: relative;
+  overflow: hidden;
+  /***
+    This way you can create a pretty box that will be both clickable and droppable:
+   ***
+    width: 15em;
+    margin: 0 auto;
+    text-align: center;
+  */ }
+
+/* Hides <input type="file"> while simulating "Browse" button: */
+.fd-file {
+  opacity: 0;
+  font-size: 118px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  filter: alpha(opacity=0);
+  font-family: sans-serif; }
+
+/***
+  With .over you can provide feedback when user drags a file over the drop zone:
+ ***
+  .fd-zone.over { border-color: maroon; background: #eee; }
+*/
 .page-container {
   margin-top: 70px; }
 
@@ -8397,7 +8434,8 @@ button.close {
       text-decoration: none;
       background: #333; }
     .top-menu .menu-item.logo {
-      border-left: 0; }
+      border-left: 0;
+      display: block; }
       .top-menu .menu-item.logo img {
         height: 45px;
         width: 45px; }
@@ -8466,9 +8504,13 @@ button.close {
     height: 30px;
     border-radius: 5px;
     cursor: pointer; }
-  .top-menu .sections-wrapper {
+    .top-menu .right-side .menu-avatar .sub-menu {
+      top: 42px;
+      width: 160px;
+      left: -20px; }
+  .top-menu .has-submenu {
     position: relative; }
-    .top-menu .sections-wrapper .sections-list {
+    .top-menu .has-submenu .sub-menu {
       position: absolute;
       left: 0;
       top: 50px;
@@ -8479,17 +8521,17 @@ button.close {
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
       min-width: 100%;
       padding: 0; }
-      .top-menu .sections-wrapper .sections-list li {
+      .top-menu .has-submenu .sub-menu li {
         padding: 0 20px;
         height: 30px;
         line-height: 30px;
         list-style: none; }
-        .top-menu .sections-wrapper .sections-list li:hover {
+        .top-menu .has-submenu .sub-menu li:hover {
           background: #f4f4f4; }
-          .top-menu .sections-wrapper .sections-list li:hover a {
+          .top-menu .has-submenu .sub-menu li:hover a {
             color: black;
             text-decoration: none; }
-      .top-menu .sections-wrapper .sections-list a {
+      .top-menu .has-submenu .sub-menu a {
         color: black;
         font-weight: normal;
         color: #aaa; }
@@ -8866,6 +8908,55 @@ button.close {
       #upload-modal .additional-upload-method a:hover,
       #upload-modal .additional-upload-method p:hover {
         text-decoration: none; }
+
+#set-title-modal .top-section {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  border: 1px solid #ddd;
+  padding: 20px; }
+
+#set-title-modal textarea {
+  width: 100%;
+  border: 0;
+  resize: none;
+  height: 100%;
+  padding-left: 120px; }
+  #set-title-modal textarea:focus {
+    border: 0;
+    outline: 0; }
+
+#set-title-modal .form-group {
+  border: 1px solid #ddd;
+  margin: 0;
+  padding: 6px 20px;
+  border-top: 0; }
+
+#set-title-modal .right-input {
+  float: right; }
+
+#set-title-modal .modal-footer {
+  border: 0; }
+
+#upload-url-input,
+#attribute-input {
+  width: 100%;
+  border: 0; }
+  #upload-url-input:focus,
+  #attribute-input:focus {
+    border: 0;
+    outline: 0; }
+
+#set-title-image-preview {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  top: 20px;
+  left: 20px; }
+
+#upload-url-modal .modal-body {
+  border-left: 1px solid #e5e5e5;
+  border-right: 1px solid #e5e5e5; }
 
 .settings-page h1 {
   margin-top: 0; }

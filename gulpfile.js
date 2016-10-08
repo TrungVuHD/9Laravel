@@ -18,6 +18,7 @@ var uglify = require('gulp-uglify');
 var jsFiles = [ 
     'node_modules/jquery/dist/jquery.min.js',
     'node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js',
+    'resources/assets/js/libraries/FileDrop-master/filedrop-min.js',
     'resources/assets/js/*.js'
 ]; 
 
@@ -45,4 +46,4 @@ elixir(function(mix) {
     //version the css and js
     mix.version([ 'css/app.css', 'js/scripts.min.js']);
 });
- 
+
