@@ -255,7 +255,7 @@
 	</div>
 	
 	<div id="go-top" class="hidden">
-		&#x2912;
+		<i class="fa fa-step-forward" aria-hidden="true"></i>
 	</div>
 
 @endsection

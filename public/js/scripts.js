@@ -105,6 +105,12 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
 		$(this).find('.menu-search-input').toggleClass('hidden');
 	});
 
+	$(".menu-search-input").on('click', function(event) {
+
+		event.stopPropagation();
+	});
+
+
 })();
 (function () {
 	
