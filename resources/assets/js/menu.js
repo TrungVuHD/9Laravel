@@ -1,8 +1,8 @@
-(function (){
+(function () {
 
-	"use strict";
+	'use strict';
 
-	var menu = {
+	var topSubmenu = {
 		init: function () {
 
 			this.cacheDom();
@@ -10,54 +10,30 @@
 		},
 		cacheDom: function () {
 
-			this.$body = $("body, html");
-			this.$pageContainer = $('.page-container');
-			this.$sections = $(".main-sections-wrapper");
-			this.$sectionsList = this.$sections.find('.sections-list');
-			this.$search = $(".search.menu-item");
-			this.$searchInput = $('.menu-search-input');
-			this.$avatarSubMenuWrapper = $(".menu-avatar");
-			this.$avatarSubMenu = this.$avatarSubMenuWrapper.find(".menu-avatar");
+			this.$doc = $('body, html');
+			this.$hasSubmenu = $('.has-submenu');
+			this.$submenu = $('.sub-menu');
 		},
 		bindEvents: function () {
 
-			this.$sections.on('click', this, this.toggleSections );
-			this.$search.on('click', this, this.toggleSearch );
-			this.$avatarSubMenuWrapper.on('click', this, this.toggleProfileSettings );
-			this.$pageContainer.on('click', $.proxy(this.hideMenuInteractions,this));
-			this.$body.on('click', $.proxy(this.hideMenuInteractions,this));
+			this.$doc.on('click', this, this.hideAllSubmenus);
+			this.$hasSubmenu.on('click', this.toggleSubmenu);
 		},
-		toggleSections: function (event) {
+		toggleSubmenu: function (event) {
 
 			event.stopPropagation();
-			event.data.$sectionsList.removeClass('hidden');
+			
+			var $currentSubmenu = $(this).find('.sub-menu');
+			$currentSubmenu.toggleClass('hidden');
 		},
-		toggleSearch: function (event) {
+		hideAllSubmenus: function (event) {
 
-			event.stopPropagation();
-			event.data.$searchInput.removeClass('hidden');
-		},		
-		toggleProfileSettings: function (event) {
-
-			event.stopPropagation();
-			event.data.$avatarSubMenu.removeClass('hidden');
-		},
-		hideMenuInteractions: function () {
-
-			if(!this.$sectionsList.hasClass('hidden')) {
-				this.$sectionsList.addClass('hidden');
-			}
-
-			if(!this.$searchInput.hasClass('hidden')) {
-				this.$searchInput.addClass('hidden');
-			}
-
-			if(!this.$avatarSubMenu.hasClass('hidden')) {
-				this.$avatarSubMenu.addClass('hidden');
-			}
+			var $submenus = event.data.$submenu;
+			$submenus.addClass('hidden');
 		}
 	};
-	
-	menu.init();
+
+	topSubmenu.init();
 
 })();
+

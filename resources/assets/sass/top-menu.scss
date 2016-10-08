@@ -22,6 +22,7 @@
 		}
 		&.logo {
 			border-left: 0;
+			display: block;
 			img {
 				height: 45px;
 				width: 45px;
@@ -115,11 +116,16 @@
 			height: 30px;
 			border-radius: 5px;
 			cursor: pointer;
+			.sub-menu {
+				top: 42px;
+				width: 160px;
+				left: -20px;
+			}
 		}
 	}
-	.sections-wrapper {
+	.has-submenu {
 		position: relative;
-		.sections-list {
+		.sub-menu {
 			position: absolute;
 			left: 0;
 			top: 50px;

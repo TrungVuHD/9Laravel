@@ -2,9 +2,9 @@
 	<div class="col-sm-24">
 		<div class="left-side">
 				
-			<div class="logo menu-item">
+			<a href="{{ url('/') }}" class="logo menu-item">
 				<img src="{{ url('/img/logo.png') }}" alt="" />
-			</div>
+			</a>
 
 			<div class="hot menu-item @if($request->is('/')) active @endif">
 				<a href="{{ url('/') }}">
@@ -21,9 +21,9 @@
 					Fresh
 				</a>
 			</div>
-			<div class="sections-wrapper menu-item main-sections-wrapper">
+			<div class="sections-wrapper menu-item has-submenu">
 				Sections <span class="caret"></span>
-				<ul class="sections-list hidden">
+				<ul class="sub-menu hidden">
 					<li>
 						<a href="">Funny</a>	
 					</li>					
@@ -101,26 +101,17 @@
 						<i class="fa fa-bell" aria-hidden="true"></i>
 					</a>
 				</div>
-				<div class="menu-avatar sections-wrapper">
+				<div class="menu-avatar has-submenu">
 					<img class="img-responsive" src="http://avatars-cdn.9gag.com/avatar/default_82_100_v0.jpg" alt="">
-					<ul class="sections-list hidden">
+					<ul class="sub-menu hidden">
 						<li>
-							<a href="">Funny</a>	
+							<a href="{{ url('/my-profile') }}">My Profile</a>	
 						</li>					
 						<li>
-							<a href="">Funny</a>	
+							<a href="{{ url('/settings') }}">Settings</a>	
 						</li>					
 						<li>
-							<a href="">Funny</a>	
-						</li>					
-						<li>
-							<a href="">Funny</a>	
-						</li>					
-						<li>
-							<a href="">Funny</a>	
-						</li>					
-						<li>
-							<a href="">Funny</a>	
+							<a href="{{ url('logout') }}">Logout</a>	
 						</li>
 					</ul>
 				</div>
