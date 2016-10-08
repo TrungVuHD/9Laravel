@@ -254,7 +254,7 @@
 		</div>
 	</div>
 	
-	<div id="go-top">
+	<div id="go-top" class="hidden">
 		&#x2912;
 	</div>
 
