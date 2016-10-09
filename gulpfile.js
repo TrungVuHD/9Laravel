@@ -1,8 +1,4 @@
 var elixir = require('laravel-elixir');
-var gulp = require('gulp');
-var concat = require('gulp-concat');  
-var rename = require('gulp-rename');  
-var uglify = require('gulp-uglify');  
 
 /*
  |--------------------------------------------------------------------------
@@ -15,35 +11,24 @@ var uglify = require('gulp-uglify');
  |
  */
 
-var jsFiles = [ 
-    'node_modules/jquery/dist/jquery.min.js',
-    'node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js',
-    'resources/assets/js/libraries/FileDrop-master/filedrop-min.js',
-    'resources/assets/js/*.js'
-]; 
-
-var jsDest = 'public/js';
-
-gulp.task('min-scripts', function() {  
-    return gulp.src(jsFiles)
-		.pipe(concat('scripts.js'))
-		.pipe(gulp.dest(jsDest))
-		.pipe(rename('scripts.min.js'))
-		//.pipe(uglify())
-		.pipe(gulp.dest(jsDest));
-});
-
 elixir(function(mix) {
 
-	var bootstrapPath = 'node_modules/bootstrap-sass/assets/';
+    var bootstrapPath = 'node_modules/bootstrap-sass/assets';
+    var jsFiles = [ 
+        '../../../node_modules/jquery/dist/jquery.min.js',
+        '../../../node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js',
+        'resources/assets/js/libraries/FileDrop-master/filedrop-min.js',
+        'resources/assets/js/*.js'
+    ]; 
 
-    mix.sass('app.scss')
-    	.copy(bootstrapPath + '/fonts', 'public/fonts');
+    mix
+    //compile the scss
+    .sass('app.scss')
+    //compile the js
+    .scripts(jsFiles, 'public/js/scripts.min.js')
+    //copy the fonts
+    .copy(bootstrapPath + '/fonts', 'public/fonts')
+    //version(cache bust) the build files
+    .version([ 'css/app.css', 'js/scripts.min.js']);
 
-    //minify the js
-    mix.task('min-scripts');
-
-    //version the css and js
-    mix.version([ 'css/app.css', 'js/scripts.min.js']);
 });
-
