@@ -34,5 +34,6 @@ Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {
 	Route::post('', 'CategoriesController@store');
 	Route::get('/{category}/edit', 'CategoriesController@edit');
 	Route::put('/{category}', 'CategoriesController@update');
+	Route::delete('/{category}', 'CategoriesController@destroy');
 });
 Route::get('{category}', 'CategoriesController@show');

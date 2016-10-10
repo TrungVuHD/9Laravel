@@ -116,4 +116,14 @@ class CategoriesController extends Controller
 			->back()
 			->with('status', 'The category has been updated');
 	}
+
+	public function destroy(Request $request, $category) 
+	{
+
+		Category::destroy($category);
+
+		return redirect()
+			->back()
+			->with('status', 'The category has been deleted.');
+	}
 }
