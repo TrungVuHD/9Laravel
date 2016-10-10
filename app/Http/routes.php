@@ -18,14 +18,21 @@ Route::get('/gag', 'PostsController@show');
 Route::get('/trending', 'PostsController@trendingIndex');
 Route::get('/fresh', 'PostsController@freshIndex');
 
-Route::get('/settings', 'SettingsController@showAccount');
-Route::get('/settings/account', 'SettingsController@showAccount');
-Route::get('/settings/password', 'SettingsController@showPassword');
-Route::get('/settings/profile', 'SettingsController@showProfile');
-Route::get('/settings/my-profile', 'SettingsController@showMyProfile');
+Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
 
-Route::get('/categories', 'CategoriesController@index');
-Route::get('/categories/create', 'CategoriesController@create');
-Route::post('/categories', 'CategoriesController@store');
-Route::get('/categories/{category}/edit', 'CategoriesController@edit');
-Route::put('/categories/{category}', 'CategoriesController@update');
+	Route::get('/', 'SettingsController@showAccount');
+	Route::get('/account', 'SettingsController@showAccount');
+	Route::get('/password', 'SettingsController@showPassword');
+	Route::get('/profile', 'SettingsController@showProfile');
+	Route::get('/my-profile', 'SettingsController@showMyProfile');
+});
+
+Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {
+
+	Route::get('', 'CategoriesController@index');
+	Route::get('/create', 'CategoriesController@create');
+	Route::post('', 'CategoriesController@store');
+	Route::get('/{category}/edit', 'CategoriesController@edit');
+	Route::put('/{category}', 'CategoriesController@update');
+});
+Route::get('{category}', 'CategoriesController@show');

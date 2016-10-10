@@ -20,7 +20,7 @@ class CategoriesController extends Controller
 	public function show ()
 	{
 
-		return view('categories.show');
+		return view('9gag.index');
 	}
 
 	public function create()
