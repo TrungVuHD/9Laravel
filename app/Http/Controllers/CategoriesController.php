@@ -115,7 +115,5 @@ class CategoriesController extends Controller
 		return redirect()
 			->back()
 			->with('status', 'The category has been updated');
-
-
 	}
 }

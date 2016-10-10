@@ -28,6 +28,7 @@
         @include('includes.top-menu')
     </div>
     @include('includes.alert')
+    @include('includes.my-profile-header')
     <div class="container page-container">
         <div class="row">
             

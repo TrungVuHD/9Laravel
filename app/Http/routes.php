@@ -17,6 +17,7 @@ Route::get('/', 'PostsController@index');
 Route::get('/gag', 'PostsController@show');
 Route::get('/trending', 'PostsController@trendingIndex');
 Route::get('/fresh', 'PostsController@freshIndex');
+Route::get('/my-profile', 'PostsController@myProfileIndex');
 
 Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
 
@@ -24,7 +25,6 @@ Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
 	Route::get('/account', 'SettingsController@showAccount');
 	Route::get('/password', 'SettingsController@showPassword');
 	Route::get('/profile', 'SettingsController@showProfile');
-	Route::get('/my-profile', 'SettingsController@showMyProfile');
 });
 
 Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {
