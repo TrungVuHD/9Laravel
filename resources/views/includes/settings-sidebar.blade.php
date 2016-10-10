@@ -7,5 +7,8 @@
 	</li>
 	<li role="presentation" @if($request->is('settings/profile')) class="active" @endif >
 		<a href="{{ url('settings/profile') }}">Profile</a>
+	</li>	
+	<li role="presentation" @if( $request->is('categories/*') || $request->is('categories')) class="active" @endif >
+		<a href="{{ url('categories') }}">Categories</a>
 	</li>
 </ul>

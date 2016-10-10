@@ -24,52 +24,21 @@
 			<div class="sections-wrapper menu-item has-submenu">
 				Sections <span class="caret"></span>
 				<ul class="sub-menu hidden">
+					@foreach ($menuPostCategories as $cat)
 					<li>
-						<a href="">Funny</a>	
-					</li>					
-					<li>
-						<a href="">Funny</a>	
-					</li>					
-					<li>
-						<a href="">Funny</a>	
-					</li>					
-					<li>
-						<a href="">Funny</a>	
-					</li>					
-					<li>
-						<a href="">Funny</a>	
-					</li>					
-					<li>
-						<a href="">Funny</a>	
+						<a href="{{ url($cat->slug) }}">{{ $cat->title }}</a>	
 					</li>
+					@endforeach
 				</ul>
 			</div>
 			<div class="sections">
+				@foreach ($menuVisiblePostCategories as $cat)
 				<div class="menu-item">
-					<a href="">
-						Video
-					</a>
-				</div>				
-				<div class="menu-item">
-					<a href="">
-						Cosplay
-					</a>
-				</div>				
-				<div class="menu-item">
-					<a href="">
-						Girl
-					</a>
-				</div>				
-				<div class="menu-item">
-					<a href="">
-						NSFW
-					</a>
-				</div>				
-				<div class="menu-item">
-					<a href="">
-						GIF
+					<a href="{{ url($cat->slug) }}">
+						{{ $cat->title }}
 					</a>
 				</div>
+				@endforeach
 			</div>
 		</div> <!-- .left-side -->
 

@@ -1,9 +1,27 @@
 .settings-page {
+	&.profile-page {
+		.avatarInputLabel {
+			display: block;
+		}
+		.profile-avatar-img, 
+		#avatarInput {
+			display: inline-block;
+		}
+		.profile-avatar-img {
+			max-width: 60px;
+		}
+	}
 	h1 {
 		margin-top: 0;
 	}
 	.delete-my-account {
 		display: block;
 		margin-top: 40px;
+	}
+	.category-main-image {
+		max-width: 60px;
+	}
+	.delete-form {
+		display: inline-block;
 	}
 }

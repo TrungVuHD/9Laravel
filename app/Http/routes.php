@@ -23,3 +23,9 @@ Route::get('/settings/account', 'SettingsController@showAccount');
 Route::get('/settings/password', 'SettingsController@showPassword');
 Route::get('/settings/profile', 'SettingsController@showProfile');
 Route::get('/settings/my-profile', 'SettingsController@showMyProfile');
+
+Route::get('/categories', 'CategoriesController@index');
+Route::get('/categories/create', 'CategoriesController@create');
+Route::post('/categories', 'CategoriesController@store');
+Route::get('/categories/{category}/edit', 'CategoriesController@edit');
+Route::put('/categories/{category}', 'CategoriesController@update');

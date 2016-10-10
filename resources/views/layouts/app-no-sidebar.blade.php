@@ -30,12 +30,8 @@
     @include('includes.alert')
     <div class="container page-container">
         <div class="row">
-            
-            <div class="col-sm-14 col-sm-offset-4">
+            <div class="col-xs-24">
                 @yield('content')
-            </div>
-            <div class="col-sm-6">
-                @yield('sidebar')
             </div>
         </div>
     </div>
