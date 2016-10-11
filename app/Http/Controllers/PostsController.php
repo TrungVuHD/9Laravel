@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
+use App\Post;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class PostsController extends Controller
@@ -12,14 +13,16 @@ class PostsController extends Controller
 
     public function index(Request $request)
     {
-    	
-    	return view('9gag.index');
+    	$posts = Post::paginate(20);
+
+    	return view('9gag.index', ['posts' => $posts]);
     }    
 
-    public function show(Request $request)
+    public function show($slug)
     {
-    	
-    	return view('9gag.show');
+    	$post = Post::where('slug', $slug)->firstOrFail();
+
+    	return view('9gag.show', [ 'post' => $post ]);
     }
 
     public function trendingIndex(Request $request)
@@ -63,7 +66,19 @@ class PostsController extends Controller
             if($image_extension != "image/gif") {
                 $this->createImageVersions($image_dir, $image_file);
             }
-            
+
+            $post = new Post();
+
+            $post->title = $request->description;
+            $post->image = $image_file;
+            $post->slug = str_slug($request->description).'-'.str_random(10);
+            $post->attribution = $request->attribution;
+            $post->nsfw = isset($request->nsfw) && $request->nsfw == 'on' ? 1 : 0;
+            $post->cat_id = $request->category;
+            $post->user_id = Auth::user()->id;
+
+            $post->save();
+
         } catch (Exception $e) {
             
             echo json_encode(['success' => false]);

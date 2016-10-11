@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-		
+
 	<div class="home-item detail-home-item">
-		<h3 class="title">When a guy wants me to send him a picture in bra</h3>
+		<h3 class="title">{{ $post->title }}</h3>
 		<div class="description">
 			<a href="{{ url('gag/') }}">
-				546,478,946,498 points 
+				{{ $post->points }} points 
 			</a><span> &bull;</span>
 			<a href="{{ url('gag'.''.'#comment') }}">
 				216 comments
@@ -32,7 +32,7 @@
 				Next Post
 			</a>
 		</div>
-		<img class="img-responsive" src="http://img-9gag-fun.9cache.com/photo/a6QRAGA_460s.jpg" alt="">
+		<img class="img-responsive" src="{{ url('img/posts/'.$post->image) }}" alt="">
 		<div class="share-section row">
 			<div class="col-sm-12">
 				<a href="" class="share-network facebook">

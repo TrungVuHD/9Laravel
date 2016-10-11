@@ -14,7 +14,7 @@
 Route::auth();
 
 Route::get('/', 'PostsController@index');
-Route::get('/gag', 'PostsController@show');
+Route::get('/gag/{slug}', 'PostsController@show');
 Route::get('/trending', 'PostsController@trendingIndex');
 Route::get('/fresh', 'PostsController@freshIndex');
 Route::get('/my-profile', 'PostsController@myProfileIndex');

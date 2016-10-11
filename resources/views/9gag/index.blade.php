@@ -2,14 +2,15 @@
 
 @section('content')
 
+	@foreach($posts as $post)
 	<div class="home-item">
-		<a href="{{ url('gag/') }}">
-			<h3 class="title">When a guy wants me to send him a picture in bra</h3>
-			<img class="img-responsive" src="http://img-9gag-fun.9cache.com/photo/a6QRAGA_460s.jpg" alt="">
+		<a href="{{ url('gag/'.$post->slug) }}">
+			<h3 class="title">{{ $post->title }}</h3>
+			<img class="img-responsive" src="{{ url('img/posts/460/'.$post->image) }}" alt="">
 		</a>
 		<div class="description">
 			<a href="{{ url('gag/') }}">
-				546,478,946,498 points 
+				{{ $post->points }} points 
 			</a><span> &bull;</span>
 			<a href="{{ url('gag'.''.'#comment') }}">
 				216 comments
@@ -37,6 +38,7 @@
 			</div>
 		</div>
 	</div>
+	@endforeach
 	
 	<div class="home-item">
 		<a href="{{ url('gag/') }}">
