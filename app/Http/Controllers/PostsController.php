@@ -105,9 +105,7 @@ class PostsController extends Controller
         $img->save($dir.DS.'460'.DS.$file, 70);
 
         // small image
-        $img->resize(300, null, function ($constraint) {
-            $constraint->aspectRatio();
-        });
+        $img->resizeCanvas(300, 160, 'center');
         $img->save($dir.DS.'300'.DS.$file, 70);
     }
 
