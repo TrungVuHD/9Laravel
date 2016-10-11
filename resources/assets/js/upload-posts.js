@@ -6,9 +6,18 @@
 		images: [],
 		init: function () {
 
+			this.enableCSRFToken()
 			this.cacheDom();
 			this.bindEvents();
 			this.enableFileDrop();
+		},
+		enableCSRFToken: function () {
+			
+			$.ajaxSetup({
+			    headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    }
+			});
 		},
 		cacheDom: function () {
 
@@ -26,7 +35,7 @@
 		enableFileDrop: function () {
 
 			var self = this;
-			var options = {iframe: {url: 'upload.php'}};
+			var options = {iframe: {url: $("#upload-post-url").val()}};
 			var uploadPosts = new FileDrop('upload-post', options);
 
 			uploadPosts.multiple(false);
@@ -60,12 +69,33 @@
 				nsfw: $("#upload-nsfw-input").val(),
 				attribution: $("#post-attribute-input").val(),
 				category: $(".upload-post-category").val(),
+				image: $("#set-title-image-preview").attr('src'),
 				url: $("#upload-post-url").val()
 			};
 
 			return input;
 		},
 		uploadFiles: function () {
+
+			var input = this.retrieveModalInput();
+
+			console.dir(input);
+
+			var request = $.ajax({
+				url: input.url,
+				method: "POST",
+				data: input,
+				dataType: 'json'
+			});
+
+			request.done(function( msg ) {
+				console.log("this shit wooorks");
+			});
+
+			request.fail(function( jqXHR, textStatus ) {
+				alert( "Request failed: " + textStatus );
+			});
+			/*			
 			
 			var input = this.retrieveModalInput();
 			var uploadUrl = input.url + '?description='+input.description;
@@ -75,8 +105,12 @@
 
 			this.files.each(function (file) {
 				
+				console.log(uploadUrl);
+
 				file.sendTo(uploadUrl);
 			});
+			*/
+			
 		},
 		toggleAtribbute: function (event) {
 

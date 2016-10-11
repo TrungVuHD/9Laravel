@@ -3,8 +3,9 @@
 /public/storage
 Homestead.yaml
 Homestead.json
-public/css/
-public/js
-public/category-images
+/public/css/
+/public/js
+/public/category-images
+/public/img/posts
 .env
 /public/build
