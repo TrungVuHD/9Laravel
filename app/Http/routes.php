@@ -18,6 +18,7 @@ Route::get('/gag', 'PostsController@show');
 Route::get('/trending', 'PostsController@trendingIndex');
 Route::get('/fresh', 'PostsController@freshIndex');
 Route::get('/my-profile', 'PostsController@myProfileIndex');
+Route::post('/upload-post', 'PostsController@store');
 
 Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
 

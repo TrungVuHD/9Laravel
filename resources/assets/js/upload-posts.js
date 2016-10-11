@@ -16,10 +16,12 @@
 			this.$setTitleModal = $("#set-title-modal");
 			this.$showAtrributeInput = $("#attribbute-input-shown");
 			this.$attributeInput = $(".attribute-form-group");
+			this.$uploadBtn = $("#upload-post-btn");
 		},
 		bindEvents: function () {
 
 			this.$showAtrributeInput.on('change', this, this.toggleAtribbute);
+			this.$uploadBtn.on('click', $.proxy(this.uploadFiles, this));
 		},
 		enableFileDrop: function () {
 
@@ -47,32 +49,37 @@
 					);
 				});
 
-				self.images = files.images();
+				// cache the files object
+				self.files = files;
+			});
+		},
+		retrieveModalInput: function () {
 
+			var input = {
+				description: $("#upload-post-description").val(),
+				nsfw: $("#upload-nsfw-input").val(),
+				attribution: $("#post-attribute-input").val(),
+				category: $(".upload-post-category").val(),
+				url: $("#upload-post-url").val()
+			};
 
-				/*
-				files[0].readData(
-					function (str) {
-					
-						console.log(str);
-						zone.el.value = str 
+			return input;
+		},
+		uploadFiles: function () {
+			
+			var input = this.retrieveModalInput();
+			var uploadUrl = input.url + '?description='+input.description;
+				uploadUrl += '&nsfw='+input.nsfw;
+				uploadUrl += '&attribution='+input.attribution;
+				uploadUrl += '&category='+input.category;
 
-					},
-					function (e) { alert('Terrible error!') },
-					'text'
-				);
-
-				files.each(function (file) {
-
-					file.sendTo('upload.php')
-				})
-				*/
-
+			this.files.each(function (file) {
+				
+				file.sendTo(uploadUrl);
 			});
 		},
 		toggleAtribbute: function (event) {
 
-			console.log('toggle the ATTRIVBute');
 			var $self = event.data;
 			
 			if($(this).is(':checked')) {

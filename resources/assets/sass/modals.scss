@@ -88,7 +88,7 @@
 	}
 }
 #upload-url-input, 
-#attribute-input {
+#post-attribute-input {
 	width: 100%;
 	border: 0;
 	&:focus {
@@ -98,14 +98,46 @@
 }
 #set-title-image-preview {
 	position: absolute;
-	width: 96px;
-	height: 96px;
-	top: 20px;
+	max-width: 96px;
+	max-height: 96px;
+	top: 50%;
 	left: 20px;
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
 }
 #upload-url-modal {
 	.modal-body {
 		border-left: 1px solid #e5e5e5;
 		border-right: 1px solid #e5e5e5;
+	}
+}
+#pick-section-modal {
+	.modal-body {
+		padding: 0;
+	}
+	label {
+		cursor: pointer;
+		padding: 10px;
+		padding-bottom: 30px;
+		display: block;
+		clear: both;
+		&:hover {
+			background: #f4f4f4;
+		}
+	}
+	.section-image {
+		max-width: 50px;
+		max-height: 50px;
+		float: left;
+		margin-right: 20px;
+	}
+	h4 {
+		display: inline-block;
+	}
+	input {
+		float: right;
+		margin-top: 20px;
 	}
 }

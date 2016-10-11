@@ -137,13 +137,13 @@
 			<div class="modal-body">
 				<div class="top-section">
 					<img id="set-title-image-preview" src="{{ url('img/logo.png') }}" alt="" />
-					<textarea name="description" placeholder="Describe your post"></textarea>
+					<textarea id="upload-post-description" name="description" placeholder="Describe your post"></textarea>
 				</div>
 				<div class="form-group">
-					<label for="nsfw-input">
+					<label for="upload-nsfw-input">
 						This post is Not Safe for Work
 					</label>
-					<input type="checkbox" class="right-input" id="nsfw-input" name="nsfw-input" />
+					<input type="checkbox" class="right-input" id="upload-nsfw-input" name="nsfw-input" />
 				</div>
 				<div class="form-group">
 					<label for="attribbute-input-shown">
@@ -152,7 +152,8 @@
 					<input type="checkbox" class="right-input" id="attribbute-input-shown" />
 				</div>
 				<div class="form-group hidden attribute-form-group">
-					<input type="text" id="attribute-input" name="attribute-input" placeholder="http://" />
+					<input type="hidden" id="upload-post-url" value="{{ url('upload-post') }}" />
+					<input type="text" id="post-attribute-input" name="attribute-input" placeholder="http://" />
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -173,11 +174,19 @@
 				<p class="text-left">Submitting to the right section to make sure your post gets the right exposure it deserves!</p>
 			</div>
 			<div class="modal-body">
-				SELECT some shit
+				<div class="post-category">
+				@foreach ($menuPostCategories as $cat)
+					<label>
+						<img class="section-image" src="{{ url($cat->image) }}" />
+						<h4>{{ $cat->title }}</h4>
+						<input class="upload-post-category" type="radio" name="section" value="{{ $cat->id }}">
+					</label>
+				@endforeach
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#set-title-modal">Back</button>
-				<button class="btn btn-primary">Post</button>
+				<button class="btn btn-primary" id="upload-post-btn">Post</button>
 			</div>
 		</div>
 	</div>

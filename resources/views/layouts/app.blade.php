@@ -19,9 +19,9 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="{{ url('favicon/ms-icon-144x144.png') }}">
     <meta name="theme-color" content="#ffffff">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>9Laravel - a 9gag like website created in Laravel</title>
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
-
 </head>
 <body>
     <div class="container-fluid">

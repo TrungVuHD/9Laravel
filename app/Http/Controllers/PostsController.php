@@ -39,4 +39,13 @@ class PostsController extends Controller
     	return view('9gag.my-profile', ['user' => $user]);
     }
 
+    public function store(Request $request)
+    {   
+
+        $this->validate($request, [
+            'description' => 'required|max:160',
+            'category' => 'required|integer',
+            'image' => 'image',
+        ]);
+    }
 }
