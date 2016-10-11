@@ -51,17 +51,52 @@ class PostsController extends Controller
             'image' => 'required'
         ]);
 
+        try {
+            
+            $image_extension = $this->getImageExtension($request->image);
+            $image_dir = base_path().DS.'public'.DS.'img'.DS.'posts'.DS;
+            $image_file = str_random(20).$image_extension;
+            $image_location = $image_dir.$image_file;
 
-        $image_extension = $this->getImageExtension($request->image);
-        $image_title = base_path().DS.'public'.DS.'img'.DS.'posts'.DS.str_random(20).$image_extension;
+            $this->base64ToImage($request->image, $image_location);
 
-        $this->base64ToImage($request->image, $image_title);
+            if($image_extension != "image/gif") {
+                $this->createImageVersions($image_dir, $image_file);
+            }
+            
+        } catch (Exception $e) {
+            
+            echo json_encode(['success' => false]);
+            die();
+        }
 
         echo json_encode(['success' => true]);
         die();
     }
 
-    public function getImageExtension($base64_string)
+    protected function createImageVersions($dir, $file) 
+    {
+        // big image
+        $img = Image::make($dir.$file);
+        $img->resize(600, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $img->save($dir.$file, 70);        
+
+        // medium image
+        $img->resize(460, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $img->save($dir.DS.'460'.DS.$file, 70);
+
+        // small image
+        $img->resize(300, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $img->save($dir.DS.'300'.DS.$file, 70);
+    }
+
+    protected function getImageExtension($base64_string)
     {
         $data = explode(',', $base64_string);
         $imgdata = base64_decode($data[1]);
@@ -85,7 +120,7 @@ class PostsController extends Controller
         return $extension;
     }
 
-    public function base64ToImage($base64_string, $output_file) {
+    protected function base64ToImage($base64_string, $output_file) {
 
         $file = fopen($output_file, "wb");
         $data = explode(',', $base64_string);
