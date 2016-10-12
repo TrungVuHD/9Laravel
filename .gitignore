@@ -5,6 +5,7 @@ Homestead.yaml
 Homestead.json
 /public/css/
 /public/js
+/public/img
 /public/category-images
 /public/img/posts
 .env

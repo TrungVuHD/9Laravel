@@ -177,7 +177,7 @@
 				<div class="post-category">
 				@foreach ($menuPostCategories as $cat)
 					<label>
-						<img class="section-image" src="{{ url($cat->image) }}" />
+						<img class="section-image" src="{{ url('img/categories/'.$cat->image) }}" />
 						<h4>{{ $cat->title }}</h4>
 						<input class="upload-post-category" type="radio" name="section" value="{{ $cat->id }}">
 					</label>

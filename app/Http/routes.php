@@ -26,6 +26,10 @@ Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
 	Route::get('/account', 'SettingsController@showAccount');
 	Route::get('/password', 'SettingsController@showPassword');
 	Route::get('/profile', 'SettingsController@showProfile');
+	Route::post('/account', 'SettingsController@storeAccount');
+	Route::post('/password', 'SettingsController@storePassword');
+	Route::post('/profile', 'SettingsController@storeProfile');
+	Route::delete('/account', 'SettingsController@destroy');
 });
 
 Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {
@@ -37,4 +41,5 @@ Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {
 	Route::put('/{category}', 'CategoriesController@update');
 	Route::delete('/{category}', 'CategoriesController@destroy');
 });
+
 Route::get('{category}', 'CategoriesController@show');

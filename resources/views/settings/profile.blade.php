@@ -7,34 +7,35 @@
 		</div>
 		<div class="col-sm-18">
 			<h1>Profile</h1>
-			<form>
+			<form action="{{ url('settings/profile') }}" method="POST" enctype="multipart/form-data">
+				{{ csrf_field() }}
 				<div class="form-group">
 					<label class="avatarInputLabel" for="avatarInput">Avatar</label>
-					<img class="profile-avatar-img" src="https://avatars-cdn.9gag.com/avatar/default_82_100_v0.jpg" alt="">
-					<input type="file" id="avatarInput">
+					<img class="profile-avatar-img" src="{{ url('img/avatars/'.$user->avatar_image) }}" alt="">
+					<input type="file" id="avatarInput" name="avatar_image">
 				</div>
 				<div class="form-group">
 					<label for="yourNameInput">Your name</label>
-					<input type="text" class="form-control" id="yourNameInput" name="name" placeholder="Your name">
+					<input type="text" class="form-control" id="yourNameInput" name="name" value="{{ $user->name or '' }}" placeholder="Your name">
 				</div>				
 				<div class="form-group">
 					<label for="gender-input">Gender</label>
 					<select name="gender" id="gender-input" class="form-control">
 						<option value="0">Male</option>
-						<option value="1">Female</option>
+						<option @if(isset($user->gender) && $user->gender == 1) selected @endif value="1">Female</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<label>Birthday</label>
 					<div class="row">
 						<div class="col-sm-12">
-							<input type="text" name="year" class="form-control" placeholder="YYYY">
+							<input type="number" name="birthday_year" class="form-control" placeholder="YYYY" value="{{ $user->birthday_year or '' }}">
 						</div>
 						<div class="col-sm-6">
-							<input type="text" name="month" class="form-control" placeholder="MM">
+							<input type="number" name="birthday_month" class="form-control" placeholder="MM" value="{{ $user->birthday_month or '' }}">
 						</div>
 						<div class="col-sm-6">
-							<input type="text" name="month" class="form-control" placeholder="DD">
+							<input type="number" name="birthday_day" class="form-control" placeholder="DD" value="{{ $user->birthday_day or '' }}">
 						</div>
 					</div>
 				</div>
@@ -42,14 +43,19 @@
 					<label for="country-input">Country</label>
 					<select name="country" id="country-input" class="form-control">
 						@foreach($countries as $country)
+							
+							@if(isset($user->country) && $user->country == $country)
+							<option selected >{{ $country }}</option>
+							@else 
 							<option>{{ $country }}</option>
+							@endif
 						@endforeach
 					</select>
 				    <p class="help-block">Tell us where you're from so we can provide better service for you.</p>
 				</div>
 				<div class="form-group">
 					<label for="yourDescriptionInput">Tell people who you are</label>
-					<textarea name="description" class="form-control" id="yourDescriptionInput"></textarea>
+					<textarea name="description" class="form-control" id="yourDescriptionInput">{{ $user->description or '' }}</textarea>
 				</div>
 				<div class="form-group">
 					<label>Social Networks</label>

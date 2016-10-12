@@ -71,7 +71,7 @@
 					</a>
 				</div>
 				<div class="menu-avatar has-submenu">
-					<img class="img-responsive" src="http://avatars-cdn.9gag.com/avatar/default_82_100_v0.jpg" alt="">
+					<img class="img-responsive" src="{{ url( 'img/avatars/'.Auth::user()->avatar_image ) }}" alt="">
 					<ul class="sub-menu hidden">
 						<li>
 							<a href="{{ url('/my-profile') }}">My Profile</a>	

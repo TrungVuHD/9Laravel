@@ -19,7 +19,7 @@
 				<div class="form-group">
 					<label class="avatarInputLabel" for="avatarInput">Avatar</label>
 					@if( isset($category) )
-					<img class="profile-avatar-img" src="{{ url($category->image) }}" alt="">
+					<img class="profile-avatar-img" src="{{ url('img/categories/'.$category->image) }}" alt="">
 					@endif 
 					<input type="file" name="image" id="avatarInput">
 				</div>

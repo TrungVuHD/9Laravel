@@ -13,28 +13,33 @@ class PostsController extends Controller
 
     public function index(Request $request)
     {
+
+        $posts = Post::paginate(20);
+
+        return view('9gag.index', ['posts' => $posts]);
+    }    
+
+    public function trendingIndex(Request $request)
+    {
+
+        $posts = Post::paginate(20);
+
+        return view('9gag.index', ['posts' => $posts]);
+    }
+
+    public function freshIndex(Request $request)
+    {
+
     	$posts = Post::paginate(20);
 
-    	return view('9gag.index', ['posts' => $posts]);
-    }    
+        return view('9gag.index', [ 'posts' => $posts ]);
+    }
 
     public function show($slug)
     {
     	$post = Post::where('slug', $slug)->firstOrFail();
 
     	return view('9gag.show', [ 'post' => $post ]);
-    }
-
-    public function trendingIndex(Request $request)
-    {
-
-    	return view('9gag.index');
-    }
-
-    public function freshIndex(Request $request)
-    {
-
-        return view('9gag.index');
     }
 
     public function myProfileIndex() {

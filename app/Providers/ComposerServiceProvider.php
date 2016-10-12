@@ -22,6 +22,10 @@ class ComposerServiceProvider extends ServiceProvider
         View::composer(
             '*', 'App\Http\ViewComposers\CategoriesComposer'
         );
+
+        View::composer(
+            '*', 'App\Http\ViewComposers\SidebarPostsComposer'
+        );
     }
 
     /**
