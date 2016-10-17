@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 </head>
 <body>
+    <input type="hidden" id="base-url" value="{{ url('/') }}">
     <div class="container-fluid">
         @include('includes.top-menu')
     </div>

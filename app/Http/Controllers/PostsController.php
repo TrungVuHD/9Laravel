@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Post;
-use Intervention\Image\ImageManagerStatic as Image;
+use App\Point;
 
 class PostsController extends Controller
 {
@@ -38,8 +39,10 @@ class PostsController extends Controller
     public function show($slug)
     {
     	$post = Post::where('slug', $slug)->firstOrFail();
+        $thumb_up = Point::where('post_id', $post->id)->where('user_id', Auth::user()->id)->first();
+        $points = count($post->points) > 0 ? count($post->points) : 0;
 
-    	return view('9gag.show', [ 'post' => $post ]);
+    	return view('9gag.show', compact('post', 'points', 'thumb_up'));
     }
 
     public function myProfileIndex() {

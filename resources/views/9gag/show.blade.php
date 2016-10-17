@@ -2,22 +2,22 @@
 
 @section('content')
 
-	<div class="home-item detail-home-item">
+	<div class="home-item detail-home-item" data-post-id="{{ $post->id }}">
 		<h3 class="title">{{ $post->title }}</h3>
 		<div class="description">
-			<a href="{{ url('gag/') }}">
-				{{ $post->points }} points 
+			<a class="points-wrapper" href="{{ url('gag/') }}">
+				<span class="points">{{ $points }}</span> points
 			</a><span> &bull;</span>
 			<a href="{{ url('gag'.''.'#comment') }}">
 				216 comments
 			</a>
 		</div>
 		<div class="social-section">
-			<a href="" class="thumbs-up social-item">
+			<a href="#" class="thumbs-up social-item @if(isset($thumb_up->id)) active @endif ">
 				<i class="fa fa-arrow-up" aria-hidden="true"></i>
 				<span>UP</span>
 			</a>
-			<a href="" class="thumbs-down social-item">
+			<a href="#" class="thumbs-down social-item">
 				<i class="fa fa-arrow-down" aria-hidden="true"></i>
 			</a>
 			<a href="" class="facebook social-link">

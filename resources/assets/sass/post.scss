@@ -12,7 +12,9 @@
 		.social-item {
 			display: block;
 			float: left;
-			&:hover {
+			&:hover,
+			&:active,
+			&:focus {
 				text-decoration: none !important;
 			}
 			&.thumbs-up {
@@ -30,6 +32,11 @@
 			width: auto;
 			margin-right: 0;
 			padding: 0 10px;
+			&.active {
+				.fa-arrow-up {
+					color: #198dff;
+				}
+			}
 			span {
 				position: relative;
 				top: -2px;

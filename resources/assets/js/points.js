@@ -1,0 +1,114 @@
+(function () {
+
+	var points = {
+		init: function () {
+
+			this.cacheDom();
+			this.bindEvents();
+		},
+		cacheDom: function () {
+
+			this.$thumbsUp = $('.thumbs-up');
+			this.$thumbsDown = $('.thumbs-down');
+			this.baseUrl = $('#base-url').val();
+		},
+		bindEvents: function () {
+			
+			this.$thumbsUp.on('click', this, this.incrementPoints);
+			this.$thumbsDown.on('click', this, this.decrementPoints);
+		},
+		incrementPoints: function (event) {
+
+			event.preventDefault();
+
+			var $parentElement = $(this).parents('.home-item');
+			var baseUrl = event.data.baseUrl;
+			var data = {
+				postId: $parentElement.data('post-id')
+			};
+
+			var request = $.ajax({
+				url: baseUrl+'/ajax/points/increment',
+				method: "POST",
+				data: data,
+				dataType: 'json'
+			});
+
+			request.done(function( data ) {
+
+				if(data.success == true) {
+
+					var $points = $parentElement.find('.points');
+					var noPoints = parseInt($points.html());
+					var $thumbsUpElement = $parentElement.find('.thumbs-up');
+
+					$points.html(noPoints+1);
+					$thumbsUpElement.addClass('active');
+				} else {
+
+					//alert( "There was a problem with your request.");
+				}
+			});
+
+			request.fail(function( jqXHR, textStatus ) {
+
+				if(jqXHR.status == 401) {
+
+					window.location.href = points.baseUrl+'/login';
+
+				} else {
+
+					//alert( "There was a problem with your request.");
+				}
+			});
+		},
+		decrementPoints: function (event) {
+
+			event.preventDefault();
+
+			var $parentElement = $(this).parents('.home-item');
+			var baseUrl = event.data.baseUrl;
+			var data = {
+				'postId': $parentElement.data('post-id')
+			};
+
+			var request = $.ajax({
+				url: baseUrl+'/ajax/points/decrement',
+				method: "POST",
+				data: data,
+				dataType: 'json'
+			});
+
+			request.done(function( data ) {
+
+				if(data.success) {
+
+					var $points = $parentElement.find('.points');
+					var noPoints = parseInt($points.html());
+					var $activeElement = $parentElement.find('.active');
+
+					$points.html(noPoints-1);
+					$activeElement.removeClass('active');
+				} else {
+					
+					//alert( "There was a problem with your request.");
+				}
+			});
+
+			request.fail(function( jqXHR, textStatus ) {
+				
+				if(jqXHR.status == 401) {
+
+					window.location.href = points.baseUrl+'/login';
+
+				} else {
+
+					//alert( "There was a problem with your request.");
+				}
+			});
+		}
+	};
+
+	points.init();
+
+})();

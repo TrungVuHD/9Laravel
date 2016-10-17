@@ -8,8 +8,8 @@
 			<img class="img-responsive" src="http://img-9gag-fun.9cache.com/photo/a6QRAGA_460s.jpg" alt="">
 		</a>
 		<div class="description">
-			<a href="{{ url('gag/') }}">
-				546,478,946,498 points 
+			<a class="points-wrapper" href="{{ url('gag/') }}">
+				<span class="points">546,478,946,498</span> points 
 			</a><span> &bull;</span>
 			<a href="{{ url('gag'.''.'#comment') }}">
 				216 comments

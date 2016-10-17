@@ -3,23 +3,26 @@
 @section('content')
 
 	@foreach($posts as $post)
-	<div class="home-item">
+	<div class="home-item" data-post-id="{{ $post->id }}">
+		
 		<a href="{{ url('gag/'.$post->slug) }}">
 			<h3 class="title">{{ $post->title }}</h3>
 			<img class="img-responsive" src="{{ url('img/posts/460/'.$post->image) }}" alt="">
 		</a>
 		<div class="description">
-			<a href="{{ url('gag/') }}">
-				{{ $post->points }} points 
+			<a class="points-wrapper" href="{{ url('gag/') }}">
+				<span class="points">{{count($post->points)}}</span> points 
 			</a><span> &bull;</span>
-			<a href="{{ url('gag'.''.'#comment') }}">
+			<a href="{{ url('gag'.'/'.'#comment') }}">
 				216 comments
 			</a>
 		</div>
 		<div class="social-section">
-			<a href="" class="thumbs-up social-item">
+
+			<a href="" class="thumbs-up social-item @if( count($post->points->where('post_id', $post->id)) ) active @endif">
 				<i class="fa fa-arrow-up" aria-hidden="true"></i>
 			</a>
+		
 			<a href="" class="thumbs-down social-item">
 				<i class="fa fa-arrow-down" aria-hidden="true"></i>
 			</a>

@@ -42,4 +42,15 @@ Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {
 	Route::delete('/{category}', 'CategoriesController@destroy');
 });
 
+Route::group(['prefix' => 'ajax'], function (){
+
+	Route::group(['middleware' => 'auth'], function () {
+		Route::post('points/increment', 'PointsController@incrementPoints');
+		Route::post('points/decrement', 'PointsController@decrementPoints');
+	});
+
+	
+
+});
+
 Route::get('{category}', 'CategoriesController@show');

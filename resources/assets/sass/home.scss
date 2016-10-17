@@ -43,6 +43,11 @@
 			&:hover {
 				border-color: #999;
 			}
+			&.active {
+				.fa {
+					color: #198dff;
+				}
+			}
 		}
 		.fa {
 			position: relative;

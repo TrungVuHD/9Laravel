@@ -20,12 +20,12 @@ class CategoriesController extends Controller
 
 	public function show ()
 	{
-
 		return view('9gag.index');
 	}
 
 	public function create()
-	{
+	{ 
+		
 		
 		return view('categories.create');
 	}
@@ -41,7 +41,7 @@ class CategoriesController extends Controller
 			'show_in_menu' => 'required|integer',
 			'image' => 'image',
 		]);
-
+   
 		$category = new Category();
 
 		// Upload the image and generate the random file name
@@ -122,6 +122,10 @@ class CategoriesController extends Controller
             $img->resize(100, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
+
+ 
+    
+
             $img->save($image_location, 70);
 		}
 

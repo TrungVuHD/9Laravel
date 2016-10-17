@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Post;
+use App\Points;
 
 class User extends Authenticatable
 {
@@ -23,4 +25,16 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function posts()
+    {
+
+        return $this->hasMany(Post::class);
+    }
+
+    public function points()
+    {
+
+        return $this->hasMany(Point::class);
+    }
 }

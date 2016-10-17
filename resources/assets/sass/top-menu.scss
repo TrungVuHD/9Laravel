@@ -9,11 +9,13 @@
 		display: block;
 		float: left;
 		line-height: 50px;
-		padding: 0 12px;
 		font-weight: bold;
 		border-left: 1px solid #333;
 		&.active {
 			background-color: #333;
+		}
+		&.sections-wrapper {
+			padding: 0 12px;
 		}
 		&:hover {
 			cursor: pointer;
@@ -34,6 +36,7 @@
 		a {
 			color: white;
 			display: block;
+			padding: 0 12px;
 			&:hover {
 				cursor: pointer;
 				text-decoration: none;
