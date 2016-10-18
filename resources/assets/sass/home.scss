@@ -10,6 +10,7 @@
 	.title {
 		cursor: pointer;
 		color: black;
+		display: inline-block;
 		&:hover {
 			color: #09f;
 		}

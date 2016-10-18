@@ -20,7 +20,11 @@
     <meta name="msapplication-TileImage" content="{{ url('favicon/ms-icon-144x144.png') }}">
     <meta name="theme-color" content="#ffffff">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>9Laravel - a 9gag like website created in Laravel</title>
+    @if(!isset($posts) && isset($post->title))
+    <title>{{ $post->title }} - 9Laravel</title>
+    @else
+    <title>9Laravel - Go Code Something Awesome</title>
+    @endif
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 </head>
 <body>
@@ -33,7 +37,7 @@
     <div class="container page-container">
         <div class="row">
             
-            <div class="col-sm-14 col-sm-offset-3">
+            <div id="content" class="col-sm-14 col-sm-offset-3">
                 @yield('content')
             </div>
             <div class="col-sm-6">

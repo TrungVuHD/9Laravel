@@ -54,6 +54,7 @@
 		border-radius: 3px 0 0 3px;
 		color: white;
 		float: right;
+		margin-right: 15px;
 		&:after {
 			content: " ";
 			display: block;
@@ -65,6 +66,13 @@
 			border-top: 17px solid transparent;
 			border-bottom: 17px solid transparent;
 			border-left: 17px solid #ff3c1f;
+		}
+		&:hover {
+			background-color: #ff6852;
+			text-decoration: none;
+			&:after {
+				border-left-color: #ff6852; 
+			}
 		}
 	}
 	.report-post {

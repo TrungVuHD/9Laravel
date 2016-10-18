@@ -6,6 +6,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Category;
+use App\Post;
 
 class CategoriesController extends Controller
 {
@@ -18,14 +19,21 @@ class CategoriesController extends Controller
 		return view('categories.index', [ 'categories' => $categories ]);
 	}
 
-	public function show ()
+	public function show(Request $request, $category)
 	{
-		return view('9gag.index');
+
+		$category = Category::where('slug', $category)->first();
+		$category_id = isset($category->id) ? $category->id : 0;
+		$posts = Post::where('cat_id', $category_id)->paginate(20);
+
+		if($category_id == 0) 
+			abort(404);
+
+		return view('9gag.index', ['category_id' => $category_id, 'posts' => $posts]);
 	}
 
 	public function create()
 	{ 
-		
 		
 		return view('categories.create');
 	}

@@ -5,10 +5,10 @@
 	<div class="home-item detail-home-item" data-post-id="{{ $post->id }}">
 		<h3 class="title">{{ $post->title }}</h3>
 		<div class="description">
-			<a class="points-wrapper" href="{{ url('gag/') }}">
+			<a class="points-wrapper" href="{{ url('gag/'.$post->slug) }}">
 				<span class="points">{{ $points }}</span> points
 			</a><span> &bull;</span>
-			<a href="{{ url('gag'.''.'#comment') }}">
+			<a href="#comments">
 				{{$no_comments}} comments
 			</a>
 		</div>
@@ -20,34 +20,36 @@
 			<a href="#" class="thumbs-down social-item">
 				<i class="fa fa-arrow-down" aria-hidden="true"></i>
 			</a>
-			<a href="" class="facebook social-link">
+			<a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/gag/'.$post->slug) }}" class="facebook social-link">
 				<i class="fa fa-facebook" aria-hidden="true"></i> 
 				<span>Facebook</span>
 			</a>
-			<a href="" class="twitter social-link">
+			<a href="https://twitter.com/home?status={{ url('/gag/'.$post->slug) }}" class="twitter social-link">
 				<i class="fa fa-twitter" aria-hidden="true"></i> 
 				<span>Twitter</span>
 			</a>
-			<a href="" class="next-post">
+			@if( $next_post != '' )
+			<a href="{{ $next_post->slug }}" class="next-post">
 				Next Post
 			</a>
+			@endif
 		</div>
 		<img class="img-responsive" src="{{ url('img/posts/'.$post->image) }}" alt="">
 		<div class="share-section row">
 			<div class="col-sm-12">
-				<a href="" class="share-network facebook">
+				<a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/gag/'.$post->slug) }}" class="share-network facebook">
 					Share on Facebook
 				</a>
 			</div>
 			<div class="col-sm-12">
-				<a href="" class="share-network twitter">
+				<a href="https://twitter.com/home?status={{ url('/gag/'.$post->slug) }}" class="share-network twitter">
 					Share on Twitter
 				</a>
 			</div>
 		</div>
 		<a href="" class="report-post">REPORT</a>
 	</div>
-	<div class="comments-section">
+	<div id="comments" class="comments-section">
 		<div class="comments-head">
 			<p class="no-comments">{{$no_comments}} Comments</p>
 			<div class="pull-right">
@@ -121,7 +123,9 @@
 						{{ $comment->comment }}
 					</p>
 					<div class="reply">
+						<!--
 						<a href="">Reply</a>
+						-->
 						@if(Auth::check())
 						<a href="#" class="up-vote-comment @if( $comment->points->where('user_id', Auth::user()->id)->count() ) active @endif ">
 							<i class="fa fa-arrow-up" aria-hidden="true"></i>
@@ -138,7 +142,8 @@
 				</div>
 			</div>
 			@endforeach
-
+	
+			<!--
 			<div class="comment">
 				<img class="comment-avatar" src="http://accounts-cdn.9gag.com/media/avatar/7707104_100_5.jpg" alt="" />
 				<div class="comment-description">
@@ -226,6 +231,7 @@
 				</div>
 
 			</div>
+			-->
 
 
 		</div>

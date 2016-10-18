@@ -13,6 +13,12 @@ class CommentsController extends Controller
 	public function store(Request $request)
 	{
 
+		if(!Auth::check()) 
+		{
+			return redirect('login')
+				->with('status', 'You need to be logged-in in order to comment.');
+		}
+
 		$this->validate($request, [
 			'comment' => 'required|max:1000',
 			'post_id' => 'required|integer',

@@ -68,7 +68,7 @@
 				description: $("#upload-post-description").val(),
 				nsfw: $("#upload-nsfw-input").val(),
 				attribution: $("#post-attribute-input").val(),
-				category: $(".upload-post-category").val(),
+				category: $(".upload-post-category:checked").val(),
 				image: $("#set-title-image-preview").attr('src'),
 				url: $("#upload-post-url").val()
 			};
@@ -88,8 +88,9 @@
 				dataType: 'json'
 			});
 
-			request.done(function( msg ) {
-				console.log("this shit wooorks");
+			request.done(function( data ) {
+				
+				
 			});
 
 			request.fail(function( jqXHR, textStatus ) {

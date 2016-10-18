@@ -13,7 +13,7 @@
 			<a class="points-wrapper" href="{{ url('gag/') }}">
 				<span class="points">{{count($post->points)}}</span> points 
 			</a><span> &bull;</span>
-			<a href="{{ url('gag'.'/'.'#comment') }}">
+			<a href="{{ url('gag'.'/'.$post->slug.'#comments') }}">
 				{{ $post->comments->count() }} comments
 			</a>
 		</div>
@@ -32,15 +32,15 @@
 			<a href="" class="thumbs-down social-item">
 				<i class="fa fa-arrow-down" aria-hidden="true"></i>
 			</a>
-			<a href="" class="comment social-item">
+			<a href="{{ url('gag'.'/'.$post->slug.'#comments') }}" class="comment social-item">
 				<i class="fa fa-comment" aria-hidden="true"></i>
 			</a>
 			<div class="pull-right">
-				<a href="" class="facebook social-link">
+				<a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/gag/'.$post->slug) }}" class="facebook social-link">
 					<i class="fa fa-facebook" aria-hidden="true"></i> 
 					<span>Facebook</span>
 				</a>
-				<a href="" class="twitter social-link">
+				<a href="https://twitter.com/home?status={{ url('/gag/'.$post->slug) }}" class="twitter social-link">
 					<i class="fa fa-twitter" aria-hidden="true"></i> 
 					<span>Twitter</span>
 				</a>
@@ -49,9 +49,61 @@
 	</div>
 	@endforeach
 	
+	<input type="hidden" id="category-id" value="{{ $category_id or 0 }}">	
+	<input type="hidden" id="posts-category" value="{{ $posts_category or 0 }}">	
 	<div id="go-top" class="hidden">
 		<i class="fa fa-step-forward" aria-hidden="true"></i>
 	</div>
+
+	<script id="home-item-template" type="x-tmpl-mustache">
+		@{{#posts}}
+		<div class="home-item" data-post-id="@{{ id }}">
+			
+			<a href="{{ url('gag') }}/@{{ slug }}">
+				<h3 class="title">@{{ title }}</h3>
+				<img class="img-responsive" src="{{ url('img/posts/460') }}/@{{ image }}" alt="">
+			</a>
+			<div class="description">
+				<a class="points-wrapper" href="{{ url('gag') }}/@{{ slug }}">
+					<span class="points">@{{ no_points }}</span> points 
+				</a><span> &bull;</span>
+				<a href="{{ url('gag') }}/@{{ slug }}#comments">
+					@{{ no_comments }} comments
+				</a>
+			</div>
+			<div class="social-section">
+
+				@{{#auth}}
+				<a href="#" class="thumbs-up social-item @{{#active_thumbs_up}} active @{{/active_thumbs_up}}">
+					<i class="fa fa-arrow-up" aria-hidden="true"></i>
+				</a>
+				@{{/auth}}
+				@{{#no_auth}}
+				<a href="#" class="thumbs-up social-item">
+					<i class="fa fa-arrow-up" aria-hidden="true"></i>
+				</a>
+				@{{/no_auth}}
+			
+				<a href="#" class="thumbs-down social-item">
+					<i class="fa fa-arrow-down" aria-hidden="true"></i>
+				</a>
+				<a href="{{ url('gag') }}/@{{ slug }}#comments" class="comment social-item">
+					<i class="fa fa-comment" aria-hidden="true"></i>
+				</a>
+				<div class="pull-right">
+					<a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/gag') }}/@{{ slug }}" class="facebook social-link">
+						<i class="fa fa-facebook" aria-hidden="true"></i> 
+						<span>Facebook</span>
+					</a>
+					<a href="https://twitter.com/home?status={{ url('/gag') }}/@{{ slug }}" class="twitter social-link">
+						<i class="fa fa-twitter" aria-hidden="true"></i> 
+						<span>Twitter</span>
+					</a>
+				</div>
+			</div>
+		</div>
+		@{{/posts}}
+	</script>	
 
 @endsection
 

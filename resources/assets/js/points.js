@@ -44,9 +44,6 @@
 
 					$points.html(noPoints+1);
 					$thumbsUpElement.addClass('active');
-				} else {
-
-					//alert( "There was a problem with your request.");
 				}
 			});
 
@@ -56,9 +53,6 @@
 
 					window.location.href = points.baseUrl+'/login';
 
-				} else {
-
-					//alert( "There was a problem with your request.");
 				}
 			});
 		},

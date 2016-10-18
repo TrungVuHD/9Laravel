@@ -46,13 +46,19 @@ Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {
 Route::group(['prefix' => 'ajax'], function (){
 
 	Route::group(['middleware' => 'auth'], function () {
+
 		Route::post('points/increment', 'PointsController@incrementPoints');
 		Route::post('points/decrement', 'PointsController@decrementPoints');
-	});
-	
-	Route::group(['middleware' => 'auth'], function () {
 		Route::post('comments/increment', 'CommentsController@incrementPoints');
 		Route::post('comments/decrement', 'CommentsController@decrementPoints');
+	});
+
+	Route::group(['prefix' => 'posts'], function () {
+
+		Route::get('/fresh/{offset}/{limit}', 'PostsController@retrieveFreshAjax');
+		Route::get('/trending/{offset}/{limit}', 'PostsController@retrieveTrendingAjax');
+		Route::get('/hot/{offset}/{limit}', 'PostsController@retrieveHotAjax');
+		Route::get('/{category}/{start}', 'PostsController@retrieveCategoryAjax');
 	});
 
 	Route::get('search', 'PostsController@search');
