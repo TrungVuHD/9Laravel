@@ -117,6 +117,12 @@
 	.comments-head {
 		border-bottom: 1px solid #DDD;
 	}
+	.comment-img {
+		max-width: 50px;
+		max-height: 50px;
+		float: left;
+		border-radius: 2px;
+	}
 	.comment-sort {
 		color: #999;
 		font-size: 13px;
@@ -131,6 +137,12 @@
 			color: black;
 		}
 	}
+	.up-vote-comment.active {
+		text-decoration: none;
+		.fa {
+			color: #08f !important;
+		}
+	} 
 	.comments-body {
 		margin-top: 20px;
 		position: relative;
@@ -220,6 +232,7 @@
 			margin-bottom: 4px;
 		}
 		.message {
+			word-wrap: break-word;
 			margin-bottom: 4px;
 		}
 		.reply {

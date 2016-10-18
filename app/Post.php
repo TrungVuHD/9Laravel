@@ -3,9 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Category;
+use App\Comment;
 use App\Point;
 use App\User;
-use App\Category;
 
 class Post extends Model
 {
@@ -26,5 +27,11 @@ class Post extends Model
     {
 
     	return $this->belongsTo(Category::class);
+    }
+
+    public function comments()
+    {
+
+        return $this->hasMany(Comment::class);
     }
 }

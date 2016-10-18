@@ -6,6 +6,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Comment;
 use App\Post;
 use App\Point;
 
@@ -39,10 +40,23 @@ class PostsController extends Controller
     public function show($slug)
     {
     	$post = Post::where('slug', $slug)->firstOrFail();
-        $thumb_up = Point::where('post_id', $post->id)->where('user_id', Auth::user()->id)->first();
-        $points = count($post->points) > 0 ? count($post->points) : 0;
 
-    	return view('9gag.show', compact('post', 'points', 'thumb_up'));
+        if(Auth::check())
+        {
+            $thumb_up = Point::where('post_id', $post->id)
+                ->where('user_id', Auth::user()->id)
+                ->first();
+        } 
+        else 
+        {
+            $thumb_up = null;
+        }
+
+        $points = count($post->points) > 0 ? count($post->points) : 0;
+        $comments = Comment::where('post_id', $post->id)->get();
+        $no_comments = $comments->count();
+
+    	return view('9gag.show', compact('post', 'points', 'thumb_up', 'comments', 'no_comments'));
     }
 
     public function myProfileIndex() {
@@ -141,7 +155,8 @@ class PostsController extends Controller
         return $extension;
     }
 
-    protected function base64ToImage($base64_string, $output_file) {
+    protected function base64ToImage($base64_string, $output_file) 
+    {
 
         $file = fopen($output_file, "wb");
         $data = explode(',', $base64_string);
@@ -149,5 +164,33 @@ class PostsController extends Controller
         fclose($file);
      
         return $output_file;
+    }
+
+    public function search(Request $request)
+    {
+
+        $this->validate($request, [
+            'keyword' => 'required'
+        ]);
+
+        $keyword = strtolower($request->keyword);
+
+        $results = Post::where('title', 'like', $keyword.'%')
+            ->take(10)
+            ->get();
+
+        return $results;
+    }
+
+    public function searchIndex(Request $request)
+    {
+        
+        $query = $request->query();
+        $query = $query['query'];
+
+        $posts = Post::where('title', 'like', "%$query%")->paginate(20);
+        $total_results = Post::where('title', 'like', "%$query%")->count();
+
+        return view('9gag.search', compact('posts', 'total_results', 'query'));
     }
 }

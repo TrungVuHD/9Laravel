@@ -19,6 +19,7 @@ Route::get('/trending', 'PostsController@trendingIndex');
 Route::get('/fresh', 'PostsController@freshIndex');
 Route::get('/my-profile', 'PostsController@myProfileIndex');
 Route::post('/upload-post', 'PostsController@store');
+Route::get('search', 'PostsController@searchIndex');
 
 Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
 
@@ -48,9 +49,15 @@ Route::group(['prefix' => 'ajax'], function (){
 		Route::post('points/increment', 'PointsController@incrementPoints');
 		Route::post('points/decrement', 'PointsController@decrementPoints');
 	});
-
 	
+	Route::group(['middleware' => 'auth'], function () {
+		Route::post('comments/increment', 'CommentsController@incrementPoints');
+		Route::post('comments/decrement', 'CommentsController@decrementPoints');
+	});
+
+	Route::get('search', 'PostsController@search');
 
 });
 
+Route::post('/comments', 'CommentsController@store');
 Route::get('{category}', 'CategoriesController@show');

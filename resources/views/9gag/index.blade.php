@@ -14,14 +14,20 @@
 				<span class="points">{{count($post->points)}}</span> points 
 			</a><span> &bull;</span>
 			<a href="{{ url('gag'.'/'.'#comment') }}">
-				216 comments
+				{{ $post->comments->count() }} comments
 			</a>
 		</div>
 		<div class="social-section">
 
-			<a href="" class="thumbs-up social-item @if( count($post->points->where('post_id', $post->id)) ) active @endif">
+			@if(Auth::check())
+			<a href="" class="thumbs-up social-item @if( $post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id )->count()) active @endif">
 				<i class="fa fa-arrow-up" aria-hidden="true"></i>
 			</a>
+			@else
+			<a href="" class="thumbs-up social-item">
+				<i class="fa fa-arrow-up" aria-hidden="true"></i>
+			</a>
+			@endif
 		
 			<a href="" class="thumbs-down social-item">
 				<i class="fa fa-arrow-down" aria-hidden="true"></i>

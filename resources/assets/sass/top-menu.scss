@@ -79,6 +79,23 @@
 			&.search {
 				position: relative;
 				font-size: 15px;
+				line-height: normal;
+				height: 50px;
+				line-height: 50px;
+				form {
+					position: absolute;
+					left: 0;
+					top: 40px;
+				}
+				&:hover {
+					background: none;
+				}
+				p {
+					line-height: 50px;
+					margin: 0;
+					float: right;
+					width: 20px !important;
+				}
 			}
 			&.sign-up {
 				&:hover {
@@ -130,6 +147,33 @@
 				border-radius: 3px;
 			}
 		}
+		#search-results {
+			visibility: hidden;
+			left: 50%;
+			position: relative;
+			width: 180px;
+			background: white;
+			height: auto;
+			font-weight: normal;
+			color: #656565;
+			line-height: 30px;
+			border: 1px solid #CCC;
+			border-top: 0;
+			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+			z-index: 999;
+			top: 80px;
+			&.visible {
+				visibility: visible;
+			}
+			.search-result {
+				display: block;
+				padding: 0 10px;
+				color: black;
+			}
+			.search-result:hover {
+				background-color: #f4f4f4;  
+			}
+		}
 	}
 	.has-submenu {
 		position: relative;
@@ -177,20 +221,19 @@
 	}
 }
 .menu-search-input {
-	position: absolute;
-	top: 50px;
-	left: -30px;
 	width: 180px;
 	height: 30px;
 	border-radius: 0 0 3px 3px;
 	border: 1px solid #CCC;
-	box-shadow: 0 5px 10px rgba(0,0,0,.2);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 	font-size: 14px;
 	font-weight: normal;
 	padding: 0 0 0 10px;
 	z-index: 2;
 	outline: 0;
 	color: black;
+	position: relative;
+	margin-left: 50%;
 	&:active,
 	&:focus {
 		border: 1px solid #CCC;

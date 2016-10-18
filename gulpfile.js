@@ -19,6 +19,7 @@ elixir(function(mix) {
         '../../../node_modules/jquery/dist/jquery.min.js',
         '../../../node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js',
         'resources/assets/js/libraries/FileDrop-master/filedrop-min.js',
+        '../../../node_modules/mustache/mustache.min.js',
         'resources/assets/js/*.js'
     ]; 
 

@@ -13,6 +13,10 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^2.0.0",
     "laravel-elixir": "^5.0.0",
-    "minify": "^2.0.12"
+    "minify": "^2.0.12",
+    "mustache": "^2.2.1"
+  },
+  "dependencies": {
+    "mustache": "^2.2.1"
   }
 }

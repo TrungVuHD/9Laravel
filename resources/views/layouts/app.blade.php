@@ -33,7 +33,7 @@
     <div class="container page-container">
         <div class="row">
             
-            <div class="col-sm-14 col-sm-offset-4">
+            <div class="col-sm-14 col-sm-offset-3">
                 @yield('content')
             </div>
             <div class="col-sm-6">

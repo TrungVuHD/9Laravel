@@ -45,10 +45,15 @@
 		<div class="right-side pull-right">
 			@if(!Auth::check())
 				<div class="search menu-item">
-					&#128269;
+					<p class="text-right">
+						&#128269;
+					</p>
 					<form action="{{ url('search') }}">
-						<input type="text" name="query" class="menu-search-input hidden" placeholder="Type to search" />
+						<input type="text" name="query" class="menu-search-input hidden" placeholder="Type to search" autocomplete="off" />
 					</form>
+					<div id="search-results">
+						
+					</div>
 				</div>
 				<div class="log-in menu-item" data-toggle="modal" data-target="#login-modal">
 					Log in
@@ -60,10 +65,15 @@
 				</div>
 			@else
 				<div class="search menu-item">
-					&#128269;
+					<p class="text-right">
+						&#128269;
+					</p>
 					<form action="{{ url('search') }}">
-						<input type="text" name="query" class="menu-search-input hidden" placeholder="Type to search" />
+						<input type="text" name="query" class="menu-search-input hidden" placeholder="Type to search" autocomplete="off" />
 					</form>
+					<div id="search-results">
+						
+					</div>
 				</div>
 				<div class="menu-notifications">
 					<a href="">
@@ -94,3 +104,12 @@
 		<!-- .right-side -->
 	</div>
 </div>
+
+<!-- search template -->
+<script id="search-template" type="x-tmpl-mustache">
+	@{{#results}}
+	<a class='search-result' href="{{ url('/gag') }}/@{{slug}}">
+		@{{title}}
+	</a> 
+	@{{/results}}
+</script>
