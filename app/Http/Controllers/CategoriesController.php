@@ -24,7 +24,7 @@ class CategoriesController extends Controller
 
 		$category = Category::where('slug', $category)->first();
 		$category_id = isset($category->id) ? $category->id : 0;
-		$posts = Post::where('cat_id', $category_id)->paginate(20);
+		$posts = Post::where('cat_id', $category_id)->orderBy('id', 'DESC')->paginate(20);
 
 		if($category_id == 0) 
 			abort(404);

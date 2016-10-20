@@ -31,7 +31,7 @@
 					@endforeach
 				</ul>
 			</div>
-			<div class="sections">
+			<div class="sections hidden-xs hidden-sm">
 				@foreach ($menuVisiblePostCategories as $cat)
 				<div class="menu-item">
 					<a href="{{ url($cat->slug) }}">
@@ -79,6 +79,17 @@
 					<a href="">
 						<i class="fa fa-bell" aria-hidden="true"></i>
 					</a>
+					<div class="notifications-wrapper hidden">
+						<div class="notifications-header">
+							Activities
+						</div>
+						<div class="notifications-body empty">
+							You don't have any notifications
+						</div>
+						<a href="{{ url('/notifications') }}" class="notifications-footer">
+							See All
+						</a>
+					</div>
 				</div>
 				<div class="menu-avatar has-submenu">
 					<img class="img-responsive" src="{{ url( 'img/avatars/'.Auth::user()->avatar_image ) }}" alt="">

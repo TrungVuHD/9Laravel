@@ -23,14 +23,28 @@
 
 			this.$uploadModal = $("#upload-modal");
 			this.$setTitleModal = $("#set-title-modal");
+			this.$pickSectionModal = $("#pick-section-modal");
 			this.$showAtrributeInput = $("#attribbute-input-shown");
 			this.$attributeInput = $(".attribute-form-group");
 			this.$uploadBtn = $("#upload-post-btn");
+
+			this.$validateSetTitle = $(".validate-set-post");
+			this.$postTitle = $("#upload-post-description");
 		},
 		bindEvents: function () {
 
 			this.$showAtrributeInput.on('change', this, this.toggleAtribbute);
 			this.$uploadBtn.on('click', $.proxy(this.uploadFiles, this));
+			this.$validateSetTitle.on('click', this, this.validateSetTitleModal);
+		},
+		validateSetTitleModal: function (event) {
+
+			if( event.data.$postTitle.val() == "" ){
+				alert('Please provide a title for your post');
+				event.data.$postTitle.focus();
+				event.preventDefault();
+				return false;
+			}
 		},
 		enableFileDrop: function () {
 
@@ -78,8 +92,12 @@
 		uploadFiles: function () {
 
 			var input = this.retrieveModalInput();
+			var self = this;
 
-			console.dir(input);
+			if(input.category == undefined){
+				alert('Please select a category.');
+				return false;
+			}
 
 			var request = $.ajax({
 				url: input.url,
@@ -90,28 +108,19 @@
 
 			request.done(function( data ) {
 				
+				self.$postTitle.val('');
+				self.$pickSectionModal.modal('hide');
 				
+				if(data.success == true) {
+					alert('Congratulations, you uploaded a post!');
+				} else {
+					alert("Error. Something went wrong with the file upload.");
+				}
 			});
 
 			request.fail(function( jqXHR, textStatus ) {
-				alert( "Request failed: " + textStatus );
+				alert("Error. Something went wrong with the file upload.");
 			});
-			/*			
-			
-			var input = this.retrieveModalInput();
-			var uploadUrl = input.url + '?description='+input.description;
-				uploadUrl += '&nsfw='+input.nsfw;
-				uploadUrl += '&attribution='+input.attribution;
-				uploadUrl += '&category='+input.category;
-
-			this.files.each(function (file) {
-				
-				console.log(uploadUrl);
-
-				file.sendTo(uploadUrl);
-			});
-			*/
-			
 		},
 		toggleAtribbute: function (event) {
 

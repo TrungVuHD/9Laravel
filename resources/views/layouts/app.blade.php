@@ -37,10 +37,10 @@
     <div class="container page-container">
         <div class="row">
             
-            <div id="content" class="col-sm-14 col-sm-offset-3">
+            <div id="content" class="col-sm-12 col-sm-offset-3">
                 @yield('content')
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6 col-sm-offset-2">
                 @yield('sidebar')
             </div>
         </div>

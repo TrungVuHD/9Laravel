@@ -112,6 +112,7 @@
 			}
 		}
 		.menu-notifications {
+			position: relative;
 			width: 30px;
 			line-height: 30px;
 			height: 30px;
@@ -119,7 +120,6 @@
 			background: #333;
 			color: white;
 			text-align: center;
-			cursor: pointer;
 			margin-top: 8px;
 			a {
 				color: white;
@@ -131,6 +131,38 @@
 					color: black;
 				}
 			}
+		}
+		.notifications-wrapper {
+			position: absolute;
+			top: 42px;
+			z-index: 3;
+			height: 450px;
+			width: 300px;
+			border: 1px solid #CCC;
+			transform: translateX(-50%);
+			background: white;
+			box-shadow: 0 5px 10px rgba(0,0,0,.2);
+		}
+		.notifications-header {
+			border-bottom: 1px solid #CCC;
+			text-align: left;
+			color: black;
+			padding-left: 15px;
+		}
+		.notifications-body {
+			height: 390px;
+			line-height: 390px;
+			font-weight: bold;
+			font-size: 16px;
+			color: black;
+		}
+		.notifications-footer {
+			height: 25px;
+			border-top: 1px solid #CCC;
+			display: block;
+			color: black !important;
+			line-height: 25px;
+			font-size: 12px;
 		}
 		.menu-avatar {
 			margin-top: 8px;

@@ -5,12 +5,28 @@
 	@foreach($posts as $post)
 	<div class="home-item" data-post-id="{{ $post->id }}">
 		
+		@if($post->is_gif)
 		<a href="{{ url('gag/'.$post->slug) }}">
 			<h3 class="title">{{ $post->title }}</h3>
+		</a>
+		<a class="gif-wrapper-link" href="{{ url('gag/'.$post->slug) }}">
+			<div class="gif-wrapper">
+				<?php 
+					$post->image = substr($post->image, 0 , strpos($post->image, '.gif')).'.png';
+				?>
+				<div class="gif-text">
+					GIF
+				</div>
+				<img src="{{ url('img/posts/460/'.$post->image)  }}" alt="" class="img-responsive">
+			</div>
+		</a>
+		@else
+		<a href="{{ url('gag/'.$post->slug) }}">
 			<img class="img-responsive" src="{{ url('img/posts/460/'.$post->image) }}" alt="">
 		</a>
+		@endif
 		<div class="description">
-			<a class="points-wrapper" href="{{ url('gag/') }}">
+			<a class="points-wrapper" href="{{ url('gag/'.$post->slug) }}">
 				<span class="points">{{count($post->points)}}</span> points 
 			</a><span> &bull;</span>
 			<a href="{{ url('gag'.'/'.$post->slug.'#comments') }}">
@@ -59,10 +75,24 @@
 		@{{#posts}}
 		<div class="home-item" data-post-id="@{{ id }}">
 			
+			@{{ #is_gif }}
 			<a href="{{ url('gag') }}/@{{ slug }}">
 				<h3 class="title">@{{ title }}</h3>
+			</a>
+			<a class="gif-wrapper-link" href="{{ url('gag') }}/@{{slug) }}">
+				<div class="gif-wrapper">
+					<div class="gif-text">
+						GIF
+					</div>
+					<img src="{{ url('img/posts/460') }}/@{{ image }}" alt="" class="img-responsive">
+				</div>
+			</a>
+			@{{ /is_gif}}
+			@{{ #isnt_gif }}
+			<a href="{{ url('gag') }}/@{{ slug }}">
 				<img class="img-responsive" src="{{ url('img/posts/460') }}/@{{ image }}" alt="">
 			</a>
+			@{{ /isnt_gif }}
 			<div class="description">
 				<a class="points-wrapper" href="{{ url('gag') }}/@{{ slug }}">
 					<span class="points">@{{ no_points }}</span> points 

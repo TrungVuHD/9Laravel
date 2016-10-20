@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Intervention\Image\ImageManagerStatic as Image;
+use grandt\ResizeGif\ResizeGif;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class PostsController extends Controller
     public function freshIndex(Request $request)
     {
 
-    	$posts = this.retrieveFreshAjax(0, 20)['posts'];
+    	$posts = $this->retrieveFreshAjax(0, 20)['posts'];
         return view('9gag.index', ['posts_category' =>'fresh', 'posts' => $posts]);
     }
 
@@ -79,14 +80,7 @@ class PostsController extends Controller
             $image_file = str_random(20).$image_extension;
             $image_location = $image_dir.$image_file;
 
-            $this->base64ToImage($request->image, $image_location);
-
-            if($image_extension != "image/gif") {
-                $this->createImageVersions($image_dir, $image_file);
-            }
-
             $post = new Post();
-
             $post->title = $request->description;
             $post->image = $image_file;
             $post->slug = str_slug($request->description).'-'.str_random(10);
@@ -95,7 +89,20 @@ class PostsController extends Controller
             $post->cat_id = $request->category;
             $post->user_id = Auth::user()->id;
 
+            $this->base64ToImage($request->image, $image_location);
+
+            if($image_extension != ".gif") {
+                
+                $post->is_gif = 0;
+                $this->createImageVersions($image_dir, $image_file);
+            } else {
+
+                $post->is_gif = 1;
+                $this->createGIFImageVersions($image_dir, $image_file);
+            }
+
             $post->save();
+
 
         } catch (Exception $e) {
             
@@ -107,6 +114,31 @@ class PostsController extends Controller
         die();
     }
 
+    protected function createGIFImageVersions($dir, $file)
+    {
+        $png_file = substr($file, 0, strpos($file, '.gif'));
+        $png_file .= '.png';
+
+        // big image - gif
+        ResizeGif::ResizeToWidth($dir.$file, $dir.$file.'_temp', 600);
+
+        rename($dir.$file.'_temp', $dir.$file);
+
+        // medium image - gif
+        ResizeGif::ResizeToWidth($dir.$file, $dir.DS.'460'.DS.$file, 460);
+
+        // medium image - png
+        $img = Image::make($dir.$file);
+        $img->resize(460, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $img->save($dir.DS.'460'.DS.$png_file, 70);
+
+        // small image - png
+        $img->resizeCanvas(300, 160, 'center');
+        $img->save($dir.DS.'300'.DS.$png_file, 70);
+    }
+
     protected function createImageVersions($dir, $file) 
     {
         // big image
@@ -114,6 +146,7 @@ class PostsController extends Controller
         $img->resize(600, null, function ($constraint) {
             $constraint->aspectRatio();
         });
+        $img->save($dir.$file, 70);        
         $img->save($dir.$file, 70);        
 
         // medium image
@@ -199,9 +232,22 @@ class PostsController extends Controller
         try {
 
             $data['posts'] = Post::where('cat_id', $category)
+                ->orderBy('id', 'desc')
                 ->offset($start)
                 ->limit(20)
                 ->get();
+
+            foreach ($data['posts'] as &$post) {
+                
+                if($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id )->count()) {
+                    $post->active_thumbs_up = true;
+                }
+
+                $post->no_comments = $post->comments->count();
+                $post->no_points = $post->points->count();
+                $post->auth = Auth::check();
+                $post->no_auth = !$post->auth;
+            }
 
         } catch (Exception $e) {
             $data['success'] = false;
@@ -222,6 +268,23 @@ class PostsController extends Controller
                 ->limit($limit)
                 ->get();
 
+            foreach ($data['posts'] as &$post) {
+                
+                $post->active_thumbs_up = false;
+                
+                if(Auth::check()) {
+                    
+                    if($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id )->count()) {
+                        $post->active_thumbs_up = true;
+                    }
+                }
+
+                $post->no_comments = $post->comments->count();
+                $post->no_points = $post->points->count();
+                $post->auth = Auth::check();
+                $post->no_auth = !$post->auth;
+            }
+            
         } catch (Exception $e) {
             
             $data['success']=false;
@@ -265,8 +328,12 @@ class PostsController extends Controller
 
             foreach ($posts as &$post) {
                 
-                if($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id )->count()) {
-                    $post->active_thumbs_up = true;
+                $post->active_thumbs_up = false;
+                
+                if(Auth::check()) {
+                    if($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id )->count()) {
+                        $post->active_thumbs_up = true;
+                    }
                 }
 
                 $post->no_comments = $post->comments->count();

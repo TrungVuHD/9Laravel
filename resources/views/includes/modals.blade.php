@@ -158,7 +158,7 @@
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#upload-modal">Back</button>
-				<button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#pick-section-modal">Next</button>
+				<button class="btn btn-primary validate-set-post" data-dismiss="modal" data-toggle="modal" data-target="#pick-section-modal">Next</button>
 			</div>
 		</div>
 	</div>

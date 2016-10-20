@@ -8,14 +8,15 @@
 		},
 		cacheDom: function () {
 
+			this.$content = $("#content");
 			this.$thumbsUp = $('.thumbs-up');
 			this.$thumbsDown = $('.thumbs-down');
 			this.baseUrl = $('#base-url').val();
 		},
 		bindEvents: function () {
 			
-			this.$thumbsUp.on('click', this, this.incrementPoints);
-			this.$thumbsDown.on('click', this, this.decrementPoints);
+			this.$content.on('click', '.thumbs-up', this, this.incrementPoints);
+			this.$content.on('click', '.thumbs-down', this, this.decrementPoints);
 		},
 		incrementPoints: function (event) {
 
