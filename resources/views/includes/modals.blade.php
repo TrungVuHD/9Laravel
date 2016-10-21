@@ -8,20 +8,20 @@
 				<p>Connect with a social network</p>
 				<div class="row social-buttons">
 					<div class="col-sm-12 social-btn-wrapper">
-						<div class="social-btn social-btn-fb">
+						<a href="{{ url('facebook/redirect') }}" class="social-btn social-btn-fb">
 							<i class="fa fa-facebook" aria-hidden="true"></i> 
 							<p class="social-btn-txt">
 								Facebook
 							</p>
-						</div>
+						</a>
 					</div>
 					<div class="col-sm-12 social-btn-wrapper">
-						<div class="social-btn social-btn-gp">
+						<a href="{{ url('google/redirect') }}" class="social-btn social-btn-gp">
 							<i class="fa fa-google-plus" aria-hidden="true"></i> 
 							<p class="social-btn-txt">
 								Google
 							</p>
-						</div>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -57,20 +57,20 @@
 				</p>
 				<div class="row social-buttons">
 					<div class="col-sm-12 social-btn-wrapper">
-						<div class="social-btn social-btn-fb">
+						<a href="{{ url('facebook/redirect') }}" class="social-btn social-btn-fb">
 							<i class="fa fa-facebook" aria-hidden="true"></i> 
 							<p class="social-btn-txt">
 								Facebook
 							</p>
-						</div>
+						</a>
 					</div>
 					<div class="col-sm-12 social-btn-wrapper">
-						<div class="social-btn social-btn-gp">
+						<a href="{{ url('google/redirect') }}" class="social-btn social-btn-gp">
 							<i class="fa fa-google-plus" aria-hidden="true"></i> 
 							<p class="social-btn-txt">
 								Google
 							</p>
-						</div>
+						</a>
 					</div>
 				</div>
 			</div>

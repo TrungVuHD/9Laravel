@@ -21,10 +21,8 @@
 			var $image = $(this).find('.img-responsive');
 			var imageHref = $image.attr('src');
 			var rawHref = imageHref.substring(0, imageHref.length - 4);
-			var $gifText = $(".gif-text");
+			var $gifText = $(this).find(".gif-text");
 			
-
-
 			if( imageHref.slice(-3) == 'png' ) {
 
 				$image.attr('src', rawHref+'.gif');

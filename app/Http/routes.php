@@ -13,6 +13,12 @@
 
 Route::auth();
 
+Route::get('/facebook/redirect', 'SocialAuthController@facebookRedirect');
+Route::get('/facebook/callback', 'SocialAuthController@facebookCallback');
+
+Route::get('/google/redirect', 'SocialAuthController@googleRedirect');
+Route::get('/google/callback', 'SocialAuthController@googleCallback');
+
 Route::get('/', 'PostsController@index');
 Route::get('/gag/{slug}', 'PostsController@show');
 Route::get('/trending', 'PostsController@trendingIndex');

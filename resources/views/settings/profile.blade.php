@@ -60,6 +60,27 @@
 				<div class="form-group">
 					<label>Social Networks</label>
 				</div>
+				{{ $user->socialAccounts }}
+				<div class="social-wrapper row">
+					<div class="connection col-sm-12">
+						Facebook 
+					</div>
+					<div class="col-sm-12">
+						<div class="btn btn primary" data-network="fb">Connect Now</div>
+						<a href="#" data-network="fb" class="disconnect">Disconnect</a>
+					</div>
+				</div>
+				
+				<div class="social-wrapper row">
+					<div class="connection col-sm-12">
+						Google+ 
+					</div>
+					<div class="col-sm-12">
+						<div class="btn btn primary" data-network="fb">Connect Now</div>
+						<a href="#" data-network="fb" class="disconnect">Disconnect</a>
+					</div>
+				</div>
+				
 
 				<button type="submit" class="btn btn-default">Submit</button>
 			</form>

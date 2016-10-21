@@ -90,6 +90,7 @@ class PostsController extends Controller
             $post->user_id = Auth::user()->id;
 
             $this->base64ToImage($request->image, $image_location);
+            $post->is_img_huge = $this->checkImageHeight($image_location);
 
             if($image_extension != ".gif") {
                 
@@ -106,12 +107,18 @@ class PostsController extends Controller
 
         } catch (Exception $e) {
             
-            echo json_encode(['success' => false]);
-            die();
+            return ['success' => false];
         }
 
-        echo json_encode(['success' => true]);
-        die();
+        return ['success' => true];
+    }
+
+    protected function checkImageHeight($img)
+    {
+        $img_height = Image::make($img)->height();
+        if($img_height > 900)
+            return 1;
+        return 0;
     }
 
     protected function createGIFImageVersions($dir, $file)
@@ -247,6 +254,12 @@ class PostsController extends Controller
                 $post->no_points = $post->points->count();
                 $post->auth = Auth::check();
                 $post->no_auth = !$post->auth;
+                $post->isnt_gif = !$post->is_gif;
+
+                if($post->is_gif) {
+                    $post->image = substr($post->image, 0, strpos($post->image, '.gif') ).'.png';
+                }
+
             }
 
         } catch (Exception $e) {
@@ -283,6 +296,12 @@ class PostsController extends Controller
                 $post->no_points = $post->points->count();
                 $post->auth = Auth::check();
                 $post->no_auth = !$post->auth;
+                $post->isnt_gif = !$post->is_gif;
+
+                if($post->is_gif) {
+                    $post->image = substr($post->image, 0, strpos($post->image, '.gif') ).'.png';
+                }
+
             }
             
         } catch (Exception $e) {
@@ -340,7 +359,13 @@ class PostsController extends Controller
                 $post->no_points = $post->points->count();
                 $post->auth = Auth::check();
                 $post->no_auth = !$post->auth;
+                $post->isnt_gif = !$post->is_gif;
                 
+
+                if($post->is_gif) {
+                    $post->image = substr($post->image, 0, strpos($post->image, '.gif') ).'.png';
+                }
+
             }
 
             $data['posts'] = $posts;
@@ -398,7 +423,13 @@ class PostsController extends Controller
                 $post->no_points = $post->points->count();
                 $post->auth = Auth::check();
                 $post->no_auth = !$post->auth;
-                
+                $post->isnt_gif = !$post->is_gif;
+
+                if($post->is_gif) {
+                    $post->image = substr($post->image, 0, strpos($post->image, '.gif') ).'.png';
+
+                }
+               
             }
 
             $data['posts'] = $posts;

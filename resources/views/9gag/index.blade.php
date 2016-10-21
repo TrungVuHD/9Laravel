@@ -21,9 +21,23 @@
 			</div>
 		</a>
 		@else
-		<a href="{{ url('gag/'.$post->slug) }}">
-			<img class="img-responsive" src="{{ url('img/posts/460/'.$post->image) }}" alt="">
-		</a>
+			@if($post->is_img_huge)
+			<a href="{{ url('gag/'.$post->slug) }}">
+				<div class="huge-image-wrapper">
+					<img class="img-responsive" src="{{ url('img/posts/460/'.$post->image) }}" alt="">
+				</div>
+				<div class="huge-image-footer">
+					<i class="fa fa-external-link" aria-hidden="true"></i>
+					<span>
+						View Full Post
+					</span>
+				</div>
+			</a>
+			@else
+			<a href="{{ url('gag/'.$post->slug) }}">
+				<img class="img-responsive" src="{{ url('img/posts/460/'.$post->image) }}" alt="">
+			</a>
+			@endif
 		@endif
 		<div class="description">
 			<a class="points-wrapper" href="{{ url('gag/'.$post->slug) }}">

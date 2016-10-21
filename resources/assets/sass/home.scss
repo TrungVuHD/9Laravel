@@ -29,8 +29,18 @@
 		width: 100%;
 		display: block;
 	}
-	.gif-wrapper-link {
-		
+	.huge-image-wrapper {
+		height: 350px;
+		overflow: hidden;
+	}
+	.huge-image-footer {
+		height: 45px;
+		line-height: 42px;
+		background: #f4f4f4;
+		font-size: 16px;
+		border: 1px solid #CCC;
+		padding: 0px 10px 10px 17px;
+		border-top: 5px solid #CCC;
 	}
 	.gif-wrapper {
 		position: relative;
