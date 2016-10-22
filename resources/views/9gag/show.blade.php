@@ -12,7 +12,7 @@
 				{{$no_comments}} comments
 			</a>
 		</div>
-		<div class="social-section">
+		<div class="social-section fixed-social-section">
 			<a href="#" class="thumbs-up social-item @if(isset($thumb_up->id)) active @endif ">
 				<i class="fa fa-arrow-up" aria-hidden="true"></i>
 				<span>UP</span>

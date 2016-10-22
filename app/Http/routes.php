@@ -37,6 +37,10 @@ Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
 	Route::post('/password', 'SettingsController@storePassword');
 	Route::post('/profile', 'SettingsController@storeProfile');
 	Route::delete('/account', 'SettingsController@destroy');
+
+	Route::delete('/network/facebook', 'SettingsController@destroyFacebook');
+	Route::delete('/network/google', 'SettingsController@destroyGoogle');
+
 });
 
 Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {

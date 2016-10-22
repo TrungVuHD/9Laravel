@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\SocialAccount;
 use App\User;
 
 class SettingsController extends Controller
@@ -168,5 +169,37 @@ class SettingsController extends Controller
         Auth::logout();
 
         return redirect('/');
+    }
+
+    public function destroyFacebook()
+    {
+        $account = SocialAccount::where('user_id', Auth::user()->id)
+            ->where('provider', 'facebook')
+            ->first();
+
+        if($account)
+        {   
+            $account->delete();
+        }
+
+        return redirect()
+            ->back()
+            ->with('status', 'Facebook is disconnected');
+    }
+
+    public function destroyGoogle()
+    {
+        $account = SocialAccount::where('user_id', Auth::user()->id)
+            ->where('provider', 'google')
+            ->first();
+
+        if($account)
+        {   
+            $account->delete();
+        }
+
+        return redirect()
+            ->back()
+            ->with('status', 'Google is disconnected');
     }
 }

@@ -7,7 +7,7 @@
 		</div>
 		<div class="col-sm-18">
 			<h1>Profile</h1>
-			<form action="{{ url('settings/profile') }}" method="POST" enctype="multipart/form-data">
+			<form class="profile-main-form" action="{{ url('settings/profile') }}" method="POST" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<div class="form-group">
 					<label class="avatarInputLabel" for="avatarInput">Avatar</label>
@@ -57,33 +57,51 @@
 					<label for="yourDescriptionInput">Tell people who you are</label>
 					<textarea name="description" class="form-control" id="yourDescriptionInput">{{ $user->description or '' }}</textarea>
 				</div>
-				<div class="form-group">
-					<label>Social Networks</label>
-				</div>
-				{{ $user->socialAccounts }}
-				<div class="social-wrapper row">
-					<div class="connection col-sm-12">
-						Facebook 
-					</div>
-					<div class="col-sm-12">
-						<div class="btn btn primary" data-network="fb">Connect Now</div>
-						<a href="#" data-network="fb" class="disconnect">Disconnect</a>
-					</div>
-				</div>
-				
-				<div class="social-wrapper row">
-					<div class="connection col-sm-12">
-						Google+ 
-					</div>
-					<div class="col-sm-12">
-						<div class="btn btn primary" data-network="fb">Connect Now</div>
-						<a href="#" data-network="fb" class="disconnect">Disconnect</a>
-					</div>
-				</div>
-				
-
-				<button type="submit" class="btn btn-default">Submit</button>
+				<button type="submit" class="btn btn-primary btn-medium">Submit</button>
 			</form>
+
+			<div class="form-group">
+				<label>Social Networks</label>
+			</div>
+			<?php 
+				$fb_exists = $user->socialAccounts->where('provider', 'facebook')->first();
+				$gp_exists = $user->socialAccounts->where('provider', 'google')->first();
+			 ?>
+			<div class="social-wrapper row">
+				<div class="connection col-sm-12">
+					Facebook @if($fb_exists) connected @else not connected @endif 
+				</div>
+				<div class="col-sm-12">
+					@if($fb_exists)
+						<form action="{{ url('settings/network/facebook') }}" method="post">
+							{{ csrf_field() }}
+							{{ method_field('DELETE') }}
+							<button type="submit" class="disconnect btn btn-danger">Disconnect</a>
+						</form>
+					@else
+						<a href="{{ url('facebook/redirect') }}" class="btn-btn primary">Connect Now</a>
+					@endif
+				</div>
+			</div>
+			
+			<div class="social-wrapper row">
+				<div class="connection col-sm-12">
+					Google+ @if($gp_exists) connected @else not connected @endif 
+				</div>
+				<div class="col-sm-12">
+					@if($gp_exists)
+						<form action="{{ url('settings/network/google') }}" method="post">
+							{{ csrf_field() }}
+							{{ method_field('DELETE') }}
+							<button type="submit" class="disconnect btn btn-danger">Disconnect</a>
+						</form>
+					@else
+						<a href="{{ url('google/redirect') }}" class="btn btn-primary">Connect Now</a>
+					@endif
+				</div>
+			</div>
+			
+
 		</div>
 	</div>
 @endsection

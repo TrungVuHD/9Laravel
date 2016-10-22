@@ -1,5 +1,12 @@
 .page-container {
 	margin-top: 70px;
+	&.small-top-margin {
+		margin-top: 20px;
+	}
+}
+body {
+	margin-right: -30px;
+	overflow-X: hidden;
 }
 .modal-content {
 	padding: 40px;

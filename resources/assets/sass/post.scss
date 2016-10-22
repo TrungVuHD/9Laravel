@@ -1,7 +1,18 @@
 .detail-home-item {
+	position: relative;
 	.social-section {
 		padding-bottom: 10px;
 		border-bottom: 0;
+		width: inherit;
+		&.fixed {
+			position: fixed;
+			top: 0;
+			margin: 0 auto;
+			height: 60px;
+			background: white;
+			z-index: 4;
+			padding-top: 10px;
+		}
 		.social-link {
 			float: none;
 			display: inline-block;
