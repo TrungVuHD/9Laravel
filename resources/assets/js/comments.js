@@ -8,91 +8,35 @@
 		},
 		cacheDom: function () {
 
-			this.$upVote = $(".up-vote-comment");
-			this.$downVote = $(".down-vote-comment");
-			this.baseUrl = $('#base-url').val();
+			this.$reply = $('.reply-anchor');
+			this.$commentsBody = $('.comments-body');
 		},
 		bindEvents: function () {
 
-			this.$upVote.on('click', this, this.upVoteComment);
-			this.$downVote.on('click', this, this.downVoteComment);
+			this.$reply.on('click', this, this.replyToComment)
 		},
-		upVoteComment: function (event) {
+		replyToComment: function (event) {
+
+			$('#content .comments-body-clone').remove();
 
 			event.preventDefault();
+			var self = event.data;
+			var $parentComment = $(this).parents('.comment');
+			var parentCommentId = $parentComment.attr('data-comment-id');
+			var $commentsBodyClone = self.$commentsBody.clone();
+			var $appendElement =  $parentComment;
 
-			var $parentElement = $(this).parents('.comment');
-			var baseUrl = event.data.baseUrl;
-			var data = {
-				'comment_id': $parentElement.attr('data-comment-id')
-			};
+			if($('#content .comment[data-parent-id='+parentCommentId+']').length > 0)
+			{
+				$appendElement = $('#content .comment[data-parent-id='+parentCommentId+']').last();	
+			}
 
-			var request = $.ajax({
-				url: baseUrl+'/ajax/comments/increment',
-				method: "POST",
-				data: data,
-				dataType: 'json'
-			});
+			$commentsBodyClone.addClass('comments-body-clone comment-small');
+			$commentsBodyClone.find('textarea').html('');
+			$commentsBodyClone.find('#comment-id').val( parentCommentId );
+			$commentsBodyClone.attr('data-parent-id');
 
-			request.done(function( data ) {
-
-				if(data.success == true) {
-
-					var $points = $parentElement.find('.comment-points');
-					var noPoints = parseInt($points.html());
-					var $upVoteElement = $parentElement.find('.up-vote-comment');
-
-					$points.html(noPoints+1);
-					$upVoteElement.addClass('active');
-				}
-			});
-
-			request.fail(function( jqXHR, textStatus ) {
-
-				if(jqXHR.status == 401) {
-
-					window.location.href = comments.baseUrl+'/login';
-
-				}
-			});
-		},
-		downVoteComment: function (event) {
-
-			event.preventDefault();
-
-			var $parentElement = $(this).parents('.comment');
-			var baseUrl = event.data.baseUrl;
-			var data = {
-				'comment_id': $parentElement.attr('data-comment-id')
-			};
-
-			var request = $.ajax({
-				url: baseUrl+'/ajax/comments/decrement',
-				method: "POST",
-				data: data,
-				dataType: 'json'
-			});
-
-			request.done(function( data ) {
-
-				if(data.success == true) {
-
-					var $points = $parentElement.find('.comment-points');
-					var noPoints = parseInt($points.html());
-					var $upVoteElement = $parentElement.find('.up-vote-comment');
-
-					$points.html(noPoints-1);
-					$upVoteElement.removeClass('active');
-				}
-			});
-
-			request.fail(function( jqXHR, textStatus ) {
-
-				if(jqXHR.status == 401) {
-
-					window.location.href = comments.baseUrl+'/login';
-				}
-			});
+			$appendElement.after($commentsBodyClone);
 		}
 	};
 

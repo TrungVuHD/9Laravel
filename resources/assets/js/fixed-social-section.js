@@ -9,11 +9,10 @@
 		},
 		cacheDom: function () {
 
-			this.$socialSection = $('.fixed-social-section');
-			this.$topMenu = $('.top-menu');
-			this.$pageContainer = $('.page-container');
-			this.$window = $(window);
-			this.$image = $('.detail-home-item img');
+			this.$socialSection 	= $('.fixed-social-section');
+			this.$image 			= $('.detail-home-item img');
+			this.$topMenu 			= $('.top-menu');
+			this.$window 			= $(window);
 		},
 		bindEvents: function () {
 
@@ -23,8 +22,7 @@
 
 			if(this.$socialSection.length == 1) {
 				
-				this.$topMenu.addClass('static');
-				this.$pageContainer.addClass('small-top-margin');
+				this.$topMenu.addClass('absolute');
 			}
 		},
 		onWindowScroll: function (event) {

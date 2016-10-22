@@ -3,6 +3,7 @@
 namespace App;
 
 use Laravel\Socialite\Contracts\User as ProviderUser;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\SocialAccount;
 
@@ -12,6 +13,8 @@ class SocialAccountService
     public function createOrGetUser(ProviderUser $providerUser, $provider)
     {
     	define('DS', DIRECTORY_SEPARATOR);
+
+        Auth::logout();
 
     	$account = SocialAccount::where('provider', $provider)
     		->where('provider_user_id', $providerUser->getId())
@@ -37,6 +40,7 @@ class SocialAccountService
         		file_put_contents($image_location, file_get_contents($avatar));
         		
 				$user = new User();
+                $user->username = snake_case(str_slug($providerUser->getEmail()));
 				$user->email = $providerUser->getEmail();
 				$user->name = $providerUser->getName();
 				$user->avatar_image = $image_file;

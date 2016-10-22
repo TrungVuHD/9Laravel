@@ -23,6 +23,7 @@
 		@else
 			@if($post->is_img_huge)
 			<a href="{{ url('gag/'.$post->slug) }}">
+				<h3 class="title">{{ $post->title }}</h3>
 				<div class="huge-image-wrapper">
 					<img class="img-responsive" src="{{ url('img/posts/460/'.$post->image) }}" alt="">
 				</div>
@@ -35,6 +36,7 @@
 			</a>
 			@else
 			<a href="{{ url('gag/'.$post->slug) }}">
+				<h3 class="title">{{ $post->title }}</h3>
 				<img class="img-responsive" src="{{ url('img/posts/460/'.$post->image) }}" alt="">
 			</a>
 			@endif
@@ -94,6 +96,7 @@
 				<h3 class="title">@{{ title }}</h3>
 			</a>
 			<a class="gif-wrapper-link" href="{{ url('gag') }}/@{{slug) }}">
+				<h3 class="title">@{{ title }}</h3>
 				<div class="gif-wrapper">
 					<div class="gif-text">
 						GIF
@@ -104,6 +107,7 @@
 			@{{ /is_gif}}
 			@{{ #isnt_gif }}
 			<a href="{{ url('gag') }}/@{{ slug }}">
+				<h3 class="title">@{{ title }}</h3>
 				<img class="img-responsive" src="{{ url('img/posts/460') }}/@{{ image }}" alt="">
 			</a>
 			@{{ /isnt_gif }}

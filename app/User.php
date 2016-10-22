@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\SocialAccount;
+use App\Comment;
 use App\Report;
 use App\Point;
 use App\Post;
@@ -50,5 +51,11 @@ class User extends Authenticatable
     {
 
         return $this->hasMany(Report::class);
+    }
+
+    public function comments()
+    {
+
+        return $this->hasMany(Comment::class);
     }
 }

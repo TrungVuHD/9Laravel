@@ -42,10 +42,11 @@ class PostsController extends Controller
     	$post = Post::where('slug', $slug)->firstOrFail();
         $next_post = Post::where('id', '>', $post->id)->first();
         $points = count($post->points) > 0 ? count($post->points) : 0;
-        $comments = Comment::where('post_id', $post->id)->get();
-        $no_comments = $comments->count();
+        $comments = Comment::where('post_id', $post->id)->where('parent_id', 0)->get();
+        $sub_comments = Comment::where('post_id', $post->id)->where('parent_id', '<>', 0)->get();
+        $no_comments = $comments->count() + $sub_comments->count();
         $thumb_up = null;
-        
+
         if(Auth::check())
         {
             $thumb_up = Point::where('post_id', $post->id)
@@ -53,7 +54,7 @@ class PostsController extends Controller
                 ->first();
         }
 
-    	return view('9gag.show', compact('post', 'points', 'thumb_up', 'comments', 'no_comments', 'next_post'));
+    	return view('9gag.show', compact('post', 'points', 'thumb_up', 'comments', 'sub_comments', 'no_comments', 'next_post'));
     }
 
     public function store(Request $request)

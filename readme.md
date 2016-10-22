@@ -2,7 +2,7 @@
 
 9Laravel is a web application that tries to mimic the functionality and design of the famous 9GAG website.
 
-The existence of such an application relies in the fact that the author tried to gain more experince with the Laravel framework. 
+The existence of such an application relies in the fact that the author tried to gain more experience with the Laravel framework. 
 
 ## Dependencies
 
@@ -12,6 +12,7 @@ The existence of such an application relies in the fact that the author tried to
 * jQuery
 * Mustache.js
 * FileDrop.js
+* Font Awesome
 
 ### Backend
 

@@ -53,8 +53,10 @@
 		<div class="comments-head">
 			<p class="no-comments">{{$no_comments}} Comments</p>
 			<div class="pull-right">
+				<!--
 				<a href="" class="comment-sort active">Hot</a>
-				<a href="" class="comment-sort">Fresh</a>
+				-->
+				<a href="" class="comment-sort active">Fresh</a>
 			</div>
 		</div>
 		<div class="comments-body">
@@ -68,6 +70,7 @@
 			<form action="{{ url('comments') }}" method="POST" class="comments-text">
 				{{ csrf_field() }}
 				<input type="hidden" name="post_id" value="{{ $post->id }}">
+				<input type="hidden" id="comment-id" name="parent_id" value="0">
 				<textarea name="comment" placeholder="Write comments"></textarea>
 				<div class="bottom-text">
 					<a target="_blank" href="http://memeful.com/">
@@ -81,12 +84,15 @@
 			</form>
 		</div>
 		<div class="comments-list">
+
 			@foreach($comments as $comment)
-			<div class="comment" data-comment-id="{{ $comment->id }}" data-parent-id="{{ $comment->parent_id or 0 }}">
+			
+			<div class="comment" data-comment-id="{{ $comment->id }}">
+
 				<img class="comment-avatar" src="{{ url('img/avatars/'.$comment->user->avatar_image) }}" alt="" />
 				<div class="comment-description">
 					<p class="desc">
-						<a href="" class="author">{{ $comment->user->username }}</a>
+						<a href="#" class="author">{{ $comment->user->username }}</a>
 						<span>
 							<span class="comment-points">{{ $comment->points->count() }}</span> points &bull;
 						</span> 
@@ -123,9 +129,8 @@
 						{{ $comment->comment }}
 					</p>
 					<div class="reply">
-						<!--
-						<a href="">Reply</a>
-						-->
+						
+						<a class="reply-anchor" href="#">Reply</a>
 						@if(Auth::check())
 						<a href="#" class="up-vote-comment @if( $comment->points->where('user_id', Auth::user()->id)->count() ) active @endif ">
 							<i class="fa fa-arrow-up" aria-hidden="true"></i>
@@ -141,98 +146,67 @@
 					</div>
 				</div>
 			</div>
+				@foreach($sub_comments->where('parent_id', $comment->id) as $sub_comment)
+					<div class="comment comment-small" data-comment-id="{{ $comment->id }}" data-parent-id="{{ $sub_comment->parent_id or 0 }}">
+						<img class="comment-avatar" src="{{ url('img/avatars/'.$sub_comment->user->avatar_image) }}" alt="" />
+						<div class="comment-description">
+							<p class="desc">
+								<a href="#" class="author">{{ $sub_comment->user->username }}</a>
+								<span>
+									<span class="comment-points">{{ $sub_comment->points->count() }}</span> points &bull;
+								</span> 
+								<span>
+									<?php 
+
+									$last_date = date('y-m-d H:i:s', $sub_comment->created_at->getTimestamp());
+									$current_date = date('y-m-d H:i:s');
+
+									$date_diff = strtotime($current_date) - strtotime($last_date);
+									$months_diff = floor($date_diff / (60*60*24*30));
+									$days_diff = floor($date_diff / (60*60*24));
+									$hours_diff = floor($date_diff / (60*60));
+									$minutes_diff = floor($date_diff / (60));
+
+									if($minutes_diff < 60) 
+									{
+										echo $minutes_diff.' minutes';
+									} elseif($hours_diff != 0 && $hours_diff<24)
+									{
+										echo $hours_diff.' hours';
+									} elseif( $hours_diff>=24 || $days_diff>0) 
+									{
+										echo $days_diff.' days';
+									} elseif ($days_diff > 31) {
+
+										echo $months_diff.' months';
+									} 
+									
+									?>
+								</span>
+							</p>
+							<p class="message">
+								{{ $sub_comment->comment }}
+							</p>
+							<div class="reply">
+								
+								<a class="reply-anchor" href="#">Reply</a>
+								@if(Auth::check())
+								<a href="#" class="up-vote-comment @if( $sub_comment->points->where('user_id', Auth::user()->id)->count() ) active @endif ">
+									<i class="fa fa-arrow-up" aria-hidden="true"></i>
+								</a>
+								@else
+								<a href="#" class="up-vote-comment">
+									<i class="fa fa-arrow-up" aria-hidden="true"></i>
+								</a>
+								@endif
+								<a href="#" class="down-vote-comment">
+									<i class="fa fa-arrow-down" aria-hidden="true"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				@endforeach
 			@endforeach
-	
-			<!--
-			<div class="comment">
-				<img class="comment-avatar" src="http://accounts-cdn.9gag.com/media/avatar/7707104_100_5.jpg" alt="" />
-				<div class="comment-description">
-					<p class="desc">
-						<a href="" class="author">evlil_noob</a>
-						<span>1128 points &bull;</span> 
-						<span>12 h</span>
-					</p>
-					<p class="message">
-						Lorem ipsum dolor sit ammet
-					</p>
-					<div class="reply">
-						<a href="">Reply</a>
-						<a href="">
-							<i class="fa fa-arrow-up" aria-hidden="true"></i>
-						</a>
-						<a href="">
-							<i class="fa fa-arrow-down" aria-hidden="true"></i>
-						</a>
-					</div>
-				</div>
-			</div>
-
-			<div class="comment comment-small">
-				
-				<img class="comment-avatar" src="http://accounts-cdn.9gag.com/media/avatar/7707104_100_5.jpg" alt="" />
-				<div class="comment-description">
-					<p class="desc">
-						<a href="" class="author">evlil_noob</a>
-						<span>1128 points &bull;</span> 
-						<span>12 h</span>
-					</p>
-					<p class="message">
-						Lorem ipsum dolor sit ammet
-					</p>
-					<div class="reply">
-						<a href="">Reply</a>
-						<a href="">
-							<i class="fa fa-arrow-up" aria-hidden="true"></i>
-						</a>
-						<a href="">
-							<i class="fa fa-arrow-down" aria-hidden="true"></i>
-						</a>
-					</div>
-				</div>
-
-			</div>
-			<div class="comment">
-				
-				<img class="comment-avatar" src="http://accounts-cdn.9gag.com/media/avatar/7707104_100_5.jpg" alt="" />
-				<div class="comment-description">
-					<p class="desc">
-						<a href="" class="author">evlil_noob</a>
-						<span>1128 points &bull;</span> 
-						<span>12 h</span>
-					</p>
-					<p class="message">
-						Lorem ipsum dolor sit ammet
-					</p>
-					<div class="reply">
-						<a href="">Reply</a>
-						<i class="fa fa-arrow-up" aria-hidden="true"></i>
-						<i class="fa fa-arrow-down" aria-hidden="true"></i>
-					</div>
-				</div>
-
-			</div>
-			<div class="comment">
-				
-				<img class="comment-avatar" src="http://accounts-cdn.9gag.com/media/avatar/7707104_100_5.jpg" alt="" />
-				<div class="comment-description">
-					<p class="desc">
-						<a href="" class="author">evlil_noob</a>
-						<span>1128 points &bull;</span> 
-						<span>12 h</span>
-					</p>
-					<p class="message">
-						Lorem ipsum dolor sit ammet
-					</p>
-					<div class="reply">
-						<a href="">Reply</a>
-						<i class="fa fa-arrow-up" aria-hidden="true"></i>
-						<i class="fa fa-arrow-down" aria-hidden="true"></i>
-					</div>
-				</div>
-
-			</div>
-			-->
-
 
 		</div>
 	</div>

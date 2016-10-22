@@ -165,6 +165,13 @@
 	.comments-body {
 		margin-top: 20px;
 		position: relative;
+		&.comments-body-clone {
+			img {
+				width: 30px;
+				height: 30px;
+				margin-left: 20px;
+			}
+		}
 		.comments-avatar {
 			width: 50px;
 			height: 50px;

@@ -30,7 +30,7 @@ class CommentsController extends Controller
 		$comment->post_id = $request->post_id;
 		$comment->user_id = Auth::user()->id;
 		$comment->parent_id = isset($request->parent_id) ? $request->parent_id : 0;
-
+		
 		$comment->save();
 
 		return redirect()
