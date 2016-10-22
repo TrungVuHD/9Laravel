@@ -56,13 +56,6 @@ class PostsController extends Controller
     	return view('9gag.show', compact('post', 'points', 'thumb_up', 'comments', 'no_comments', 'next_post'));
     }
 
-    public function myProfileIndex() {
-        
-        $user = Auth::user();
-
-    	return view('9gag.my-profile', ['user' => $user]);
-    }
-
     public function store(Request $request)
     {
         define('DS', DIRECTORY_SEPARATOR);

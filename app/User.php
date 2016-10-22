@@ -3,9 +3,10 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Post;
-use App\Points;
 use App\SocialAccount;
+use App\Report;
+use App\Point;
+use App\Post;
 
 class User extends Authenticatable
 {
@@ -41,6 +42,13 @@ class User extends Authenticatable
 
     public function socialAccounts() 
     {
+        
         return $this->hasMany(SocialAccount::class);
+    }
+
+    public function reports() 
+    {
+
+        return $this->hasMany(Report::class);
     }
 }

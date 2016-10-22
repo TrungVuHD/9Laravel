@@ -213,5 +213,53 @@
 	</div>
 </div>
 
-
+<!-- Report Modal -->
+<div class="modal fade" id="report-modal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h3 class="modal-title text-left" id="reportModalLabel">Report Post</h3>
+				<p class="text-left">What do you report this post for?</p>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label>
+						<input type="radio" class="report-input" name="report_input" value="1" checked="checked">
+						<span>
+							Contains a trademark or copyright violation
+						</span>
+					</label>
+				</div>				
+				<div class="form-group">
+					<label>
+						<input type="radio" class="report-input" name="report_input" value="2">
+						<span>
+							Spam, blatant advertising, or solicitation
+						</span>
+					</label>
+				</div>				
+				<div class="form-group">
+					<label>
+						<input type="radio" class="report-input" name="report_input" value="3">
+						<span>
+							Contains offensive materials/nudity
+						</span>
+					</label>
+				</div>				
+				<div class="form-group">
+					<label>
+						<input type="radio" class="report-input" name="report_input" value="4">
+						<span>
+							Repost of another post on 9GAG
+						</span>
+					</label>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="send-report">Submit</button>
+			</div>
+		</div>
+	</div>
+</div>
 

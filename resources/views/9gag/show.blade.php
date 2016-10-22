@@ -47,7 +47,7 @@
 				</a>
 			</div>
 		</div>
-		<a href="" class="report-post">REPORT</a>
+		<a href="#" class="report-post" data-toggle="modal" data-target="#report-modal">REPORT</a>
 	</div>
 	<div id="comments" class="comments-section">
 		<div class="comments-head">

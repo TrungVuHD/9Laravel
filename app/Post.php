@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Category;
 use App\Comment;
+use App\Report;
 use App\Point;
 use App\User;
 
@@ -33,5 +34,11 @@ class Post extends Model
     {
 
         return $this->hasMany(Comment::class);
+    }
+
+    public function reports()
+    {
+
+        return $this->hasMany(Report::class);
     }
 }

@@ -23,9 +23,16 @@ Route::get('/', 'PostsController@index');
 Route::get('/gag/{slug}', 'PostsController@show');
 Route::get('/trending', 'PostsController@trendingIndex');
 Route::get('/fresh', 'PostsController@freshIndex');
-Route::get('/my-profile', 'PostsController@myProfileIndex');
 Route::post('/upload-post', 'PostsController@store');
-Route::get('search', 'PostsController@searchIndex');
+Route::get('/search', 'PostsController@searchIndex');
+
+Route::group(['prefix' => '/my-profile'], function () {
+
+	Route::get('/', 'MyProfileController@index');
+	Route::get('/posts', 'MyProfileController@postsIndex');
+	Route::get('/upvotes', 'MyProfileController@upvotesIndex');
+	Route::get('/comments', 'MyProfileController@commentsIndex');
+});
 
 Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
 
@@ -69,6 +76,7 @@ Route::group(['prefix' => 'ajax'], function (){
 		Route::get('/trending/{offset}/{limit}', 'PostsController@retrieveTrendingAjax');
 		Route::get('/hot/{offset}/{limit}', 'PostsController@retrieveHotAjax');
 		Route::get('/{category}/{start}', 'PostsController@retrieveCategoryAjax');
+		Route::post('/report', 'ReportsController@store');
 	});
 
 	Route::get('search', 'PostsController@search');
