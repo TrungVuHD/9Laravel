@@ -1,0 +1,83 @@
+[20:18:50] Using gulpfile /var/www/9laravel/gulpfile.js
+[20:18:50] Starting 'default'...
+[20:18:50] Starting 'sass'...
+
+Fetching Sass Source Files...
+   - resources/assets/sass/app.scss
+
+
+Saving To...
+   - public/css/app.css
+
+[20:18:51] Finished 'default' after 971 ms
+[20:18:51] gulp-notify: [Laravel Elixir] Sass Compilation Failed: resources/assets/sass/app.scss
+Error: @import directive requires a url or quoted path
+        on line 4 of resources/assets/sass/app.scss
+>> @import $bootstrap_location + "/variables";
+   ^
+
+[20:18:51] gulp-notify: [Error running notifier] Could not send message: not found: notify-send
+{ status: 1,
+  file: '/var/www/9laravel/resources/assets/sass/app.scss',
+  line: 4,
+  column: 1,
+  message: 'resources/assets/sass/app.scss\nError: @import directive requires a url or quoted path\n        on line 4 of resources/assets/sass/app.scss\n>> @import $bootstrap_location + "/variables";\n   ^\n',
+  formatted: 'Error: @import directive requires a url or quoted path\n        on line 4 of resources/assets/sass/app.scss\n>> @import $bootstrap_location + "/variables";\n   ^\n',
+  messageFormatted: 'resources/assets/sass/app.scss\nError: @import directive requires a url or quoted path\n        on line 4 of resources/assets/sass/app.scss\n>> @import $bootstrap_location + "/variables";\n   ^\n',
+  messageOriginal: '@import directive requires a url or quoted path',
+  relativePath: 'resources/assets/sass/app.scss',
+  name: 'Error',
+  stack: 'Error: resources/assets/sass/app.scss\nError: @import directive requires a url or quoted path\n        on line 4 of resources/assets/sass/app.scss\n>> @import $bootstrap_location + "/variables";\n   ^\n\n    at options.error (/var/www/9laravel/node_modules/laravel-elixir/node_modules/gulp-sass/node_modules/node-sass/lib/index.js:292:26)',
+  showStack: false,
+  showProperties: true,
+  plugin: 'gulp-sass' }
+[20:18:51] Finished 'sass' after 999 ms
+[20:18:51] Starting 'scripts'...
+
+Fetching Scripts Source Files...
+   - node_modules/jquery/dist/jquery.min.js
+   - node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js
+   - resources/assets/js/libraries/FileDrop-master/filedrop-min.js
+   - node_modules/mustache/mustache.min.js
+   - resources/assets/js/*.js
+
+
+Saving To...
+   - public/js/scripts.min.js
+
+[20:18:52] gulp-notify: [Laravel Elixir] Scripts Merged!
+[20:18:52] gulp-notify: [Error in notifier] Error in plugin 'gulp-notify'
+Message:
+    notify-send must be installed on the system.
+[20:18:52] Finished 'scripts' after 735 ms
+[20:18:52] Starting 'copy'...
+
+Fetching Copy Source Files...
+   - node_modules/bootstrap-sass/assets/fonts/**/*
+
+
+Saving To...
+   - public/fonts
+
+[20:18:52] Finished 'copy' after 12 ms
+[20:18:52] Starting 'copy'...
+
+Fetching Copy Source Files...
+   - node_modules/font-awesome/fonts/**/*
+
+
+Saving To...
+   - public/build/fonts
+
+[20:18:52] Finished 'copy' after 18 ms
+[20:18:52] Starting 'version'...
+
+Fetching Version Source Files...
+   - public/css/app.css
+   - public/js/scripts.min.js
+
+
+Saving To...
+   - public/build
+
+[20:18:52] Finished 'version' after 49 ms

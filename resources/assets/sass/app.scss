@@ -1,4 +1,6 @@
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+// Core variables and mixins
+@import "variables";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "node_modules/font-awesome/scss/font-awesome";
 @import "../js/libraries/FileDrop-master/filedrop";
 @import "general";

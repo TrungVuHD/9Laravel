@@ -13,8 +13,8 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
 
-    var bootstrapPath = 'node_modules/bootstrap-sass/assets';
-    var bootstrapPath = '';
+    var bootstrapPath = 'node_modules/bootstrap-sass/assets/fonts';
+    var fontAwesomePath = 'node_modules/font-awesome/fonts';
     var jsFiles = [ 
         '../../../node_modules/jquery/dist/jquery.min.js',
         '../../../node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js',
@@ -29,7 +29,8 @@ elixir(function(mix) {
     //compile the js
     .scripts(jsFiles, 'public/js/scripts.min.js')
     //copy the fonts
-    .copy(bootstrapPath + '/fonts', 'public/fonts')
+    .copy(bootstrapPath, 'public/fonts')
+    .copy(fontAwesomePath, 'public/build/fonts')
     //version(cache bust) the build files
     .version([ 'css/app.css', 'js/scripts.min.js']);
 
