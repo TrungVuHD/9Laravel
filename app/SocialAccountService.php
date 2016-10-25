@@ -4,8 +4,10 @@ namespace App;
 
 use Laravel\Socialite\Contracts\User as ProviderUser;
 use Illuminate\Support\Facades\Auth;
-use App\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\SocialAccount;
+use App\User;
 
 class SocialAccountService
 {
@@ -36,14 +38,28 @@ class SocialAccountService
         		$image_dir = base_path().DS.'public'.DS.'img'.DS.'avatars'.DS;
         		$image_file = str_random(20).'.jpeg';
 				$image_location = $image_dir.$image_file;
-
         		file_put_contents($image_location, file_get_contents($avatar));
         		
+
+                $password = str_random(40);
+                $hashed_password = Hash::make($password);
+
 				$user = new User();
                 $user->username = snake_case(str_slug($providerUser->getEmail()));
 				$user->email = $providerUser->getEmail();
-				$user->name = $providerUser->getName();
+                $user->name = $providerUser->getName();
+                $user->name = $hashed_password;
 				$user->avatar_image = $image_file;
+
+                $email_data = ['name' => $user->name];
+                $email_data['email'] = $user->email;
+                $email_data['password'] = $password;
+
+                Mail::send('emails.password', $email_data, function ($m) use ($user, $email_data) {
+                    $m->from('no-reply@9laravel.superbrackets.com', '9Laravel');
+
+                    $m->to($email_data['email'], $email_data['name'])->subject('Your Password!');
+                });
 
 				$user->save();
 			}

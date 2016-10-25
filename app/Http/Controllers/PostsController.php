@@ -250,10 +250,6 @@ class PostsController extends Controller
                 $post->no_auth = !$post->auth;
                 $post->isnt_gif = !$post->is_gif;
 
-                if($post->is_gif) {
-                    $post->image = substr($post->image, 0, strpos($post->image, '.gif') ).'.png';
-                }
-
             }
 
         } catch (Exception $e) {
@@ -292,10 +288,6 @@ class PostsController extends Controller
                 $post->no_auth = !$post->auth;
                 $post->isnt_gif = !$post->is_gif;
 
-                if($post->is_gif) {
-                    $post->image = substr($post->image, 0, strpos($post->image, '.gif') ).'.png';
-                }
-
             }
             
         } catch (Exception $e) {
@@ -317,9 +309,8 @@ class PostsController extends Controller
             // get the first part of posts ids
             $post_ids = Point::orderBy('post_id', 'desc')
                 ->groupBy('post_id')
-                ->having('no_points', '>', 300)
-                ->having('no_points', '<', 1000)
-                ->select(DB::raw('count(post_id) as no_points, points.*'))
+                ->having(DB::raw('count(post_id)'), '>', 300)
+                ->having(DB::raw('count(post_id)'), '<', 1000)
                 ->offset($offset)
                 ->limit($limit)
                 ->pluck('post_id');
@@ -355,11 +346,6 @@ class PostsController extends Controller
                 $post->no_auth = !$post->auth;
                 $post->isnt_gif = !$post->is_gif;
                 
-
-                if($post->is_gif) {
-                    $post->image = substr($post->image, 0, strpos($post->image, '.gif') ).'.png';
-                }
-
             }
 
             $data['posts'] = $posts;
@@ -377,14 +363,13 @@ class PostsController extends Controller
 
         $offset = (int) $offset;
         $limit = (int) $limit;
-        $data = [ 'success' => true ];
+        $data = ['success' => true];
 
         try {
             // get the first part of posts ids
             $post_ids = Point::orderBy('post_id', 'desc')
                 ->groupBy('post_id')
-                ->having('no_points', '>=', 1000)
-                ->select(DB::raw('count(post_id) as no_points, points.*'))
+                ->having(DB::raw('count(post_id)'), '>=', 1000)
                 ->offset($offset)
                 ->limit($limit)
                 ->pluck('post_id');
@@ -418,11 +403,6 @@ class PostsController extends Controller
                 $post->auth = Auth::check();
                 $post->no_auth = !$post->auth;
                 $post->isnt_gif = !$post->is_gif;
-
-                if($post->is_gif) {
-                    $post->image = substr($post->image, 0, strpos($post->image, '.gif') ).'.png';
-
-                }
                
             }
 
