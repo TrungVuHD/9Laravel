@@ -33,13 +33,13 @@ class PostsController extends Controller
     public function freshIndex(Request $request)
     {
 
-    	$posts = $this->retrieveFreshAjax(0, 20)['posts'];
+        $posts = $this->retrieveFreshAjax(0, 20)['posts'];
         return view('9gag.index', ['posts_category' =>'fresh', 'posts' => $posts]);
     }
 
     public function show($slug)
     {
-    	$post = Post::where('slug', $slug)->firstOrFail();
+        $post = Post::where('slug', $slug)->firstOrFail();
         $next_post = Post::where('id', '>', $post->id)->first();
         $points = count($post->points) > 0 ? count($post->points) : 0;
         $comments = Comment::where('post_id', $post->id)->where('parent_id', 0)->get();
@@ -54,7 +54,7 @@ class PostsController extends Controller
                 ->first();
         }
 
-    	return view('9gag.show', compact('post', 'points', 'thumb_up', 'comments', 'sub_comments', 'no_comments', 'next_post'));
+        return view('9gag.show', compact('post', 'points', 'thumb_up', 'comments', 'sub_comments', 'no_comments', 'next_post'));
     }
 
     public function store(Request $request)
@@ -83,6 +83,7 @@ class PostsController extends Controller
             $post->cat_id = $request->category;
             $post->user_id = Auth::user()->id;
 
+            $this->createDirectories($image_dir);
             $this->base64ToImage($request->image, $image_location);
             $post->is_img_huge = $this->checkImageHeight($image_location);
 
@@ -105,6 +106,24 @@ class PostsController extends Controller
         }
 
         return ['success' => true];
+    }
+
+    protected function createDirectories($dir)
+    {
+        if(!file_exists($dir))
+        {
+            mkdir($dir);
+        }
+
+        if(!file_exists($dir.DS.'460')) 
+        {
+            mkdir($dir.DS.'460');
+        }
+
+        if(!file_exists($dir.DS.'300')) 
+        {
+            mkdir($dir.DS.'300');
+        }
     }
 
     protected function checkImageHeight($img)
