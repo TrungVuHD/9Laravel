@@ -207,7 +207,7 @@
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#upload-modal">Back</button>
-				<button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#set-title-modal">Next</button>
+				<button class="btn btn-primary" id="upload-url-next-btn" data-dismiss="modal" data-toggle="modal" data-target="#set-title-modal">Next</button>
 			</div>
 		</div>
 	</div>

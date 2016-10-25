@@ -79,7 +79,7 @@
 							<button type="submit" class="disconnect btn btn-danger">Disconnect</a>
 						</form>
 					@else
-						<a href="{{ url('facebook/redirect') }}" class="btn-btn primary">Connect Now</a>
+						<a href="{{ url('facebook/redirect') }}" class="btn btn-primary">Connect Now</a>
 					@endif
 				</div>
 			</div>

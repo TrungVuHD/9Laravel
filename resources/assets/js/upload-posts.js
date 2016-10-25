@@ -27,6 +27,8 @@
 			this.$showAtrributeInput = $("#attribbute-input-shown");
 			this.$attributeInput = $(".attribute-form-group");
 			this.$uploadBtn = $("#upload-post-btn");
+			this.$imagePreview = $("#set-title-image-preview");
+			this.baseUrl = $("#base-url").val();
 
 			this.$validateSetTitle = $(".validate-set-post");
 			this.$postTitle = $("#upload-post-description");
@@ -39,12 +41,21 @@
 		},
 		validateSetTitleModal: function (event) {
 
-			if( event.data.$postTitle.val() == "" ){
+			var self = event.data;
+
+			if( self.$postTitle.val() == "" ){
 				alert('Please provide a title for your post');
-				event.data.$postTitle.focus();
+				self.$postTitle.focus();
 				event.preventDefault();
 				return false;
 			}
+
+			if( self.$imagePreview.attr('href') == self.baseUrl+"/img/logo.png" ) {
+
+				alert('You haven\'t chosen an image yet');
+				event.preventDefault();
+				return false;
+			} 
 		},
 		enableFileDrop: function () {
 
@@ -84,7 +95,8 @@
 				attribution: $("#post-attribute-input").val(),
 				category: $(".upload-post-category:checked").val(),
 				image: $("#set-title-image-preview").attr('src'),
-				url: $("#upload-post-url").val()
+				url: $("#upload-post-url").val(),
+				notBase64Image: window.notBase64Image == false ? false : true,
 			};
 
 			return input;

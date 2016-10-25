@@ -69,7 +69,7 @@ class PostsController extends Controller
 
         try {
             
-            $image_extension = $this->getImageExtension($request->image);
+            $image_extension = $this->getImageExtension($request->image, $request->notBase64Image);
             $image_dir = base_path().DS.'public'.DS.'img'.DS.'posts'.DS;
             $image_file = str_random(20).$image_extension;
             $image_location = $image_dir.$image_file;
@@ -84,7 +84,16 @@ class PostsController extends Controller
             $post->user_id = Auth::user()->id;
 
             $this->createDirectories($image_dir);
-            $this->base64ToImage($request->image, $image_location);
+            
+            if($request->notBase64Image)
+            {
+                copy($request->image, $image_location);
+            } 
+            else 
+            {
+                $this->base64ToImage($request->image, $image_location);
+            }
+
             $post->is_img_huge = $this->checkImageHeight($image_location);
 
             if($image_extension != ".gif") {
@@ -123,6 +132,12 @@ class PostsController extends Controller
         if(!file_exists($dir.DS.'300')) 
         {
             mkdir($dir.DS.'300');
+        }
+
+        $tmp_dir = base_path().DS.'tmp';
+        if(!file_exists($tmp_dir))
+        {
+            mkdir($tmp_dir);
         }
     }
 
@@ -180,12 +195,26 @@ class PostsController extends Controller
         $img->save($dir.DS.'300'.DS.$file, 70);
     }
 
-    protected function getImageExtension($base64_string)
+    protected function getImageExtension($base64_string, $isnt_base_64)
     {
-        $data = explode(',', $base64_string);
-        $imgdata = base64_decode($data[1]);
-        $f = finfo_open();
-        $mime_type = finfo_buffer($f, $imgdata, FILEINFO_MIME_TYPE);
+
+        if($isnt_base_64) {
+
+            $tmp_dir = base_path().DS.'tmp';
+            $tmp_file = str_random(20);
+            $tmp_location = $tmp_dir.DS.$tmp_file;
+
+            copy($base64_string, $tmp_location);
+            $mime_type = mime_content_type($tmp_location);
+            unlink($tmp_location);
+
+        } else {
+
+            $data = explode(',', $base64_string);
+            $imgdata = base64_decode($data[1]);
+            $f = finfo_open();
+            $mime_type = finfo_buffer($f, $imgdata, FILEINFO_MIME_TYPE);
+        }
 
         switch($mime_type) {
 
