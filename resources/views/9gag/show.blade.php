@@ -146,7 +146,11 @@
 					</div>
 				</div>
 			</div>
-				@foreach($sub_comments->where('parent_id', $comment->id) as $sub_comment)
+				<?php 
+					$subcomments = $sub_comments->where('parent_id', $comment->id)->get();
+				?>
+
+				@foreach( $subcomments as $sub_comment)
 					<div class="comment comment-small" data-comment-id="{{ $comment->id }}" data-parent-id="{{ $sub_comment->parent_id or 0 }}">
 						<img class="comment-avatar" src="{{ url('img/avatars/'.$sub_comment->user->avatar_image) }}" alt="" />
 						<div class="comment-description">

@@ -43,8 +43,8 @@ class PostsController extends Controller
         $next_post = Post::where('id', '>', $post->id)->first();
         $points = count($post->points) > 0 ? count($post->points) : 0;
         $comments = Comment::where('post_id', $post->id)->where('parent_id', 0)->get();
-        $sub_comments = Comment::where('post_id', $post->id)->where('parent_id', '<>', 0)->get();
-        $no_comments = $comments->count() + $sub_comments->count();
+        $sub_comments = Comment::where('post_id', $post->id)->where('parent_id', '<>', 0);
+        $no_comments = $comments->count() + $sub_comments->get()->count();
         $thumb_up = null;
 
         if(Auth::check())
