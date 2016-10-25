@@ -38,20 +38,30 @@ class SocialAccountService
         		$image_dir = base_path().DS.'public'.DS.'img'.DS.'avatars'.DS;
         		$image_file = str_random(20).'.jpeg';
 				$image_location = $image_dir.$image_file;
+
+                if(!file_exists($image_dir))
+                {
+                    mkdir($image_dir);
+                }
+
         		file_put_contents($image_location, file_get_contents($avatar));
         		
-
-                $password = str_random(40);
+                $password = str_random(20);
                 $hashed_password = Hash::make($password);
 
 				$user = new User();
-                $user->username = snake_case(str_slug($providerUser->getEmail()));
+
+                $username = explode('@', $providerUser->getEmail())[0];
+                $username = snake_case(str_slug($username));
+
+                $user->username = $username;
 				$user->email = $providerUser->getEmail();
                 $user->name = $providerUser->getName();
-                $user->name = $hashed_password;
+                $user->password = $hashed_password;
 				$user->avatar_image = $image_file;
 
-                $email_data = ['name' => $user->name];
+                $email_data = [];
+                $email_data['name'] = $user->name;
                 $email_data['email'] = $user->email;
                 $email_data['password'] = $password;
 
