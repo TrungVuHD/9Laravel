@@ -1,8 +1,9 @@
 # 9Laravel
 
-9Laravel is a web application that tries to mimic the functionality and design of the famous 9GAG website.
+9Laravel is a web application that mimics the functionality and design of the famous 9GAG website.
 
-The existence of such an application relies in the fact that the author tried to gain more experience with the Laravel framework. 
+This application was created for learning purposes.
+Even though the website looks similar and acts in the same way, no code was copied from the originial 9GAG website.
 
 ## Dependencies
 
@@ -18,9 +19,12 @@ The existence of such an application relies in the fact that the author tried to
 
 * Intervention
 * Socialite
+* Doctrine
 * ResizeGif
 
 ## Instalation
+
+
 
 ## Authors
 
