@@ -21,7 +21,7 @@ class PostsController extends Controller
 
         $posts = $this->retrieveHotAjax(0, 20)['posts'];
         return view('9gag.index', ['posts_category' =>'hot', 'posts' => $posts]);
-    }    
+    }
 
     public function trendingIndex(Request $request)
     {
@@ -47,8 +47,7 @@ class PostsController extends Controller
         $no_comments = $comments->count() + $sub_comments->get()->count();
         $thumb_up = null;
 
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             $thumb_up = Point::where('post_id', $post->id)
                 ->where('user_id', Auth::user()->id)
                 ->first();
@@ -68,7 +67,6 @@ class PostsController extends Controller
         ]);
 
         try {
-            
             $image_extension = $this->getImageExtension($request->image, $request->notBase64Image);
             $image_dir = base_path().DS.'public'.DS.'img'.DS.'posts'.DS;
             $image_file = str_random(20).$image_extension;
@@ -85,32 +83,24 @@ class PostsController extends Controller
 
             $this->createDirectories($image_dir);
             
-            if($request->notBase64Image)
-            {
+            if ($request->notBase64Image) {
                 copy($request->image, $image_location);
-            } 
-            else 
-            {
+            } else {
                 $this->base64ToImage($request->image, $image_location);
             }
 
             $post->is_img_huge = $this->checkImageHeight($image_location);
 
-            if($image_extension != ".gif") {
-                
+            if ($image_extension != ".gif") {
                 $post->is_gif = 0;
                 $this->createImageVersions($image_dir, $image_file);
             } else {
-
                 $post->is_gif = 1;
                 $this->createGIFImageVersions($image_dir, $image_file);
             }
 
             $post->save();
-
-
         } catch (Exception $e) {
-            
             return ['success' => false];
         }
 
@@ -119,24 +109,20 @@ class PostsController extends Controller
 
     protected function createDirectories($dir)
     {
-        if(!file_exists($dir))
-        {
+        if (!file_exists($dir)) {
             mkdir($dir);
         }
 
-        if(!file_exists($dir.DS.'460')) 
-        {
+        if (!file_exists($dir.DS.'460')) {
             mkdir($dir.DS.'460');
         }
 
-        if(!file_exists($dir.DS.'300')) 
-        {
+        if (!file_exists($dir.DS.'300')) {
             mkdir($dir.DS.'300');
         }
 
         $tmp_dir = base_path().DS.'tmp';
-        if(!file_exists($tmp_dir))
-        {
+        if (!file_exists($tmp_dir)) {
             mkdir($tmp_dir);
         }
     }
@@ -144,8 +130,9 @@ class PostsController extends Controller
     protected function checkImageHeight($img)
     {
         $img_height = Image::make($img)->height();
-        if($img_height > 900)
+        if ($img_height > 900) {
             return 1;
+        }
         return 0;
     }
 
@@ -174,15 +161,15 @@ class PostsController extends Controller
         $img->save($dir.DS.'300'.DS.$png_file, 70);
     }
 
-    protected function createImageVersions($dir, $file) 
+    protected function createImageVersions($dir, $file)
     {
         // big image
         $img = Image::make($dir.$file);
         $img->resize(600, null, function ($constraint) {
             $constraint->aspectRatio();
         });
-        $img->save($dir.$file, 70);        
-        $img->save($dir.$file, 70);        
+        $img->save($dir.$file, 70);
+        $img->save($dir.$file, 70);
 
         // medium image
         $img->resize(460, null, function ($constraint) {
@@ -197,9 +184,7 @@ class PostsController extends Controller
 
     protected function getImageExtension($base64_string, $isnt_base_64)
     {
-
-        if($isnt_base_64) {
-
+        if ($isnt_base_64) {
             $tmp_dir = base_path().DS.'tmp';
             $tmp_file = str_random(20);
             $tmp_location = $tmp_dir.DS.$tmp_file;
@@ -207,33 +192,30 @@ class PostsController extends Controller
             copy($base64_string, $tmp_location);
             $mime_type = mime_content_type($tmp_location);
             unlink($tmp_location);
-
         } else {
-
             $data = explode(',', $base64_string);
             $imgdata = base64_decode($data[1]);
             $f = finfo_open();
             $mime_type = finfo_buffer($f, $imgdata, FILEINFO_MIME_TYPE);
         }
 
-        switch($mime_type) {
-
+        switch ($mime_type) {
             case 'image/gif':
                 $extension = '.gif';
-            break;
+                break;
             case 'image/jpeg':
                 $extension = '.jpeg';
-            break;
+                break;
             case 'image/png':
                 $extension = '.png';
-            break;
+                break;
             default:
                 $extension = '.jpeg';
         }
         return $extension;
     }
 
-    protected function base64ToImage($base64_string, $output_file) 
+    protected function base64ToImage($base64_string, $output_file)
     {
 
         $file = fopen($output_file, "wb");
@@ -279,7 +261,6 @@ class PostsController extends Controller
         $category = (int)$category;
         
         try {
-
             $data['posts'] = Post::where('cat_id', $category)
                 ->orderBy('id', 'desc')
                 ->offset($start)
@@ -287,8 +268,7 @@ class PostsController extends Controller
                 ->get();
 
             foreach ($data['posts'] as &$post) {
-                
-                if($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id )->count()) {
+                if ($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id)->count()) {
                     $post->active_thumbs_up = true;
                 }
 
@@ -297,9 +277,7 @@ class PostsController extends Controller
                 $post->auth = Auth::check();
                 $post->no_auth = !$post->auth;
                 $post->isnt_gif = !$post->is_gif;
-
             }
-
         } catch (Exception $e) {
             $data['success'] = false;
         }
@@ -320,12 +298,10 @@ class PostsController extends Controller
                 ->get();
 
             foreach ($data['posts'] as &$post) {
-                
                 $post->active_thumbs_up = false;
                 
-                if(Auth::check()) {
-                    
-                    if($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id )->count()) {
+                if (Auth::check()) {
+                    if ($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id)->count()) {
                         $post->active_thumbs_up = true;
                     }
                 }
@@ -335,11 +311,8 @@ class PostsController extends Controller
                 $post->auth = Auth::check();
                 $post->no_auth = !$post->auth;
                 $post->isnt_gif = !$post->is_gif;
-
             }
-            
         } catch (Exception $e) {
-            
             $data['success']=false;
         }
 
@@ -368,7 +341,7 @@ class PostsController extends Controller
                 ->whereIn('id', $post_ids)
                 ->get();
 
-            $limit -= $posts->count(); 
+            $limit -= $posts->count();
 
             $more_posts = Post::orderBy('id', 'desc')
                 ->whereNotIn('id', $post_ids)
@@ -379,11 +352,10 @@ class PostsController extends Controller
             $posts = $posts->merge($more_posts);
 
             foreach ($posts as &$post) {
-                
                 $post->active_thumbs_up = false;
                 
-                if(Auth::check()) {
-                    if($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id )->count()) {
+                if (Auth::check()) {
+                    if ($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id)->count()) {
                         $post->active_thumbs_up = true;
                     }
                 }
@@ -393,13 +365,10 @@ class PostsController extends Controller
                 $post->auth = Auth::check();
                 $post->no_auth = !$post->auth;
                 $post->isnt_gif = !$post->is_gif;
-                
             }
 
             $data['posts'] = $posts;
-        
         } catch (Exception $e) {
-            
             $data['success'] = false;
         }
 
@@ -427,7 +396,7 @@ class PostsController extends Controller
                 ->whereIn('id', $post_ids)
                 ->get();
 
-            $limit -= $posts->count(); 
+            $limit -= $posts->count();
 
             $more_posts = Post::orderBy('id', 'desc')
                 ->whereNotIn('id', $post_ids)

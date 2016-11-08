@@ -1,7 +1,7 @@
 (function () {
 
 	'use strict';
-
+	
 	var topSubmenu = {
 		init: function () {
 
@@ -36,4 +36,3 @@
 	topSubmenu.init();
 
 })();
-

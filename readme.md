@@ -24,7 +24,11 @@ Even though the website looks similar and acts in the same way, no code was copi
 
 ## Instalation
 
+`git clone https://github.com/SuperBrackets/9Laravel.git`
 
+`composer install`
+
+`npm install`
 
 ## Authors
 
