@@ -22,7 +22,7 @@ Even though the website looks similar and acts in the same way, no code was copi
 * Doctrine
 * ResizeGif
 
-## Instalation
+## Installation
 
 `git clone https://github.com/SuperBrackets/9Laravel.git`
 
