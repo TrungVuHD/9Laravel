@@ -38,13 +38,13 @@ class SettingsController extends Controller
     public function showProfile()
     {
 
-    	return view('settings.profile', ['countries' => $this->countries, 'user' => $this->user]);
+        return view('settings.profile', ['countries' => $this->countries, 'user' => $this->user]);
     }
 
     public function showMyProfile()
     {
 
-    	return view('settings.my-profile');
+        return view('settings.my-profile');
     }
 
     public function storeAccount(Request $request)
@@ -83,10 +83,8 @@ class SettingsController extends Controller
         ]);
 
         // check to see if the passwords match...
-        if (Hash::check($request->old_password, $hashedPassword)) 
-        {
-            if($request->new_password === $request->repeat_new_password) 
-            {
+        if (Hash::check($request->old_password, $hashedPassword)) {
+            if ($request->new_password === $request->repeat_new_password) {
                 $new_password = Hash::make($request->new_password);
 
                 $user->password = $new_password;
@@ -97,12 +95,11 @@ class SettingsController extends Controller
                         ->back()
                         ->with('status', 'The password has been changed');
             }
-        } 
+        }
 
         return redirect()
                 ->back()
                 ->withErrors('The old password doesn\'t match the password you entered.');
-
     }
 
     public function storeProfile(Request $request)
@@ -130,8 +127,7 @@ class SettingsController extends Controller
         $user->birthday_month = $request->birthday_month;
         $user->birthday_day = $request->birthday_day;
 
-        if ( $request->hasFile('avatar_image') && $request->file('avatar_image')->isValid() ) 
-        {
+        if ($request->hasFile('avatar_image') && $request->file('avatar_image')->isValid()) {
             // save the image to disk
             $image_name = str_random(20);
             $image_name .= '.'.$request->avatar_image->getClientOriginalExtension();
@@ -160,7 +156,7 @@ class SettingsController extends Controller
                 ->with('status', 'Profile settings were changed.');
     }
 
-    public function destroy(Request $request) 
+    public function destroy(Request $request)
     {
         
         $user = User::where('id', Auth::user()->id)->firstOrFail();
@@ -177,8 +173,7 @@ class SettingsController extends Controller
             ->where('provider', 'facebook')
             ->first();
 
-        if($account)
-        {   
+        if ($account) {
             $account->delete();
         }
 
@@ -193,8 +188,7 @@ class SettingsController extends Controller
             ->where('provider', 'google')
             ->first();
 
-        if($account)
-        {   
+        if ($account) {
             $account->delete();
         }
 

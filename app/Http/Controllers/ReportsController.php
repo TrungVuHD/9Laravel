@@ -11,29 +11,26 @@ use Validator;
 
 class ReportsController extends Controller
 {
-	public function store(Request $request)
-	{
+    public function store(Request $request)
+    {
 
-		$validation = Validator::make($request->all(), [
-			'post_id' => 'required|integer',
-			'reason' => 'required|integer'
-		]);
+        $validation = Validator::make($request->all(), [
+            'post_id' => 'required|integer',
+            'reason' => 'required|integer'
+        ]);
 
 
-		if($validation->fails()) {
+        if ($validation->fails()) {
+            return ['success' => false];
+        } else {
+            $report =  new Report();
+            $report->user_id = Auth::user()->id;
+            $report->post_id = $request->post_id;
+            $report->reason = $request->reason;
 
-			return ['success' => false];
-		} else {
+            $report->save();
 
-			$report =  new Report();
-			$report->user_id = Auth::user()->id;
-			$report->post_id = $request->post_id;
-			$report->reason = $request->reason;
-
-			$report->save();
-
-			return ['success' => true];
-		}
-
-	}
+            return ['success' => true];
+        }
+    }
 }

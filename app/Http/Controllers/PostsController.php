@@ -18,7 +18,6 @@ class PostsController extends Controller
 
     public function index(Request $request)
     {
-
         $posts = $this->retrieveHotAjax(0, 20)['posts'];
         return view('9gag.index', ['posts_category' =>'hot', 'posts' => $posts]);
     }
@@ -407,10 +406,9 @@ class PostsController extends Controller
             $posts = $posts->merge($more_posts);
 
             foreach ($posts as &$post) {
-                
                 $post->active_thumbs_up = false;
-                if(Auth::check()) {
-                    if($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id )->count()) {
+                if (Auth::check()) {
+                    if ($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id)->count()) {
                         $post->active_thumbs_up = true;
                     }
                 }
@@ -418,15 +416,12 @@ class PostsController extends Controller
                 $post->no_comments = $post->comments->count();
                 $post->no_points = $post->points->count();
                 $post->auth = Auth::check();
-                $post->no_auth = !$post->auth;
+                $post->no_auth = !$post->auth
                 $post->isnt_gif = !$post->is_gif;
-               
             }
 
             $data['posts'] = $posts;
-        
         } catch (Exception $e) {
-            
             $data['success'] = false;
         }
 
