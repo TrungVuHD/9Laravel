@@ -81,7 +81,7 @@ class PostsController extends Controller
             $post->user_id = Auth::user()->id;
 
             $this->createDirectories($image_dir);
-            
+
             if ($request->notBase64Image) {
                 copy($request->image, $image_location);
             } else {
@@ -221,7 +221,7 @@ class PostsController extends Controller
         $data = explode(',', $base64_string);
         fwrite($file, base64_decode($data[1]));
         fclose($file);
-     
+
         return $output_file;
     }
 
@@ -243,7 +243,7 @@ class PostsController extends Controller
 
     public function searchIndex(Request $request)
     {
-        
+
         $query = $request->query();
         $query = $query['query'];
 
@@ -258,7 +258,7 @@ class PostsController extends Controller
         $data = ['success' => true];
         $start = (int)$start;
         $category = (int)$category;
-        
+
         try {
             $data['posts'] = Post::where('cat_id', $category)
                 ->orderBy('id', 'desc')
@@ -298,7 +298,7 @@ class PostsController extends Controller
 
             foreach ($data['posts'] as &$post) {
                 $post->active_thumbs_up = false;
-                
+
                 if (Auth::check()) {
                     if ($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id)->count()) {
                         $post->active_thumbs_up = true;
@@ -352,7 +352,7 @@ class PostsController extends Controller
 
             foreach ($posts as &$post) {
                 $post->active_thumbs_up = false;
-                
+
                 if (Auth::check()) {
                     if ($post->points->where('post_id', $post->id)->where('user_id', Auth::user()->id)->count()) {
                         $post->active_thumbs_up = true;
@@ -416,7 +416,7 @@ class PostsController extends Controller
                 $post->no_comments = $post->comments->count();
                 $post->no_points = $post->points->count();
                 $post->auth = Auth::check();
-                $post->no_auth = !$post->auth
+                $post->no_auth = !$post->auth;
                 $post->isnt_gif = !$post->is_gif;
             }
 

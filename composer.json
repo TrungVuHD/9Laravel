@@ -6,7 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.2.*",
+        "laravel/framework": "5.*",
         "intervention/image": "^2.3",
         "doctrine/dbal": "^2.5",
         "grandt/phpresizegif": "^1.0",
