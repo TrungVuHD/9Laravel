@@ -15,7 +15,6 @@ use App\Point;
 
 class PostsController extends Controller
 {
-
     public function index(Request $request)
     {
         $posts = $this->retrieveHotAjax(0, 20)['posts'];
@@ -24,14 +23,12 @@ class PostsController extends Controller
 
     public function trendingIndex(Request $request)
     {
-
         $posts = $this->retrieveTrendingAjax(0, 20)['posts'];
         return view('9gag.index', ['posts_category' =>'trending', 'posts' => $posts]);
     }
 
     public function freshIndex(Request $request)
     {
-
         $posts = $this->retrieveFreshAjax(0, 20)['posts'];
         return view('9gag.index', ['posts_category' =>'fresh', 'posts' => $posts]);
     }
