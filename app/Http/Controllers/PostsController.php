@@ -54,8 +54,6 @@ class PostsController extends Controller
 
     public function store(Request $request)
     {
-        define('DS', DIRECTORY_SEPARATOR);
-
         $this->validate($request, [
             'description' => 'required|max:160',
             'category' => 'required|integer',

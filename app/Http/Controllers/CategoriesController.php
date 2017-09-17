@@ -10,7 +10,6 @@ use App\Post;
 
 class CategoriesController extends Controller
 {
-
     public function index()
     {
         $categories = Category::paginate(15);
@@ -37,8 +36,6 @@ class CategoriesController extends Controller
 
     public function store(Request $request)
     {
-        define('DS', DIRECTORY_SEPARATOR);
-
         $this->validate($request, [
             'title' => 'required|max:255',
             'description' => 'required',
@@ -46,7 +43,7 @@ class CategoriesController extends Controller
             'show_in_menu' => 'required|integer',
             'image' => 'image',
         ]);
-   
+
         $category = new Category();
 
         // Upload the image and generate the random file name
@@ -92,8 +89,6 @@ class CategoriesController extends Controller
 
     public function update(Request $request, $category)
     {
-        define('DS', DIRECTORY_SEPARATOR);
-
         $this->validate($request, [
             'title' => 'required|max:255',
             'description' => 'required',
@@ -101,7 +96,6 @@ class CategoriesController extends Controller
             'show_in_menu' => 'required|integer',
             'image' => 'image',
         ]);
-
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             // Upload the image and generate the random file name
@@ -111,7 +105,7 @@ class CategoriesController extends Controller
             $image_name = str_random(20);
             $image_name .= '.'.$request->image->getClientOriginalExtension();
             $image_location = $image_dir.DS.$image_name;
-    
+
             $file = $request
                 ->image
                 ->move($image_dir, $image_name);
@@ -127,8 +121,7 @@ class CategoriesController extends Controller
         }
 
         $categoryObject = Category::where('id', $category)->firstOrFail();
-        
-        
+
         $categoryObject->title = $request->title;
         $categoryObject->slug = str_slug($request->title);
         $categoryObject->description = $request->description;
