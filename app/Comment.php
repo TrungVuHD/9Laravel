@@ -8,22 +8,22 @@ use App\User;
 
 class Comment extends Model
 {
-   
-	public function points()
-	{
 
-		return $this->hasMany(CommentPoint::class);
-	}
+    public function points()
+    {
 
-	public function user()
-	{
+        return $this->hasMany(CommentPoint::class);
+    }
 
-		return $this->belongsTo(User::class);
-	}
+    public function user()
+    {
 
-	public function post()
-	{
+        return $this->belongsTo(User::class);
+    }
 
-		return $this->belongsTo(Post::class);
-	}
+    public function post()
+    {
+
+        return $this->belongsTo(Post::class);
+    }
 }
