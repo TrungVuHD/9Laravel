@@ -17,13 +17,6 @@
                 @endif
 
                 <div class="form-group">
-                    <label class="avatarInputLabel" for="avatarInput">Avatar</label>
-                    @if( isset($category) )
-                    <img class="profile-avatar-img" src="{{ url('img/categories/'.$category->image) }}" alt="">
-                    @endif
-                    <input type="file" name="image" id="avatarInput">
-                </div>
-                <div class="form-group">
                     <label for="titleInput">Title</label>
                     <input name="title" type="text" class="form-control" id="titleInput" placeholder="Title" value="{{ $category->title or "" }}">
                 </div>

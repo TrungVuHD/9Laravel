@@ -13,7 +13,6 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Image</th>
                         <th>Title</th>
                         <th>Published</th>
                         <th>Show in Menu</th>
@@ -23,11 +22,6 @@
                 <tbody>
                     @foreach($categories as $cat)
                     <tr>
-                        <td>
-                            <a target="_blank" href="{{ url($cat->slug) }}">
-                                <img class="category-main-image" src="{{ url('img/categories/'.$cat->image) }}" alt="">
-                            </a>
-                        </td>
                         <td>
                             <a target="_blank" href="{{ url($cat->slug) }}">
                                 {{ $cat->title }}

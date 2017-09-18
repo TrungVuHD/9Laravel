@@ -15,9 +15,6 @@
                         </th>
                     </tr>
                     <tr>
-                        <th>Image</th>
-                    </tr>
-                    <tr>
                         <th>
                             Title
                         </th>
