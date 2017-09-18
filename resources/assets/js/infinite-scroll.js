@@ -1,13 +1,13 @@
 (function () {
 
+  "use strict";
+
   var infiniteScroll = {
     init: function () {
-
       this.cacheDom();
       this.bindEvents();
     },
     cacheDom: function () {
-
       this.$window = $(window);
       this.$doc = $(document);
       this.$content = $("#content");
@@ -21,22 +21,20 @@
       this.waitForAjax = false;
     },
     bindEvents: function () {
-
       this.$window.on('scroll', $.proxy(this.onWindowScroll, this));
-
     },
     onWindowScroll: function () {
-
       var self = this;
       var ajaxPosition = this.$doc.height() - this.$window.height() - 200;
       var url = '';
       var rendered = '';
+      var processedData;
 
-      if( this.postCategory == undefined && this.categoryId == undefined) {
+      if(this.postCategory === undefined && this.categoryId === undefined) {
         return false;
       }
 
-      if( this.lastAjaxCallWasEmpty == true ) {
+      if(this.lastAjaxCallWasEmpty === true) {
         return false;
       }
 
@@ -56,9 +54,7 @@
       }
 
       if( this.$window.scrollTop() >= ajaxPosition && !this.waitForAjax ) {
-
         this.waitForAjax = true;
-
         var request = $.ajax({
           url: url,
           method: "GET",
@@ -66,24 +62,21 @@
         });
 
         request.done(function( data ) {
-
-          if(data.success == true) {
-
+          if(data.success === true) {
             processedData = {
               posts: data.posts
             };
 
-            Mustache.parse(self.template);
-            rendered = Mustache.render(self.template, processedData);
+            window.Mustache.parse(self.template);
+            rendered = window.Mustache.render(self.template, processedData);
             self.$content.append(rendered);
             self.start += self.noElements;
             self.waitForAjax = false;
 
-            if(data.posts.length == 0) {
+            if(data.posts.length === 0) {
               self.lastAjaxCallWasEmpty = true;
             }
           }
-
         });
       }
     }
