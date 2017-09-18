@@ -10,7 +10,7 @@ use App\Http\Requests;
 use App\SocialAccount;
 use App\User;
 
-class SettingsController extends Controller
+class SettingController extends Controller
 {
     protected $countries;
     protected $user;

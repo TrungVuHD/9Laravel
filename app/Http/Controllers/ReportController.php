@@ -9,7 +9,7 @@ use App\Report;
 use App\Post;
 use Validator;
 
-class ReportsController extends Controller
+class ReportController extends Controller
 {
     public function store(Request $request)
     {

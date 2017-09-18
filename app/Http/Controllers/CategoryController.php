@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Category;
 use App\Post;
 
-class CategoriesController extends Controller
+class CategoryController extends Controller
 {
     public function index()
     {

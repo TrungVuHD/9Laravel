@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\CommentPoint;
 use App\Comment;
 
-class CommentsController extends Controller
+class CommentController extends Controller
 {
     public function store(Request $request)
     {
@@ -28,7 +28,7 @@ class CommentsController extends Controller
         $comment->post_id = $request->post_id;
         $comment->user_id = Auth::user()->id;
         $comment->parent_id = isset($request->parent_id) ? $request->parent_id : 0;
-        
+
         $comment->save();
 
         return redirect()

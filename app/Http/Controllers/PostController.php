@@ -13,7 +13,7 @@ use App\Comment;
 use App\Post;
 use App\Point;
 
-class PostsController extends Controller
+class PostController extends Controller
 {
     public function index(Request $request)
     {

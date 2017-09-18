@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Point;
 use App\Post;
 
-class PointsController extends Controller
+class PointController extends Controller
 {
     public function incrementPoints(Request $request)
     {
