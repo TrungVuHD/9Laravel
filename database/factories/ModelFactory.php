@@ -19,3 +19,18 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+// Categories
+$factory->define(App\Category::class, function (Faker\Generator $faker) {
+    $title = $faker->unique()->word;
+    $title = ucfirst($title);
+    $slug = str_slug($title);
+
+    return [
+        'title' => $title,
+        'description' => $faker->paragraph,
+        'published' => true,
+        'show_in_menu' => true,
+        'slug' => $slug
+    ];
+});
