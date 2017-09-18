@@ -1,109 +1,109 @@
 (function () {
 
-	var points = {
-		init: function () {
+  var points = {
+    init: function () {
 
-			this.cacheDom();
-			this.bindEvents();
-		},
-		cacheDom: function () {
+      this.cacheDom();
+      this.bindEvents();
+    },
+    cacheDom: function () {
 
-			this.$content = $("#content");
-			this.$thumbsUp = $('.thumbs-up');
-			this.$thumbsDown = $('.thumbs-down');
-			this.baseUrl = $('#base-url').val();
-		},
-		bindEvents: function () {
-			
-			this.$content.on('click', '.thumbs-up', this, this.incrementPoints);
-			this.$content.on('click', '.thumbs-down', this, this.decrementPoints);
-		},
-		incrementPoints: function (event) {
+      this.$content = $("#content");
+      this.$thumbsUp = $('.thumbs-up');
+      this.$thumbsDown = $('.thumbs-down');
+      this.baseUrl = $('#base-url').val();
+    },
+    bindEvents: function () {
 
-			event.preventDefault();
+      this.$content.on('click', '.thumbs-up', this, this.incrementPoints);
+      this.$content.on('click', '.thumbs-down', this, this.decrementPoints);
+    },
+    incrementPoints: function (event) {
 
-			var $parentElement = $(this).parents('.home-item');
-			var baseUrl = event.data.baseUrl;
-			var data = {
-				postId: $parentElement.data('post-id')
-			};
+      event.preventDefault();
 
-			var request = $.ajax({
-				url: baseUrl+'/ajax/points/increment',
-				method: "POST",
-				data: data,
-				dataType: 'json'
-			});
+      var $parentElement = $(this).parents('.home-item');
+      var baseUrl = event.data.baseUrl;
+      var data = {
+        postId: $parentElement.data('post-id')
+      };
 
-			request.done(function( data ) {
+      var request = $.ajax({
+        url: baseUrl+'/ajax/points/increment',
+        method: "POST",
+        data: data,
+        dataType: 'json'
+      });
 
-				if(data.success == true) {
+      request.done(function( data ) {
 
-					var $points = $parentElement.find('.points');
-					var noPoints = parseInt($points.html());
-					var $thumbsUpElement = $parentElement.find('.thumbs-up');
+        if(data.success == true) {
 
-					$points.html(noPoints+1);
-					$thumbsUpElement.addClass('active');
-				}
-			});
+          var $points = $parentElement.find('.points');
+          var noPoints = parseInt($points.html());
+          var $thumbsUpElement = $parentElement.find('.thumbs-up');
 
-			request.fail(function( jqXHR, textStatus ) {
+          $points.html(noPoints+1);
+          $thumbsUpElement.addClass('active');
+        }
+      });
 
-				if(jqXHR.status == 401) {
+      request.fail(function( jqXHR, textStatus ) {
 
-					window.location.href = points.baseUrl+'/login';
+        if(jqXHR.status == 401) {
 
-				}
-			});
-		},
-		decrementPoints: function (event) {
+          window.location.href = points.baseUrl+'/login';
 
-			event.preventDefault();
+        }
+      });
+    },
+    decrementPoints: function (event) {
 
-			var $parentElement = $(this).parents('.home-item');
-			var baseUrl = event.data.baseUrl;
-			var data = {
-				'postId': $parentElement.data('post-id')
-			};
+      event.preventDefault();
 
-			var request = $.ajax({
-				url: baseUrl+'/ajax/points/decrement',
-				method: "POST",
-				data: data,
-				dataType: 'json'
-			});
+      var $parentElement = $(this).parents('.home-item');
+      var baseUrl = event.data.baseUrl;
+      var data = {
+        'postId': $parentElement.data('post-id')
+      };
 
-			request.done(function( data ) {
+      var request = $.ajax({
+        url: baseUrl+'/ajax/points/decrement',
+        method: "POST",
+        data: data,
+        dataType: 'json'
+      });
 
-				if(data.success) {
+      request.done(function( data ) {
 
-					var $points = $parentElement.find('.points');
-					var noPoints = parseInt($points.html());
-					var $activeElement = $parentElement.find('.active');
+        if(data.success) {
 
-					$points.html(noPoints-1);
-					$activeElement.removeClass('active');
-				} else {
-					
-					//alert( "There was a problem with your request.");
-				}
-			});
+          var $points = $parentElement.find('.points');
+          var noPoints = parseInt($points.html());
+          var $activeElement = $parentElement.find('.active');
 
-			request.fail(function( jqXHR, textStatus ) {
-				
-				if(jqXHR.status == 401) {
+          $points.html(noPoints-1);
+          $activeElement.removeClass('active');
+        } else {
 
-					window.location.href = points.baseUrl+'/login';
+          //alert( "There was a problem with your request.");
+        }
+      });
 
-				} else {
+      request.fail(function( jqXHR, textStatus ) {
 
-					//alert( "There was a problem with your request.");
-				}
-			});
-		}
-	};
+        if(jqXHR.status == 401) {
 
-	points.init();
+          window.location.href = points.baseUrl+'/login';
+
+        } else {
+
+          //alert( "There was a problem with your request.");
+        }
+      });
+    }
+  };
+
+  points.init();
 
 })();

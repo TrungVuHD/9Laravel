@@ -1,150 +1,150 @@
 (function () {
-	
-	'use strict';
 
-	var fileUploads = {
-		images: [],
-		init: function () {
+  'use strict';
 
-			this.enableCSRFToken()
-			this.cacheDom();
-			this.bindEvents();
-			this.enableFileDrop();
-		},
-		enableCSRFToken: function () {
-			
-			$.ajaxSetup({
-			    headers: {
-			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			    }
-			});
-		},
-		cacheDom: function () {
+  var fileUploads = {
+    images: [],
+    init: function () {
 
-			this.$uploadModal = $("#upload-modal");
-			this.$setTitleModal = $("#set-title-modal");
-			this.$pickSectionModal = $("#pick-section-modal");
-			this.$showAtrributeInput = $("#attribbute-input-shown");
-			this.$attributeInput = $(".attribute-form-group");
-			this.$uploadBtn = $("#upload-post-btn");
-			this.$imagePreview = $("#set-title-image-preview");
-			this.baseUrl = $("#base-url").val();
+      this.enableCSRFToken()
+      this.cacheDom();
+      this.bindEvents();
+      this.enableFileDrop();
+    },
+    enableCSRFToken: function () {
 
-			this.$validateSetTitle = $(".validate-set-post");
-			this.$postTitle = $("#upload-post-description");
-		},
-		bindEvents: function () {
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+    },
+    cacheDom: function () {
 
-			this.$showAtrributeInput.on('change', this, this.toggleAtribbute);
-			this.$uploadBtn.on('click', $.proxy(this.uploadFiles, this));
-			this.$validateSetTitle.on('click', this, this.validateSetTitleModal);
-		},
-		validateSetTitleModal: function (event) {
+      this.$uploadModal = $("#upload-modal");
+      this.$setTitleModal = $("#set-title-modal");
+      this.$pickSectionModal = $("#pick-section-modal");
+      this.$showAtrributeInput = $("#attribbute-input-shown");
+      this.$attributeInput = $(".attribute-form-group");
+      this.$uploadBtn = $("#upload-post-btn");
+      this.$imagePreview = $("#set-title-image-preview");
+      this.baseUrl = $("#base-url").val();
 
-			var self = event.data;
+      this.$validateSetTitle = $(".validate-set-post");
+      this.$postTitle = $("#upload-post-description");
+    },
+    bindEvents: function () {
 
-			if( self.$postTitle.val() == "" ){
-				alert('Please provide a title for your post');
-				self.$postTitle.focus();
-				event.preventDefault();
-				return false;
-			}
+      this.$showAtrributeInput.on('change', this, this.toggleAtribbute);
+      this.$uploadBtn.on('click', $.proxy(this.uploadFiles, this));
+      this.$validateSetTitle.on('click', this, this.validateSetTitleModal);
+    },
+    validateSetTitleModal: function (event) {
 
-			if( self.$imagePreview.attr('href') == self.baseUrl+"/img/logo.png" ) {
+      var self = event.data;
 
-				alert('You haven\'t chosen an image yet');
-				event.preventDefault();
-				return false;
-			} 
-		},
-		enableFileDrop: function () {
+      if( self.$postTitle.val() == "" ){
+        alert('Please provide a title for your post');
+        self.$postTitle.focus();
+        event.preventDefault();
+        return false;
+      }
 
-			var self = this;
-			var options = {iframe: {url: $("#upload-post-url").val()}};
-			var uploadPosts = new FileDrop('upload-post', options);
+      if( self.$imagePreview.attr('href') == self.baseUrl+"/img/logo.png" ) {
 
-			uploadPosts.multiple(false);
-			uploadPosts.event('send', function (files) {
+        alert('You haven\'t chosen an image yet');
+        event.preventDefault();
+        return false;
+      }
+    },
+    enableFileDrop: function () {
 
-				// navigate between modals 
-				self.$uploadModal.modal('hide');
-				self.$setTitleModal.modal('show');
+      var self = this;
+      var options = {iframe: {url: $("#upload-post-url").val()}};
+      var uploadPosts = new FileDrop('upload-post', options);
 
-				// preview the image 
-				files.images().each(function (file) {
-					file.readData(
-						function (uri) {
-							$("#set-title-image-preview").attr('src', uri); 
-						},
-						function (error) {
-							alert('Ph, noes! Cannot read your image.')
-						},
-						'uri'
-					);
-				});
+      uploadPosts.multiple(false);
+      uploadPosts.event('send', function (files) {
 
-				// cache the files object
-				self.files = files;
-			});
-		},
-		retrieveModalInput: function () {
+        // navigate between modals
+        self.$uploadModal.modal('hide');
+        self.$setTitleModal.modal('show');
 
-			var input = {
-				description: $("#upload-post-description").val(),
-				nsfw: $("#upload-nsfw-input").val(),
-				attribution: $("#post-attribute-input").val(),
-				category: $(".upload-post-category:checked").val(),
-				image: $("#set-title-image-preview").attr('src'),
-				url: $("#upload-post-url").val(),
-				notBase64Image: window.notBase64Image == false ? false : true,
-			};
+        // preview the image
+        files.images().each(function (file) {
+          file.readData(
+            function (uri) {
+              $("#set-title-image-preview").attr('src', uri);
+            },
+            function (error) {
+              alert('Ph, noes! Cannot read your image.')
+            },
+            'uri'
+          );
+        });
 
-			return input;
-		},
-		uploadFiles: function () {
+        // cache the files object
+        self.files = files;
+      });
+    },
+    retrieveModalInput: function () {
 
-			var input = this.retrieveModalInput();
-			var self = this;
+      var input = {
+        description: $("#upload-post-description").val(),
+        nsfw: $("#upload-nsfw-input").val(),
+        attribution: $("#post-attribute-input").val(),
+        category: $(".upload-post-category:checked").val(),
+        image: $("#set-title-image-preview").attr('src'),
+        url: $("#upload-post-url").val(),
+        notBase64Image: window.notBase64Image == false ? false : true,
+      };
 
-			if(input.category == undefined){
-				alert('Please select a category.');
-				return false;
-			}
+      return input;
+    },
+    uploadFiles: function () {
 
-			var request = $.ajax({
-				url: input.url,
-				method: "POST",
-				data: input,
-				dataType: 'json'
-			});
+      var input = this.retrieveModalInput();
+      var self = this;
 
-			request.done(function( data ) {
-				
-				self.$postTitle.val('');
-				self.$pickSectionModal.modal('hide');
-				
-				if(data.success == true) {
-					alert('Congratulations, you uploaded a post!');
-				} else {
-					alert("Error. Something went wrong with the file upload.");
-				}
-			});
+      if(input.category == undefined){
+        alert('Please select a category.');
+        return false;
+      }
 
-			request.fail(function( jqXHR, textStatus ) {
-				alert("Error. Something went wrong with the file upload.");
-			});
-		},
-		toggleAtribbute: function (event) {
+      var request = $.ajax({
+        url: input.url,
+        method: "POST",
+        data: input,
+        dataType: 'json'
+      });
 
-			var $self = event.data;
-			
-			if($(this).is(':checked')) {
-				$self.$attributeInput.removeClass('hidden');
-			} else {
-				$self.$attributeInput.addClass('hidden');
-			}
-		}
-	};
+      request.done(function( data ) {
 
-	fileUploads.init();
+        self.$postTitle.val('');
+        self.$pickSectionModal.modal('hide');
+
+        if(data.success == true) {
+          alert('Congratulations, you uploaded a post!');
+        } else {
+          alert("Error. Something went wrong with the file upload.");
+        }
+      });
+
+      request.fail(function( jqXHR, textStatus ) {
+        alert("Error. Something went wrong with the file upload.");
+      });
+    },
+    toggleAtribbute: function (event) {
+
+      var $self = event.data;
+
+      if($(this).is(':checked')) {
+        $self.$attributeInput.removeClass('hidden');
+      } else {
+        $self.$attributeInput.addClass('hidden');
+      }
+    }
+  };
+
+  fileUploads.init();
 })();
