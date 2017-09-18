@@ -13,7 +13,6 @@ class UpdateUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            
             $table->string('username', 255);
             $table->integer('show_nsfw');
             $table->string('show_upvote', 2);
@@ -35,7 +34,6 @@ class UpdateUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            
             $table->dropColumn('username');
             $table->dropColumn('show_nsfw');
             $table->dropColumn('show_upvote');
@@ -44,7 +42,7 @@ class UpdateUsersTable extends Migration
             $table->dropColumn('country');
             $table->dropColumn('birthday_year');
             $table->dropColumn('birthday_month');
-            $table->dropColumn('birthday_month');
+            $table->dropColumn('birthday_day');
             $table->dropColumn('description');
         });
     }

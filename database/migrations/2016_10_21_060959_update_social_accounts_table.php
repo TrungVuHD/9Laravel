@@ -27,8 +27,8 @@ class UpdateSocialAccountsTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            
+        Schema::table('social_accounts', function (Blueprint $table) {
+
             $table->dropColumn('user_id');
             $table->dropColumn('provider_user_id');
             $table->dropColumn('provider');
