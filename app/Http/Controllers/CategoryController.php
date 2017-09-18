@@ -45,12 +45,11 @@ class CategoryController extends Controller
             'image' => 'image',
         ]);
 
-        $category = new Category();
-        $category->title = $request->title;
-        $category->slug = str_slug($request->title);
-        $category->description = $request->description;
-        $category->published = $request->published;
-        $category->show_in_menu = $request->show_in_menu;
+        // add the processed slug variable to the request array
+        $slug = str_slug($request->title);
+        $request->request->add(['slug' => $slug]);
+
+        $category = new Category($request->all());
         $category->save();
 
         return redirect()
@@ -73,12 +72,12 @@ class CategoryController extends Controller
             'show_in_menu' => 'required|integer'
         ]);
 
+        // add the processed slug variable to the request array
+        $slug = str_slug($request->title);
+        $request->request->add(['slug' => $slug]);
+
         $category = $this->categoryRepository->getById($category_id);
-        $category->title = $request->title;
-        $category->slug = str_slug($request->title);
-        $category->description = $request->description;
-        $category->published = $request->published;
-        $category->show_in_menu = $request->show_in_menu;
+        $category->fill($request->all());
         $category->save();
 
         return redirect()
