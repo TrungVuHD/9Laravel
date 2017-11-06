@@ -33,23 +33,19 @@ class PostController extends Controller
 
     public function show($slug)
     {
-        $post = Post::where('slug', $slug)->firstOrFail();
-        $next_post = Post::where('id', '>', $post->id)->first();
-        $points = count($post->points) > 0 ? count($post->points) : 0;
-        $comments = Comment::where('post_id', $post->id)->where('parent_id', 0)->get();
-        $sub_comments = Comment::where('post_id', $post->id)->where('parent_id', '<>', 0);
+        $post = Post::slug($slug)->firstOrFail();
+        $next_post = Post::next($post->id)->first();
+        $comments = Comment::postComments($post->id)->get();
+        $sub_comments = Comment::postSubComments($post->id);
+        $no_points = count($post->points) > 0 ? count($post->points) : 0;
         $no_comments = $comments->count() + $sub_comments->get()->count();
-        $thumb_up = null;
+        $thumb_up = Auth::check() ? Point::thumbUp($post->id)->first() : null;
 
-        if (Auth::check()) {
-            $thumb_up = Point::where('post_id', $post->id)
-                ->where('user_id', Auth::user()->id)
-                ->first();
-        }
+        //dd($comments);
 
         $view_data = compact(
             'post',
-            'points',
+            'no_points',
             'thumb_up',
             'comments',
             'sub_comments',

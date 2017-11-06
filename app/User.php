@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'user_image'
     ];
 
     /**
@@ -41,13 +41,13 @@ class User extends Authenticatable
         return $this->hasMany(Point::class);
     }
 
-    public function socialAccounts() 
+    public function socialAccounts()
     {
-        
+
         return $this->hasMany(SocialAccount::class);
     }
 
-    public function reports() 
+    public function reports()
     {
 
         return $this->hasMany(Report::class);

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Comment extends Model
 {
@@ -23,5 +24,17 @@ class Comment extends Model
     public function post()
     {
         return $this->belongsTo(Post::class);
+    }
+
+    public function scopePostComments($query, $post_id)
+    {
+        return $query->where('post_id', $post_id)
+            ->where('parent_id', 0);
+    }
+
+    public function scopePostSubComments($query, $post_id)
+    {
+        return $query->where('post_id', $post_id)
+            ->where('parent_id', '<>', 0);
     }
 }

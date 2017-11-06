@@ -41,4 +41,14 @@ class Post extends Model
 
         return $this->hasMany(Report::class);
     }
+
+    public function scopeNext($query, $id)
+    {
+        return $query->where('id', '>', $id);
+    }
+
+    public function scopeSlug($query, $slug)
+    {
+        return $query->where('slug', $slug);
+    }
 }
