@@ -22,10 +22,12 @@ class CategoryController extends Controller
         return view('categories.index', compact('categories'));
     }
 
-    public function show(Request $request, $slug)
+    public function show($slug)
     {
         $category_id = $this->categoryRepository->getIdBySlug($slug);
-        $posts = Post::where('cat_id', $category_id)->orderBy('id', 'DESC')->paginate(20);
+        $posts = Post::where('cat_id', $category_id)
+            ->orderBy('id', 'DESC')
+            ->paginate(20);
 
         return view('9gag.index', compact('category_id', 'posts'));
     }
@@ -57,7 +59,7 @@ class CategoryController extends Controller
             ->with('status', 'The category has been saved');
     }
 
-    public function edit(Request $request, $category_id)
+    public function edit($category_id)
     {
         $category = $this->categoryRepository->getById($category_id);
         return view('categories.create', compact('category'));
@@ -85,10 +87,9 @@ class CategoryController extends Controller
             ->with('status', 'The category has been updated');
     }
 
-    public function destroy(Request $request, $category_id)
+    public function destroy($category_id)
     {
-        $category = $this->categoryRepository->getById($category_id);
-        $this->categoryRepository->destroy($category);
+        $this->categoryRepository->destroy($category_id);
 
         return redirect()
             ->back()

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Http\Requests;
 use App\CommentPoint;
 use App\Comment;
 
@@ -22,13 +21,10 @@ class CommentController extends Controller
             'post_id' => 'required|integer',
             'parent_id' => 'integer'
         ]);
-
-        $comment = new Comment();
-        $comment->comment = $request->comment;
-        $comment->post_id = $request->post_id;
-        $comment->user_id = Auth::user()->id;
-        $comment->parent_id = isset($request->parent_id) ? $request->parent_id : 0;
-
+        // add the processed slug variable to the request array
+        $parent_id = (int) $request->parent_id;
+        $request->request->add(['parent_id' => $parent_id]);
+        $comment = new Comment($request->all());
         $comment->save();
 
         return redirect()
@@ -48,7 +44,7 @@ class CommentController extends Controller
             $point->user_id = Auth::user()->id;
 
             $point->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return ['success' => false];
         }
 
@@ -67,7 +63,7 @@ class CommentController extends Controller
                 ->first();
 
             $point->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return ['success' => false];
         }
 

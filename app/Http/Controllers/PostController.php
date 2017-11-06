@@ -7,8 +7,6 @@ use grandt\ResizeGif\ResizeGif;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Category;
 use App\Comment;
 use App\Post;
 use App\Point;
@@ -49,7 +47,17 @@ class PostController extends Controller
                 ->first();
         }
 
-        return view('9gag.show', compact('post', 'points', 'thumb_up', 'comments', 'sub_comments', 'no_comments', 'next_post'));
+        $view_data = compact(
+            'post',
+            'points',
+            'thumb_up',
+            'comments',
+            'sub_comments',
+            'no_comments',
+            'next_post'
+        );
+
+        return view('9gag.show', $view_data);
     }
 
     public function store(Request $request)
@@ -94,7 +102,7 @@ class PostController extends Controller
             }
 
             $post->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return ['success' => false];
         }
 
@@ -272,7 +280,7 @@ class PostController extends Controller
                 $post->no_auth = !$post->auth;
                 $post->isnt_gif = !$post->is_gif;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $data['success'] = false;
         }
 
@@ -362,7 +370,7 @@ class PostController extends Controller
             }
 
             $data['posts'] = $posts;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $data['success'] = false;
         }
 
@@ -416,7 +424,7 @@ class PostController extends Controller
             }
 
             $data['posts'] = $posts;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $data['success'] = false;
         }
 
