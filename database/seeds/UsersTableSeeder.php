@@ -39,5 +39,19 @@ class UsersTableSeeder extends Seeder
             'birthday_day' => 1,
             'description' => 'A regular Jane Doe',
         ]);
+        DB::table('users')->insert([
+            'name' => 'Florian Stancioiu',
+            'email' => 'florian@superbrackets.com',
+            'password' => bcrypt('secret'),
+            'username' => 'florian',
+            'show_nsfw' => true,
+            'show_upvote' => true,
+            'gender' => 1,
+            'country' => 'Romania',
+            'birthday_year' => 1990,
+            'birthday_month' => 1,
+            'birthday_day' => 1,
+            'description' => 'A not so regular developer',
+        ]);
     }
 }
