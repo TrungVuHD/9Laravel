@@ -11,6 +11,12 @@ class Comment extends Model
        'comment', 'post_id', 'user_id', 'parent_id'
     ];
 
+    public function subcomments()
+    {
+        return $this->hasMany(Comment::class, 'parent_id', 'id');
+    }
+
+
     public function points()
     {
         return $this->hasMany(CommentPoint::class);
@@ -29,12 +35,14 @@ class Comment extends Model
     public function scopePostComments($query, $post_id)
     {
         return $query->where('post_id', $post_id)
-            ->where('parent_id', 0);
+            ->where('parent_id', 0)
+            ->where('user_id', '<>', 0);
     }
 
     public function scopePostSubComments($query, $post_id)
     {
         return $query->where('post_id', $post_id)
-            ->where('parent_id', '<>', 0);
+            ->where('parent_id', '<>', 0)
+            ->where('user_id', '<>', 0);
     }
 }

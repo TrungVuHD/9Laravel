@@ -25,6 +25,7 @@ class CommentController extends Controller
         $parent_id = (int) $request->parent_id;
         $request->request->add(['parent_id' => $parent_id]);
         $comment = new Comment($request->all());
+        $comment->user_id  = Auth::id();
         $comment->save();
 
         return redirect()

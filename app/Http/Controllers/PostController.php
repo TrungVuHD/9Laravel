@@ -35,7 +35,7 @@ class PostController extends Controller
     {
         $post = Post::slug($slug)->firstOrFail();
         $next_post = Post::next($post->id)->first();
-        $comments = Comment::postComments($post->id)->get();
+        $comments = Comment::postComments($post->id)->with('subcomments')->get();
         $sub_comments = Comment::postSubComments($post->id);
         $no_points = count($post->points) > 0 ? count($post->points) : 0;
         $no_comments = $comments->count() + $sub_comments->get()->count();
