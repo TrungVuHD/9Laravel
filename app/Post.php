@@ -11,6 +11,9 @@ use App\User;
 
 class Post extends Model
 {
+    protected $fillable = [
+        'title', 'attribution', 'cat_id'
+    ];
 
     public function points()
     {

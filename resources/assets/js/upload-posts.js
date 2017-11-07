@@ -81,10 +81,10 @@
     },
     retrieveModalInput: function () {
       return {
-        description: $("#upload-post-description").val(),
+        title: $("#upload-post-description").val(),
         nsfw: $("#upload-nsfw-input").val(),
         attribution: $("#post-attribute-input").val(),
-        category: $(".upload-post-category:checked").val(),
+        cat_id: $(".upload-post-category:checked").val(),
         image: $("#set-title-image-preview").attr('src'),
         url: $("#upload-post-url").val(),
         notBase64Image: window.notBase64Image !== false,

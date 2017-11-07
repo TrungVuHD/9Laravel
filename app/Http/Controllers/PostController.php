@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostStore;
 use Intervention\Image\ImageManagerStatic as Image;
 use grandt\ResizeGif\ResizeGif;
 use Illuminate\Support\Facades\Auth;
@@ -41,8 +42,6 @@ class PostController extends Controller
         $no_comments = $comments->count() + $sub_comments->get()->count();
         $thumb_up = Auth::check() ? Point::thumbUp($post->id)->first() : null;
 
-        //dd($comments);
-
         $view_data = compact(
             'post',
             'no_points',
@@ -56,27 +55,18 @@ class PostController extends Controller
         return view('9gag.show', $view_data);
     }
 
-    public function store(Request $request)
+    public function store(PostStore $request)
     {
-        $this->validate($request, [
-            'description' => 'required|max:160',
-            'category' => 'required|integer',
-            'image' => 'required'
-        ]);
-
         try {
             $image_extension = $this->getImageExtension($request->image, $request->notBase64Image);
             $image_dir = base_path().DS.'public'.DS.'img'.DS.'posts'.DS;
             $image_file = str_random(20).$image_extension;
             $image_location = $image_dir.$image_file;
 
-            $post = new Post();
-            $post->title = $request->description;
+            $post = new Post($request->all());
             $post->image = $image_file;
             $post->slug = str_slug($request->description).'-'.str_random(10);
-            $post->attribution = $request->attribution;
             $post->nsfw = isset($request->nsfw) && $request->nsfw == 'on' ? 1 : 0;
-            $post->cat_id = $request->category;
             $post->user_id = Auth::user()->id;
 
             $this->createDirectories($image_dir);
