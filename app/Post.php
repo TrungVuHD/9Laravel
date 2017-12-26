@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    const IMG_DIR = 'posts';
+
     /**
      * The array of fillable properties
      *
