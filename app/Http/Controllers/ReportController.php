@@ -13,12 +13,10 @@ class ReportController extends Controller
 {
     public function store(Request $request)
     {
-
         $validation = Validator::make($request->all(), [
             'post_id' => 'required|integer',
             'reason' => 'required|integer'
         ]);
-
 
         if ($validation->fails()) {
             return ['success' => false];
