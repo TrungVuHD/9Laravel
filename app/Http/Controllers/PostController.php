@@ -8,12 +8,23 @@ use grandt\ResizeGif\ResizeGif;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Http\Services\PostService;
+use App\Http\Repositories\PostRepository;
 use App\Comment;
 use App\Post;
 use App\Point;
 
 class PostController extends Controller
 {
+    protected $repository;
+    protected $service;
+
+    public function __construct(PostRepository $repository, PostService $service)
+    {
+        $this->repository = $repository;
+        $this->service = $service;
+    }
+
     public function index(Request $request)
     {
         $posts = $this->retrieveHotAjax(0, 20)['posts'];
@@ -38,8 +49,8 @@ class PostController extends Controller
         $next_post = Post::next($post->id)->first();
         $comments = Comment::postComments($post->id)->with('subcomments')->get();
         $sub_comments = Comment::postSubComments($post->id);
-        $no_points = count($post->points) > 0 ? count($post->points) : 0;
-        $no_comments = $comments->count() + $sub_comments->get()->count();
+        $no_points = $post->noPoints();
+        $no_comments = $this->service->noComments($comments, $sub_comments);
         $thumb_up = Auth::check() ? Point::thumbUp($post->id)->first() : null;
 
         $view_data = compact(
@@ -57,161 +68,9 @@ class PostController extends Controller
 
     public function store(PostStore $request)
     {
-        try {
-            $image_extension = $this->getImageExtension($request->image, $request->notBase64Image);
-            $image_dir = base_path().DS.'public'.DS.'img'.DS.'posts'.DS;
-            $image_file = str_random(20).$image_extension;
-            $image_location = $image_dir.$image_file;
-
-            $post = new Post($request->all());
-            $post->image = $image_file;
-            $post->slug = str_slug($request->description).'-'.str_random(10);
-            $post->nsfw = isset($request->nsfw) && $request->nsfw == 'on' ? 1 : 0;
-            $post->user_id = Auth::user()->id;
-
-            $this->createDirectories($image_dir);
-
-            if ($request->notBase64Image) {
-                copy($request->image, $image_location);
-            } else {
-                $this->base64ToImage($request->image, $image_location);
-            }
-
-            $post->is_img_huge = $this->checkImageHeight($image_location);
-
-            if ($image_extension != ".gif") {
-                $post->is_gif = 0;
-                $this->createImageVersions($image_dir, $image_file);
-            } else {
-                $post->is_gif = 1;
-                $this->createGIFImageVersions($image_dir, $image_file);
-            }
-
-            $post->save();
-        } catch (\Exception $e) {
-            return ['success' => false];
-        }
-
-        return ['success' => true];
-    }
-
-    protected function createDirectories($dir)
-    {
-        if (!file_exists($dir)) {
-            mkdir($dir);
-        }
-
-        if (!file_exists($dir.DS.'460')) {
-            mkdir($dir.DS.'460');
-        }
-
-        if (!file_exists($dir.DS.'300')) {
-            mkdir($dir.DS.'300');
-        }
-
-        $tmp_dir = base_path().DS.'tmp';
-        if (!file_exists($tmp_dir)) {
-            mkdir($tmp_dir);
-        }
-    }
-
-    protected function checkImageHeight($img)
-    {
-        $img_height = Image::make($img)->height();
-        if ($img_height > 900) {
-            return 1;
-        }
-        return 0;
-    }
-
-    protected function createGIFImageVersions($dir, $file)
-    {
-        $png_file = substr($file, 0, strpos($file, '.gif'));
-        $png_file .= '.png';
-
-        // big image - gif
-        ResizeGif::ResizeToWidth($dir.$file, $dir.$file.'_temp', 600);
-
-        rename($dir.$file.'_temp', $dir.$file);
-
-        // medium image - gif
-        ResizeGif::ResizeToWidth($dir.$file, $dir.DS.'460'.DS.$file, 460);
-
-        // medium image - png
-        $img = Image::make($dir.$file);
-        $img->resize(460, null, function ($constraint) {
-            $constraint->aspectRatio();
-        });
-        $img->save($dir.DS.'460'.DS.$png_file, 70);
-
-        // small image - png
-        $img->resizeCanvas(300, 160, 'center');
-        $img->save($dir.DS.'300'.DS.$png_file, 70);
-    }
-
-    protected function createImageVersions($dir, $file)
-    {
-        // big image
-        $img = Image::make($dir.$file);
-        $img->resize(600, null, function ($constraint) {
-            $constraint->aspectRatio();
-        });
-        $img->save($dir.$file, 70);
-        $img->save($dir.$file, 70);
-
-        // medium image
-        $img->resize(460, null, function ($constraint) {
-            $constraint->aspectRatio();
-        });
-        $img->save($dir.DS.'460'.DS.$file, 70);
-
-        // small image
-        $img->resizeCanvas(300, 160, 'center');
-        $img->save($dir.DS.'300'.DS.$file, 70);
-    }
-
-    protected function getImageExtension($base64_string, $isnt_base_64)
-    {
-        if ($isnt_base_64) {
-            $tmp_dir = base_path().DS.'tmp';
-            $tmp_file = str_random(20);
-            $tmp_location = $tmp_dir.DS.$tmp_file;
-
-            copy($base64_string, $tmp_location);
-            $mime_type = mime_content_type($tmp_location);
-            unlink($tmp_location);
-        } else {
-            $data = explode(',', $base64_string);
-            $imgdata = base64_decode($data[1]);
-            $f = finfo_open();
-            $mime_type = finfo_buffer($f, $imgdata, FILEINFO_MIME_TYPE);
-        }
-
-        switch ($mime_type) {
-            case 'image/gif':
-                $extension = '.gif';
-                break;
-            case 'image/jpeg':
-                $extension = '.jpeg';
-                break;
-            case 'image/png':
-                $extension = '.png';
-                break;
-            default:
-                $extension = '.jpeg';
-        }
-        return $extension;
-    }
-
-    protected function base64ToImage($base64_string, $output_file)
-    {
-
-        $file = fopen($output_file, "wb");
-        $data = explode(',', $base64_string);
-        fwrite($file, base64_decode($data[1]));
-        fclose($file);
-
-        return $output_file;
+        $image = $this->service->saveImage($request);
+        $data = $request->all() + [ 'image' => $image ];
+        $this->repository->save($data);
     }
 
     public function search(Request $request)
