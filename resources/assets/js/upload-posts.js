@@ -82,27 +82,26 @@
     retrieveModalInput: function () {
       return {
         title: $("#upload-post-description").val(),
-        nsfw: $("#upload-nsfw-input").val(),
+        nsfw: $("#upload-nsfw-input").val() === 'on',
         attribution: $("#post-attribute-input").val(),
         cat_id: $(".upload-post-category:checked").val(),
         image: $("#set-title-image-preview").attr('src'),
-        url: $("#upload-post-url").val(),
-        notBase64Image: window.notBase64Image !== false,
+        base_64: !window.notBase64Image,
       };
     },
     uploadFiles: function () {
-      var input = this.retrieveModalInput();
+      var data = this.retrieveModalInput();
       var self = this;
 
-      if(input.category === undefined){
+      if(data.cat_id === undefined){
         alert('Please select a category.');
         return false;
       }
 
       var request = $.ajax({
-        url: input.url,
+        url: window.Laravel.baseUrl + '/posts',
         method: "POST",
-        data: input,
+        data: data,
         dataType: 'json'
       });
 
