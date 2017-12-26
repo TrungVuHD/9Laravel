@@ -26,6 +26,12 @@
     <title>9Laravel - Go Code Something Awesome</title>
     @endif
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
+    <script>
+      window.Laravel = {!! json_encode([
+          'csrfToken' => csrf_token(),
+          'baseUrl' => url('/')
+        ]) !!};
+    </script>
 </head>
 <body>
     <input type="hidden" id="base-url" value="{{ url('/') }}">
@@ -36,11 +42,11 @@
     @include('includes.my-profile-header')
     <div class="container page-container">
         <div class="row">
-            
-            <div id="content" class="col-sm-12 col-sm-offset-3">
+
+            <div id="content" class="col-sm-9">
                 @yield('content')
             </div>
-            <div class="col-sm-6 col-sm-offset-2">
+            <div class="col-sm-3">
                 @yield('sidebar')
             </div>
         </div>
