@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
-
 Auth::routes();
 
 Route::get('/logout', function () {
@@ -24,12 +13,16 @@ Route::get('/facebook/callback', 'SocialAuthController@facebookCallback');
 Route::get('/google/redirect', 'SocialAuthController@googleRedirect');
 Route::get('/google/callback', 'SocialAuthController@googleCallback');
 
+
 Route::get('/', 'PostController@index');
-Route::get('/gag/{slug}', 'PostController@show');
 Route::get('/trending', 'PostController@trendingIndex');
 Route::get('/fresh', 'PostController@freshIndex');
-Route::post('/upload-post', 'PostController@store');
-Route::get('/search', 'PostController@searchIndex');
+
+Route::group(['prefix' => 'posts'], function () {
+    Route::get('/search', 'PostController@searchIndex');
+    Route::post('/', 'PostController@store');
+    Route::get('/{slug}', 'PostController@show');
+});
 
 Route::group(['prefix' => '/my-profile'], function () {
 
@@ -53,7 +46,7 @@ Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
     Route::delete('/network/facebook', 'SettingController@destroyFacebook');
     Route::delete('/network/google', 'SettingController@destroyGoogle');
 });
-
+/*
 Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {
 
     Route::get('', 'CategoryController@index');
@@ -62,7 +55,7 @@ Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {
     Route::get('/{category}/edit', 'CategoryController@edit');
     Route::put('/{category}', 'CategoryController@update');
     Route::delete('/{category}', 'CategoryController@destroy');
-});
+});*/
 
 Route::group(['prefix' => 'ajax'], function () {
 
@@ -87,5 +80,5 @@ Route::group(['prefix' => 'ajax'], function () {
 });
 
 Route::post('/comments', 'CommentController@store');
-Route::get('{category}', 'CategoryController@show');
+//Route::get('{category}', 'CategoryController@show');
 

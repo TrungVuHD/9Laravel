@@ -1,8 +1,7 @@
 <?php
-
+/*
 namespace App\Http\Controllers;
 
-use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 use App\Category;
 use App\Post;
@@ -95,4 +94,4 @@ class CategoryController extends Controller
             ->back()
             ->with('status', 'The category has been deleted.');
     }
-}
+}*/
