@@ -6,9 +6,8 @@ use Intervention\Image\Image;
 use grandt\ResizeGif\ResizeGif;
 use Illuminate\Support\Facades\Storage;
 
-class ImageService
+class ImageService extends Service
 {
-
     /**
      * Store a regular image file in the filesystem
      *
@@ -87,13 +86,11 @@ class ImageService
      */
     public static function extension($file)
     {
-        $tmp_dir = sys_get_temp_dir();
-        $tmp_file = str_random(20);
-        $tmp_location = $tmp_dir.DS.$tmp_file;
+        $tmp_file_location = sys_get_temp_dir() . self::DS . str_random(20);
 
-        copy($file, $tmp_location);
-        $mime_type = mime_content_type($tmp_location);
-        unlink($tmp_location);
+        copy($file, $tmp_file_location);
+        $mime_type = mime_content_type($tmp_file_location);
+        unlink($tmp_file_location);
 
         return self::extensionFromMime($mime_type);
     }
@@ -108,9 +105,9 @@ class ImageService
     {
         $data = explode(',', $base64);
         $image_data = base64_decode($data[1]);
-        $handler = finfo_open();
-        $mime_type = finfo_buffer($handler, $image_data, FILEINFO_MIME_TYPE);
-        finfo_close($handler);
+        $finfo_handle = finfo_open();
+        $mime_type = finfo_buffer($finfo_handle, $image_data, FILEINFO_MIME_TYPE);
+        finfo_close($finfo_handle);
 
         return self::extensionFromMime($mime_type);
     }
@@ -128,11 +125,6 @@ class ImageService
         }
 
         return false;
-    }
-
-    public static function base64ToImage($base64_string, $output_file)
-    {
-
     }
 
     public static function checkImageHeight($img)

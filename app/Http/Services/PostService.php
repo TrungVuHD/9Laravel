@@ -5,7 +5,7 @@ namespace App\Http\Services;
 use App\Comment;
 use App\Post;
 
-class PostService
+class PostService extends Service
 {
     /**
      * Return the number of comments
