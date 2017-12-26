@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Storage;
 class ImageService extends Service
 {
     /**
+     * The constant containing all image widths that should be created
+     */
+    const SIZES = [
+        600,
+        400,
+        100
+    ];
+
+    /**
      * Store a regular image file in the filesystem
      *
      * @param $image
@@ -17,7 +26,7 @@ class ImageService extends Service
      */
     public static function storeImageFile($image, $directory)
     {
-        $extension = self::extension($image);
+        $extension = self::fileExtension($image);
 
         if ($extension === false) {
             return [];
@@ -65,14 +74,14 @@ class ImageService extends Service
     {
         $data = [];
         $data['location'] = $image_location;
-        $data['tall_image'] = self::checkImageHeight($image_location);
+        $data['is_tall'] = self::isTall($image_location);
 
         if ($extension === ".gif") {
             $data['gif_image'] = true;
-            self::createGIFImageVersions($image_dir, $image_file);
+            self::multipleGifSizes($image_location, self::SIZES);
         } else {
             $data['gif_image'] = false;
-            self::createImageVersions($image_dir, $image_file);
+            self::multipleSizes($image_location, self::SIZES);
         }
 
         return $data;
@@ -84,7 +93,7 @@ class ImageService extends Service
      * @param $file
      * @return bool|mixed
      */
-    public static function extension($file)
+    public static function fileExtension($file)
     {
         $tmp_file_location = sys_get_temp_dir() . self::DS . str_random(20);
 
@@ -127,59 +136,73 @@ class ImageService extends Service
         return false;
     }
 
-    public static function checkImageHeight($img)
+    /**
+     * Check to see if the image is tall
+     *
+     * @param $location
+     * @return bool
+     */
+    public static function isTall($location)
     {
         $image = new Image();
-        $img_height = $image->make($img)->height();
-        if ($img_height > 900) {
-            return 1;
-        }
-        return 0;
+        $img = $image->make($location);
+        $height = $img->height();
+        $width = $img->width();
+
+        return ($height / $width) > 3;
     }
 
-    public static function createGIFImageVersions($dir, $file)
+    /**
+     * Generate different GIF and non-GIF image sizes
+     *
+     * @param string $path
+     * @param array $sizes
+     * @return array
+     */
+    public static function multipleGifSizes(string $path, array $sizes)
     {
-        $png_file = substr($file, 0, strpos($file, '.gif'));
-        $png_file .= '.png';
+        $dir = dirname($path);
+        $file = basename($path);
+        $versions = [];
 
-        // big image - gif
-        ResizeGif::ResizeToWidth($dir.$file, $dir.$file.'_temp', 600);
-
-        rename($dir.$file.'_temp', $dir.$file);
-
-        // medium image - gif
-        ResizeGif::ResizeToWidth($dir.$file, $dir.DS.'460'.DS.$file, 460);
-
-        // medium image - png
-        $img = Image::make($dir.$file);
-        $img->resize(460, null, function ($constraint) {
-            $constraint->aspectRatio();
+        array_walk($sizes, function ($size) use ($path, $dir, $file, $versions) {
+            $destination = self::DS . $size . DS . $file;
+            ResizeGif::ResizeToWidth($path, $destination, (int)$size);
+            $versions[] = [
+                'type' => 'gif',
+                'size' => $size
+            ];
         });
-        $img->save($dir.DS.'460'.DS.$png_file, 70);
 
-        // small image - png
-        $img->resizeCanvas(300, 160, 'center');
-        $img->save($dir.DS.'300'.DS.$png_file, 70);
+        return $versions + self::multipleSizes($path, $sizes);
     }
 
-    public static function createImageVersions($dir, $file)
+    /**
+     * Generate different image sizes
+     *
+     * @param string $path
+     * @param array $sizes
+     * @return array
+     */
+    public static function multipleSizes(string $path, array $sizes)
     {
-        // big image
-        $img = Image::make($dir.$file);
-        $img->resize(600, null, function ($constraint) {
-            $constraint->aspectRatio();
-        });
-        $img->save($dir.$file, 70);
-        $img->save($dir.$file, 70);
+        $dir = dirname($path);
+        $file = basename($path);
+        $image = new Image();
+        $versions = [];
 
-        // medium image
-        $img->resize(460, null, function ($constraint) {
-            $constraint->aspectRatio();
+        array_walk($sizes, function ($size) use ($path, $dir, $file, $versions, $image) {
+            $img = $image->make($path);
+            $img->resize((int)$size, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $img->save(self::DS . $size . DS . $file, 70);
+            $versions[] = [
+                'type' => 'non-gif',
+                'size' => $size
+            ];
         });
-        $img->save($dir.DS.'460'.DS.$file, 70);
 
-        // small image
-        $img->resizeCanvas(300, 160, 'center');
-        $img->save($dir.DS.'300'.DS.$file, 70);
+        return $versions;
     }
 }
