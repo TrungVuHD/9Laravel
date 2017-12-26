@@ -2,7 +2,8 @@
 
 namespace App\Http\Services;
 
-class Service {
+class Service
+{
     /**
      * The directory separator constant
      */

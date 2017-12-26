@@ -7,25 +7,20 @@ use Illuminate\Support\Facades\DB;
 use App\Post;
 use App\Point;
 
-class PostRepository {
+class PostRepository
+{
     /**
-     *  Persist a post in the database
+     * Persist a post in the database
      *
      * @param array $data
-     * @return bool
+     * @return Post
      */
     public function save(array $data)
     {
-        $nsfw = (int) $data['nsfw'] === 'on';
-        $description = $data['description'];
-        $slug = str_slug($description).'-'.str_random(10);
-
         $post = new Post($data);
-        $post->slug = $slug;
-        $post->nsfw = $nsfw;
-        $post->user_id = Auth::id();
+        $post->save();
 
-        return $post->save();
+        return $post;
     }
 
 

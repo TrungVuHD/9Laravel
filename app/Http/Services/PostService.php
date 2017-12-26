@@ -24,7 +24,7 @@ class PostService extends Service
      */
     public function storeImage($request)
     {
-        $is_base_64 = !$request->notBase64Image;
+        $is_base_64 = (bool)$request->base_64;
         $dir = Post::IMG_DIR;
         $this->createDirs();
 
@@ -42,15 +42,15 @@ class PostService extends Service
     {
         clearstatcache();
 
-        $parent_dir = storage_path(Post::IMG_DIR);
+        $parent_dir = storage_path('app' . self::DS . 'public' . self::DS . Post::IMG_DIR);
 
-        $dirs = [ 'original', '600', '460', '300' ];
+        $dirs = ImageService::SIZES;
 
         array_walk($dirs, function ($dir) use ($parent_dir) {
             $path = $parent_dir . DIRECTORY_SEPARATOR . $dir;
 
             if (!file_exists($path)) {
-                mkdir($path, 755, true);
+                mkdir($path, 0755, true);
             }
         });
     }

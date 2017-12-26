@@ -15,6 +15,10 @@ class Post extends Model
      */
     protected $fillable = [
         'title',
+        'nsfw',
+        'image',
+        'tall_image',
+        'gif',
         'attribution',
         'cat_id'
     ];

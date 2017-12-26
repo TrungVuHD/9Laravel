@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostStore;
@@ -25,7 +26,6 @@ class PostController extends Controller
     public function index()
     {
         $posts = $this->repository->retrieveHotAjax(0, 20);
-        //dd($posts->toArray());
         return view('9gag.index', ['posts_category' =>'hot', 'posts' => $posts]);
     }
 
@@ -66,14 +66,18 @@ class PostController extends Controller
 
     public function store(PostStore $request)
     {
-        $image = $this->service->saveImage($request);
-        $data = $request->all() + [ 'image' => $image ];
-        $this->repository->save($data);
+        $image = $this->service->storeImage($request);
+        $data = array_merge($request->all(), $image);
+        $data['slug'] = str_slug($data['title']).'-'.str_random(10);
+        $data['user_id'] = Auth::id();
+
+        $post = $this->repository->save($data);
+
+        return new PostResource($post);
     }
 
     public function search(Request $request)
     {
-
         $this->validate($request, [
             'keyword' => 'required'
         ]);
@@ -89,7 +93,6 @@ class PostController extends Controller
 
     public function searchIndex(Request $request)
     {
-
         $query = $request->query();
         $query = $query['query'];
 

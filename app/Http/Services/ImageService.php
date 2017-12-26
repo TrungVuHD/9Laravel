@@ -2,9 +2,9 @@
 
 namespace App\Http\Services;
 
-use Intervention\Image\Image;
 use grandt\ResizeGif\ResizeGif;
 use Illuminate\Support\Facades\Storage;
+use Image;
 
 class ImageService extends Service
 {
@@ -54,13 +54,20 @@ class ImageService extends Service
         }
 
         // create the base64 string to be stored
+        $file_name = str_random(20) . "{$extension}";
+        $file_location = $directory . DIRECTORY_SEPARATOR . $file_name;
         $image_data = explode(',', $image);
         $base_64_data = base64_decode($image_data[1]);
 
         // store the string
-        $image_location = Storage::putFile($directory, $base_64_data);
+        $saved = Storage::put($file_location, $base_64_data);
 
-        return self::createReturnData($image_location, $extension);
+        if ($saved) {
+            $absolute_path = storage_path('app' . self::DS . 'public' . self::DS . $file_location);
+            return self::createReturnData($absolute_path, $extension);
+        }
+
+        return [];
     }
 
     /**
@@ -74,13 +81,14 @@ class ImageService extends Service
     {
         $data = [];
         $data['location'] = $image_location;
-        $data['is_tall'] = self::isTall($image_location);
+        $data['image'] = $data['basename'] = basename($image_location);
+        $data['tall_image'] = self::isTall($image_location);
 
         if ($extension === ".gif") {
-            $data['gif_image'] = true;
+            $data['gif'] = true;
             self::multipleGifSizes($image_location, self::SIZES);
         } else {
-            $data['gif_image'] = false;
+            $data['gif'] = false;
             self::multipleSizes($image_location, self::SIZES);
         }
 
@@ -129,7 +137,7 @@ class ImageService extends Service
      */
     public static function extensionFromMime($mime)
     {
-        if (strpos($mime, 'image')) {
+        if (strpos($mime, 'image') !== -1) {
             return str_replace('image/', '.', $mime);
         }
 
@@ -144,8 +152,7 @@ class ImageService extends Service
      */
     public static function isTall($location)
     {
-        $image = new Image();
-        $img = $image->make($location);
+        $img = Image::make($location);
         $height = $img->height();
         $width = $img->width();
 
@@ -188,15 +195,15 @@ class ImageService extends Service
     {
         $dir = dirname($path);
         $file = basename($path);
-        $image = new Image();
         $versions = [];
 
-        array_walk($sizes, function ($size) use ($path, $dir, $file, $versions, $image) {
-            $img = $image->make($path);
+        array_walk($sizes, function ($size) use ($path, $dir, $file, $versions) {
+            $store_path = $dir . self::DS . $size . self::DS . $file;
+            $img = Image::make($path);
             $img->resize((int)$size, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            $img->save(self::DS . $size . DS . $file, 70);
+            $img->save($store_path, 70);
             $versions[] = [
                 'type' => 'non-gif',
                 'size' => $size
