@@ -25,20 +25,26 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = $this->repository->retrieveHotAjax(0, 20);
-        return view('9gag.index', ['posts_category' =>'hot', 'posts' => $posts]);
+        $posts = Post::hot()->paginate(20);
+        $category = 'hot';
+
+        return view('9gag.index', compact('category', 'posts'));
     }
 
     public function trendingIndex()
     {
-        $posts = $this->repository->retrieveTrendingAjax(0, 20)['posts'];
-        return view('9gag.index', ['posts_category' =>'trending', 'posts' => $posts]);
+        $posts = Post::trending()->paginate(20);
+        $category = 'trending';
+
+        return view('9gag.index', compact('category', 'posts'));
     }
 
     public function freshIndex()
     {
-        $posts = $this->repository->retrieveFreshAjax(0, 20)['posts'];
-        return view('9gag.index', ['posts_category' =>'fresh', 'posts' => $posts]);
+        $posts = Post::new()->paginate(20);
+        $category = 'fresh';
+
+        return view('9gag.index', compact('category', 'posts'));
     }
 
     public function show($slug)

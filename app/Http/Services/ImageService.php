@@ -14,7 +14,7 @@ class ImageService extends Service
     const SIZES = [
         600,
         400,
-        100
+        200
     ];
 
     /**

@@ -26,7 +26,7 @@ class PostService extends Service
     {
         $is_base_64 = (bool)$request->base_64;
         $dir = Post::IMG_DIR;
-        $this->createDirs();
+        self::createDirs();
 
         if ($is_base_64) {
             return ImageService::storeBase64Image($request->image, $dir);
@@ -38,7 +38,7 @@ class PostService extends Service
     /**
      * Create Post directories
      */
-    public function createDirs()
+    public static function createDirs()
     {
         clearstatcache();
 
