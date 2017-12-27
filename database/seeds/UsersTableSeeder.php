@@ -53,5 +53,7 @@ class UsersTableSeeder extends Seeder
             'birthday_day' => 1,
             'description' => 'A not so regular developer',
         ]);
+
+        factory(App\User::class, 1000)->create();
     }
 }
