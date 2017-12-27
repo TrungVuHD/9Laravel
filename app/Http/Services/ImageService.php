@@ -63,7 +63,7 @@ class ImageService extends Service
         $saved = Storage::put($file_location, $base_64_data);
 
         if ($saved) {
-            $absolute_path = storage_path('app' . self::DS . 'public' . self::DS . $file_location);
+            $absolute_path = storage_path('app' . DS . 'public' . DS . $file_location);
             return self::createReturnData($absolute_path, $extension);
         }
 
@@ -103,7 +103,7 @@ class ImageService extends Service
      */
     public static function fileExtension($file)
     {
-        $tmp_file_location = sys_get_temp_dir() . self::DS . str_random(20);
+        $tmp_file_location = sys_get_temp_dir() . DS . str_random(20);
 
         copy($file, $tmp_file_location);
         $mime_type = mime_content_type($tmp_file_location);
@@ -173,7 +173,7 @@ class ImageService extends Service
         $versions = [];
 
         array_walk($sizes, function ($size) use ($path, $dir, $file, $versions) {
-            $destination = self::DS . $size . DS . $file;
+            $destination = $dir . DS . $size . DS . $file;
             ResizeGif::ResizeToWidth($path, $destination, (int)$size);
             $versions[] = [
                 'type' => 'gif',
@@ -198,7 +198,7 @@ class ImageService extends Service
         $versions = [];
 
         array_walk($sizes, function ($size) use ($path, $dir, $file, $versions) {
-            $store_path = $dir . self::DS . $size . self::DS . $file;
+            $store_path = $dir . DS . $size . DS . $file;
             $img = Image::make($path);
             $img->resize((int)$size, null, function ($constraint) {
                 $constraint->aspectRatio();
