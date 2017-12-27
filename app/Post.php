@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Post extends Model
 {
@@ -105,5 +106,45 @@ class Post extends Model
     public function noPoints()
     {
         return (int) count($this->points);
+    }
+
+    /**
+     * The hot scope function for retrieving the hot posts
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeHot($query)
+    {
+        return $query->join('points', 'points.post_id', '=', 'posts.id')
+            ->having(DB::raw('COUNT(points.id)'), '>=', 80)
+            ->groupBy('points.post_id');
+    }
+
+    /**
+     * The hot scope function for retrieving the trending posts
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeTrending($query)
+    {
+        return $query->join('points', 'points.post_id', '=', 'posts.id')
+            ->having(DB::raw('COUNT(points.id)'), '>=', 40)
+            ->having(DB::raw('COUNT(points.id)'), '<', 80)
+            ->groupBy('points.post_id');
+    }
+
+    /**
+     * The hot scope function for retrieving the fresh posts
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeNew($query)
+    {
+        return $query->join('points', 'points.post_id', '=', 'posts.id')
+            ->having(DB::raw('COUNT(points.id)'), '<', 40)
+            ->groupBy('points.post_id');
     }
 }
