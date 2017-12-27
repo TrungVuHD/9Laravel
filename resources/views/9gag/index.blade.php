@@ -17,7 +17,7 @@
                 <div class="gif-text">
                     GIF
                 </div>
-                <img src="{{ url('storage/posts/400/'.$post->image)  }}" alt="" class="img-responsive">
+                <img src="{{ url('storage/posts/600/'.$post->image)  }}" alt="" class="img-responsive">
             </div>
         </a>
         @else
@@ -25,7 +25,7 @@
             <a href="{{ url('gag/'.$post->slug) }}">
                 <h3 class="title">{{ $post->title }}</h3>
                 <div class="huge-image-wrapper">
-                    <img class="img-responsive" src="{{ url('storage/posts/400/'.$post->image) }}" alt="">
+                    <img class="img-responsive" src="{{ url('storage/posts/600/'.$post->image) }}" alt="">
                 </div>
                 <div class="huge-image-footer">
                     <i class="fa fa-external-link" aria-hidden="true"></i>
@@ -37,7 +37,7 @@
             @else
             <a href="{{ url('gag/'.$post->slug) }}">
                 <h3 class="title">{{ $post->title }}</h3>
-                <img class="img-responsive" src="{{ url('storage/posts/400/'.$post->image) }}" alt="">
+                <img class="img-responsive" src="{{ url('storage/posts/600/'.$post->image) }}" alt="">
             </a>
             @endif
         @endif
@@ -101,14 +101,14 @@
                     <div class="gif-text">
                         GIF
                     </div>
-                    <img src="{{ url('img/posts/400') }}/@{{ image }}" alt="" class="img-responsive">
+                    <img src="{{ url('img/posts/600') }}/@{{ image }}" alt="" class="img-responsive">
                 </div>
             </a>
             @{{ /is_gif}}
             @{{ #isnt_gif }}
             <a href="{{ url('gag') }}/@{{ slug }}">
                 <h3 class="title">@{{ title }}</h3>
-                <img class="img-responsive" src="{{ url('img/posts/400') }}/@{{ image }}" alt="">
+                <img class="img-responsive" src="{{ url('img/posts/600') }}/@{{ image }}" alt="">
             </a>
             @{{ /isnt_gif }}
             <div class="description">
