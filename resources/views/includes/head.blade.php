@@ -7,9 +7,7 @@
 <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 <script>
   window.Laravel = {!! json_encode([
-          'csrfToken' => csrf_token(),
-          'baseUrl' => url('/')
-        ]) !!};
-
-  $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': window.Laravel.csrfToken } });
+    'csrfToken' => csrf_token(),
+    'baseUrl' => url('/')
+  ]) !!};
 </script>
