@@ -2,17 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\SocialAccount;
+use App\Http\Requests\StoreAccountSettings;
+use App\Http\Requests\StorePasswordSettings;
+use App\Http\Requests\StoreProfileSettings;
+use App\Http\Requests\DestroyAccount;
+use App\Http\Services\ImageService;
 use App\User;
 
 class SettingController extends Controller
 {
+    /**
+     * @var array All available countries
+     */
     protected $countries;
+
+    /**
+     * The current logged in user
+     *
+     * @var \Illuminate\Contracts\Auth\Authenticatable|null
+     */
     protected $user;
 
     public function __construct()
@@ -21,26 +32,49 @@ class SettingController extends Controller
         $this->user = Auth::user();
     }
 
+    /**
+     * Retrieve the countries
+     *
+     * @return array
+     */
     public function geCountries()
     {
         $location = storage_path('app/countries.txt');
         $countries = file_get_contents($location);
-        return explode(', ', $countries);
+        return (array) explode(', ', $countries);
     }
 
+    /**
+     * Show the account settings
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showAccount()
     {
         return view('settings.account', ['user' => $this->user]);
     }
 
+    /**
+     * Show the password settings
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showPassword()
     {
         return view('settings.password');
     }
 
+    /**
+     * Show the profile page for the current logged in user
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showProfile()
     {
-        return view('settings.profile', ['countries' => $this->countries, 'user' => $this->user]);
+        return view('settings.profile', [
+            'countries' => $this->countries,
+            'user' => $this->user
+        ]);
     }
 
     public function showMyProfile()
@@ -48,116 +82,76 @@ class SettingController extends Controller
         return view('settings.my-profile');
     }
 
-    public function storeAccount(Request $request)
+    /**
+     * Store the account settings
+     *
+     * @param StoreAccountSettings $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeAccount(StoreAccountSettings $request)
     {
-        $this->validate($request, [
-            'username' => 'required|max:255',
-            'email' => 'required|email',
-            'show_nsfw' => 'required|integer',
-        ]);
-
-        $user = Auth::user();
-
+        $user = User::findOrFail(Auth::id());
+        $user->fill($request->all());
         $user->username = str_slug($request->username);
-        $user->email = $request->email;
-        $user->show_nsfw = $request->show_nsfw;
-        $user->show_upvote = $request->show_upvote;
-
         $user->save();
 
-        return redirect()
-                ->back()
-                ->with('status', 'Account settings were saved');
+        return back()->with('status', 'Account settings were saved');
     }
 
-    public function storePassword(Request $request)
+    /**
+     * Store the password settings
+     *
+     * @param StorePasswordSettings $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function storePassword(StorePasswordSettings $request)
     {
         $user = Auth::user();
-        $hashedPassword = $user->password;
-
-        $this->validate($request, [
-            'old_password' => 'required|max:255',
-            'new_password' => 'required|max:255',
-            'repeat_new_password' => 'required|max:255'
-        ]);
-
         // check to see if the passwords match...
-        if (Hash::check($request->old_password, $hashedPassword)) {
-            if ($request->new_password === $request->repeat_new_password) {
-                $new_password = Hash::make($request->new_password);
+        if (Hash::check($request->old_password, $user->password)) {
+            $user->password = Hash::make($request->new_password);
+            $user->save();
 
-                $user->password = $new_password;
-
-                $user->save();
-
-                return redirect()
-                        ->back()
-                        ->with('status', 'The password has been changed');
-            }
+            return back()->with('status', 'The password has been changed');
         }
 
-        return redirect()
-                ->back()
-                ->withErrors('The old password doesn\'t match the password you entered.');
+        return back()->withErrors("The old password is incorrect");
     }
 
-    public function storeProfile(Request $request)
+    /**
+     * Store the profile settings
+     *
+     * @param StoreProfileSettings $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeProfile(StoreProfileSettings $request)
     {
-        $this->validate($request, [
-            'name' => 'required|max:255',
-            'gender' => 'required|integer',
-            'avatar_image' => 'image',
-            'country' => 'required|max:100',
-            'description' => 'max:255',
-            'birthday_year' => 'integer|max:9999',
-            'birthday_month' => 'integer|max:12',
-            'birthday_day' => 'integer|max:31',
-        ]);
-
         $user = Auth::user();
+        $user->fill($request->all());
 
-        $user->name = $request->name;
-        $user->gender = $request->gender;
-        $user->country = $request->country;
-        $user->description = $request->description;
-        $user->birthday_year = $request->birthday_year;
-        $user->birthday_month = $request->birthday_month;
-        $user->birthday_day = $request->birthday_day;
+        // store the avatar
+        if ($request->hasFile('avatar_image')) {
+            $image_dir = storage_path('app' . DS . 'public' . DS . 'avatars');
+            $image_data = ImageService::storeImageFile($request->file('avatar_image'), $image_dir);
+            ImageService::multipleSizes($image_data['location'], ImageService::SIZES);
 
-        if ($request->hasFile('avatar_image') && $request->file('avatar_image')->isValid()) {
-            // save the image to disk
-            $image_name = str_random(20);
-            $image_name .= '.'.$request->avatar_image->getClientOriginalExtension();
-
-            $avatar_image = $request
-                ->avatar_image
-                ->move('img/avatars', $image_name);
-
-            // save the image to database(model)
-            $user->avatar_image = $image_name;
-
-            $avatar_location = base_path().DS.'public'.DS.$avatar_image;
-
-            // resize the image
-            $img = Image::make($avatar_location);
-            $img->resize(100, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $img->save($avatar_location, 70);
+            $user->avatar_image = $image_data['basename'];
         }
 
         $user->save();
 
-        return redirect()
-                ->back()
-                ->with('status', 'Profile settings were changed.');
+        return back()->with('status', 'Profile settings were changed.');
     }
 
-    public function destroy(Request $request)
+    /**
+     * Destroy the current users's account
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function destroy(DestroyAccount $request)
     {
-        $user = User::where('id', Auth::user()->id)->firstOrFail();
-        $user->delete();
-
+        User::where('id', Auth::id())->delete();
         Auth::logout();
 
         return redirect('/');
