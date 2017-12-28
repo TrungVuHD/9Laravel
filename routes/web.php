@@ -64,10 +64,10 @@ Route::group(['prefix' => 'ajax'], function () {
     });
 
     Route::group(['prefix' => 'posts'], function () {
-        Route::get('/fresh/{offset}/{limit}', 'PostController@retrieveFreshAjax');
-        Route::get('/trending/{offset}/{limit}', 'PostController@retrieveTrendingAjax');
-        Route::get('/hot/{offset}/{limit}', 'PostController@retrieveHotAjax');
-        Route::get('/{category}/{start}', 'PostController@retrieveCategoryAjax');
+        Route::get('/fresh', 'Ajax\PostController@fresh');
+        Route::get('/trending', 'Ajax\PostController@trending');
+        Route::get('/hot', 'Ajax\PostController@hot');
+        Route::get('/categories/{id}', 'PostController@retrieveCategoryAjax');
         Route::post('/report', 'ReportController@store');
     });
 
