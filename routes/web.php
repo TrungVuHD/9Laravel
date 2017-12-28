@@ -40,8 +40,8 @@ Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
     Route::post('/password', 'SettingController@storePassword');
     Route::post('/profile', 'SettingController@storeProfile');
     Route::delete('/account', 'SettingController@destroy');
-    Route::delete('/network/facebook', 'SettingController@destroyFacebook');
-    Route::delete('/network/google', 'SettingController@destroyGoogle');
+    Route::delete('/network/facebook', 'SocialAuthController@disconnectFacebook');
+    Route::delete('/network/google', 'SocialAuthController@disconnectGoogle');
 });
 
 /*
