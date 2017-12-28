@@ -2,7 +2,6 @@
 
 @section('content')
 
-
     @foreach($posts as $post)
     <div class="home-item" data-post-id="{{ $post->id }}">
 
@@ -18,14 +17,14 @@
                 <div class="gif-text">
                     GIF
                 </div>
-                <img src="{{ url('img/posts/460/'.$post->image)  }}" alt="" class="img-responsive">
+                <img src="{{ url('storage/posts/600/'.$post->image)  }}" alt="" class="img-responsive">
             </div>
         </a>
         @else
             @if($post->is_img_huge)
             <a href="{{ url('gag/'.$post->slug) }}">
                 <div class="huge-image-wrapper">
-                    <img class="img-responsive" src="{{ url('img/posts/460/'.$post->image) }}" alt="">
+                    <img class="img-responsive" src="{{ url('storage/posts/600/'.$post->image) }}" alt="">
                 </div>
                 <div class="huge-image-footer">
                     <i class="fa fa-external-link" aria-hidden="true"></i>
@@ -36,7 +35,7 @@
             </a>
             @else
             <a href="{{ url('gag/'.$post->slug) }}">
-                <img class="img-responsive" src="{{ url('img/posts/460/'.$post->image) }}" alt="">
+                <img class="img-responsive" src="{{ url('storage/posts/600/'.$post->image) }}" alt="">
             </a>
             @endif
         @endif
@@ -99,13 +98,13 @@
                     <div class="gif-text">
                         GIF
                     </div>
-                    <img src="{{ url('img/posts/460') }}/@{{ image }}" alt="" class="img-responsive">
+                    <img src="{{ url('storage/posts/600') }}/@{{ image }}" alt="" class="img-responsive">
                 </div>
             </a>
             @{{ /is_gif}}
             @{{ #isnt_gif }}
             <a href="{{ url('gag') }}/@{{ slug }}">
-                <img class="img-responsive" src="{{ url('img/posts/460') }}/@{{ image }}" alt="">
+                <img class="img-responsive" src="{{ url('storage/posts/600') }}/@{{ image }}" alt="">
             </a>
             @{{ /isnt_gif }}
             <div class="description">

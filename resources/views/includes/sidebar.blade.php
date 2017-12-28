@@ -1,5 +1,5 @@
 @foreach($sidebar_posts as $post)
-<a href="{{ url('gag/'.$post->slug) }}" class="sidebar-item">
+<a href="{{ url('posts/'.$post->slug) }}" class="sidebar-item">
     @if ($post->gif)
       @php $image = substr($post->image, 0 , strpos($post->image, '.gif')).'.png'; @endphp
       <img class="img-responsive" src="{{ url('storage/posts/400/' . $image) }}" alt="">

@@ -43,10 +43,10 @@
     <div class="container page-container">
         <div class="row">
 
-            <div id="content" class="col-sm-9">
+            <div id="content" class="col-sm-18">
                 @yield('content')
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-6">
                 @yield('sidebar')
             </div>
         </div>
