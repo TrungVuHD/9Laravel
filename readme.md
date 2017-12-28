@@ -10,6 +10,8 @@ Even though the website looks and acts similar to the original website, no code 
 
 ### Frontend
 
+Note: The Bootstrap grid consist of 24 columns instead of the regular 12.
+
 * jQuery
 * Bootstrap 3
 * Font Awesome

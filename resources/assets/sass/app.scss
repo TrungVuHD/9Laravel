@@ -1,11 +1,11 @@
-// Libraries
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "node_modules/font-awesome/scss/font-awesome";
-@import "../js/libraries/FileDrop-master/filedrop";
-
 // Globals
 @import "globals/variables";
 @import "globals/general";
+
+// Libraries
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/font-awesome/scss/font-awesome";
+@import "node_modules/filedrop/filedrop";
 
 // Partials
 @import "partials/top-menu";
