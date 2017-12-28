@@ -3,23 +3,18 @@
 namespace App\Http\ViewComposers;
 
 use Illuminate\View\View;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Post;
 
 class SidebarPostsComposer
 {
-
-    protected $posts;
-
+    /**
+     * Add the sidebar_posts variable to all views
+     *
+     * @param View $view
+     */
     public function compose(View $view)
     {
-        $this->posts = DB::table('posts')
-            ->orderBy(DB::raw('RAND()'))
-            ->take(30)
-            ->get();
-
-        $view->with([
-            'sidebarPosts' => $this->posts
-        ]);
+        $sidebar_posts = Post::inRandomOrder()->paginate(30);
+        $view->with(compact('sidebar_posts'));
     }
 }
