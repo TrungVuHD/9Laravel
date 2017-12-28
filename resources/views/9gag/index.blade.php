@@ -80,7 +80,7 @@
   @endforeach
 
   <input type="hidden" id="category-id" value="{{ $category_id or 0 }}">
-  <input type="hidden" id="posts-category" value="{{ $posts_category or 0 }}">
+  <input type="hidden" id="posts-category" value="{{ $category or 0 }}">
   <div id="go-top" class="hidden">
     <i class="fa fa-step-forward" aria-hidden="true"></i>
   </div>
