@@ -2,46 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PointResource;
+use App\Http\Requests\PointIncrement;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use App\Http\Requests;
 use App\Point;
-use App\Post;
 
 class PointController extends Controller
 {
-    public function incrementPoints(Request $request)
+    /**
+     * Increment the number of points for a post
+     *
+     * @param PointIncrement $request
+     * @return PointResource
+     */
+    public function increment(PointIncrement $request)
     {
-        try {
-            $this->validate($request, [
-                'postId' => 'required|integer'
-            ]);
+        $point = new Point();
+        $point->user_id = Auth::id();
+        $point->post_id = $request->post_id;
+        $point->save();
 
-            if (Post::findOrFail($request->postId)) {
-                $point = new Point();
-                $point->user_id = Auth::user()->id;
-                $point->post_id = $request->postId;
-                $point->save();
-            } else {
-                return ['success' => false];
-            }
-        } catch (Exception $e) {
-            return ['success' => false];
-        }
-        return ['success' => true];
+        return new PointResource($point);
     }
 
-    public function decrementPoints(Request $request)
+    /**
+     * Decrement the number of points for a post
+     *
+     * @param PointIncrement $request
+     * @return PointResource
+     */
+    public function decrement(PointIncrement $request)
     {
+        $point = Point::where('user_id', Auth::id())
+            ->where('post_id', $request->postId)
+            ->delete();
 
-        try {
-            $point = Point::where('user_id', Auth::user()->id)
-                        ->where('post_id', $request->postId)
-                        ->firstOrFail();
-            $point->delete();
-        } catch (Exception $e) {
-            return ['success' => false];
-        }
-        return ['success' => true];
+        return new PointResource($point);
     }
 }
