@@ -21,12 +21,12 @@
       var rawHref = imageHref.substring(0, imageHref.length - 4);
       var $gifText = $(this).find(".gif-text");
 
-      if(imageHref.slice(-3) === 'png') {
+      if (imageHref.slice(-3) === 'png') {
         $image.attr('src', rawHref+'.gif');
         $gifText.addClass('hidden');
       }
 
-      if(imageHref.slice(-3) === 'gif') {
+      if (imageHref.slice(-3) === 'gif') {
         $image.attr('src', rawHref+'.png');
         $gifText.removeClass('hidden');
       }

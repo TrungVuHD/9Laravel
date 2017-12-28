@@ -26,7 +26,6 @@
       var $self = $(this);
 
       setTimeout(function () {
-
         $self.addClass('hidden');
         event.data.$searchResults.removeClass('visible');
       }, 200);
@@ -38,9 +37,7 @@
     search: function (event) {
       var searchKeyword = $(this).val();
       var url = $("#base-url").val()+'/ajax/search';
-      var data = {
-        keyword: searchKeyword
-      };
+      var data = { keyword: searchKeyword };
       var self = event.data;
 
       if (searchKeyword.length < 1) {

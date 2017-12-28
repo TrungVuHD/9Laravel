@@ -16,7 +16,7 @@
       this.$scrollTop.on('click', this.scrollTop);
     },
     onWindowScroll: function () {
-      if( this.$window.scrollTop() > 800 ) {
+      if (this.$window.scrollTop() > 800) {
         this.$scrollTop.removeClass('hidden');
       } else {
         this.$scrollTop.addClass('hidden');

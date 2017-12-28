@@ -30,8 +30,8 @@
         dataType: 'json'
       });
 
-      request.done(function( data ) {
-        if(data.success === true) {
+      request.done(function(data) {
+        if (data.success === true) {
           var $points = $parentElement.find('.comment-points');
           var noPoints = parseInt($points.html());
           var $upVoteElement = $parentElement.find('.up-vote-comment');
@@ -41,8 +41,8 @@
         }
       });
 
-      request.fail(function(jqXHR) {
-        if(jqXHR.status === 401) {
+      request.fail(function (jqXHR) {
+        if (jqXHR.status === 401) {
           window.location.href = comments.baseUrl+'/login';
         }
       });
@@ -62,8 +62,8 @@
         dataType: 'json'
       });
 
-      request.done(function(data) {
-        if(data.success === true) {
+      request.done(function (data) {
+        if (data.success === true) {
           var $points = $parentElement.find('.comment-points');
           var noPoints = parseInt($points.html());
           var $upVoteElement = $parentElement.find('.up-vote-comment');
@@ -73,7 +73,7 @@
         }
       });
 
-      request.fail(function(jqXHR) {
+      request.fail(function (jqXHR) {
         if (jqXHR.status === 401) {
           window.location.href = baseUrl+'/login';
         }

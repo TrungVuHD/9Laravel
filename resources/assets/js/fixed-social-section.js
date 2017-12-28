@@ -27,7 +27,6 @@
       var width = self.$image.width();
 
       if(self.$window.scrollTop() > 200) {
-
         self.$socialSection.addClass('fixed');
         self.$socialSection.css('width', width);
       } else {

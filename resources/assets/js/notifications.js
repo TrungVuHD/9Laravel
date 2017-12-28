@@ -8,7 +8,7 @@
       this.bindEvents();
     },
     cacheDom: function () {
-      this.$doc= $("html, body");
+      this.$doc= $(document);
       this.$notificationsBtn = $(".menu-notifications, .menu-notifications a");
       this.$notifications = $(".notifications-wrapper");
     },

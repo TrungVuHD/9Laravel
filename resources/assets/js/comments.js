@@ -15,10 +15,9 @@
       this.$reply.on('click', this, this.replyToComment)
     },
     replyToComment: function (event) {
+      event.preventDefault();
       var $content = $('#content');
       $content.find('.comments-body-clone').remove();
-
-      event.preventDefault();
       var self = event.data;
       var $parentComment = $(this).parents('.comment');
       var parentCommentId = $parentComment.attr('data-comment-id');

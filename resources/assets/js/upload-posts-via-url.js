@@ -18,7 +18,7 @@
       var self = event.data;
       var imageUrl = self.$urlInput.val();
 
-      if(self.$urlInput.val().length === 0) {
+      if (self.$urlInput.val().length === 0) {
         event.preventDefault();
         alert('Please fill the input with an image url');
 

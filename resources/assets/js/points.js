@@ -31,8 +31,8 @@
         dataType: 'json'
       });
 
-      request.done(function( data ) {
-        if(data.success === true) {
+      request.done(function (data) {
+        if (data.success === true) {
           var $points = $parentElement.find('.points');
           var noPoints = parseInt($points.html());
           var $thumbsUpElement = $parentElement.find('.thumbs-up');
@@ -42,8 +42,8 @@
         }
       });
 
-      request.fail(function( jqXHR ) {
-        if(jqXHR.status === 401) {
+      request.fail(function(jqXHR) {
+        if (jqXHR.status === 401) {
           window.location.href = points.baseUrl+'/login';
         }
       });
@@ -64,8 +64,8 @@
         dataType: 'json'
       });
 
-      request.done(function( data ) {
-        if(data.success) {
+      request.done(function(data) {
+        if (data.success) {
           var $points = $parentElement.find('.points');
           var noPoints = parseInt($points.html());
           var $activeElement = $parentElement.find('.active');
@@ -76,7 +76,7 @@
         }
       });
 
-      request.fail(function( jqXHR ) {
+      request.fail(function(jqXHR) {
         if (jqXHR.status === 401) {
           window.location.href = points.baseUrl+'/login';
         } else {

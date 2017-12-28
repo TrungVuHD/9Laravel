@@ -30,11 +30,11 @@
       var rendered = '';
       var processedData;
 
-      if(this.postCategory === undefined && this.categoryId === undefined) {
+      if (this.postCategory === undefined && this.categoryId === undefined) {
         return false;
       }
 
-      if(this.lastAjaxCallWasEmpty === true) {
+      if (this.lastAjaxCallWasEmpty === true) {
         return false;
       }
 
