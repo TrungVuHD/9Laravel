@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostSearch;
 use App\Http\Resources\PostResource;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use App\Http\Requests\PostStore;
 use App\Http\Services\PostService;
 use App\Http\Repositories\PostRepository;
@@ -14,15 +14,36 @@ use App\Point;
 
 class PostController extends Controller
 {
+    /**
+     * The Post repository
+     *
+     * @var PostRepository
+     */
     protected $repository;
+
+    /**
+     * The Post service
+     *
+     * @var PostService
+     */
     protected $service;
 
+    /**
+     * PostController constructor.
+     * @param PostRepository $repository
+     * @param PostService $service
+     */
     public function __construct(PostRepository $repository, PostService $service)
     {
         $this->repository = $repository;
         $this->service = $service;
     }
 
+    /**
+     * Show a hot listing of records
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         $posts = Post::hot()->paginate(20);
@@ -31,6 +52,11 @@ class PostController extends Controller
         return view('9gag.index', compact('category', 'posts'));
     }
 
+    /**
+     * Show a trending listing of records
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function trendingIndex()
     {
         $posts = Post::trending()->paginate(20);
@@ -39,6 +65,11 @@ class PostController extends Controller
         return view('9gag.index', compact('category', 'posts'));
     }
 
+    /**
+     * Show a fresh listing of records
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function freshIndex()
     {
         $posts = Post::new()->paginate(20);
@@ -47,6 +78,12 @@ class PostController extends Controller
         return view('9gag.index', compact('category', 'posts'));
     }
 
+    /**
+     * Show a record
+     *
+     * @param $slug
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function show($slug)
     {
         $post = Post::slug($slug)->firstOrFail();
@@ -70,6 +107,12 @@ class PostController extends Controller
         return view('9gag.show', $view_data);
     }
 
+    /**
+     * Store a record
+     *
+     * @param PostStore $request
+     * @return PostResource
+     */
     public function store(PostStore $request)
     {
         $image = $this->service->storeImage($request);
@@ -82,29 +125,31 @@ class PostController extends Controller
         return new PostResource($post);
     }
 
-    public function search(Request $request)
+    /**
+     * Search the records and return a collection
+     *
+     * @param PostSearch $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function search(PostSearch $request)
     {
-        $this->validate($request, [
-            'keyword' => 'required'
-        ]);
+        $posts = Post::search($request->keyword)->paginate(20);
 
-        $keyword = strtolower($request->keyword);
-
-        $results = Post::where('title', 'like', $keyword.'%')
-            ->take(10)
-            ->get();
-
-        return $results;
+        return PostResource::collection($posts);
     }
 
-    public function searchIndex(Request $request)
+    /**
+     * Search the records and return a view
+     *
+     * @param PostSearch $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function searchIndex(PostSearch $request)
     {
-        $query = $request->query();
-        $query = $query['query'];
+        $keyword = $request->keyword;
+        $posts = Post::search($keyword)->paginate(20);
+        $no_posts = $posts->count();
 
-        $posts = Post::where('title', 'like', "%$query%")->paginate(20);
-        $total_results = Post::where('title', 'like', "%$query%")->count();
-
-        return view('9gag.search', compact('posts', 'total_results', 'query'));
+        return view('9gag.search', compact('posts', 'no_posts', 'keyword'));
     }
 }

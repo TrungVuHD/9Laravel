@@ -147,4 +147,17 @@ class Post extends Model
             ->having(DB::raw('COUNT(points.id)'), '<', 40)
             ->groupBy('points.post_id');
     }
+
+    /**
+     * The scope search method
+     *
+     * @param $query
+     * @param $keyword
+     * @return mixed
+     */
+    public function scopeSearch($query, $keyword)
+    {
+        $keyword = strtolower($keyword);
+        return $query->where(DB::raw('LOWER(title)'), 'like', "%$keyword%");
+    }
 }
