@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use App\Http\Requests;
 use App\Comment;
 use App\Post;
 use App\Point;
 
-class MyProfileController extends Controller
+class ProfileController extends Controller
 {
+    /**
+     * Show the profile page
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         $user = Auth::user();
@@ -22,7 +25,12 @@ class MyProfileController extends Controller
         return view('9gag.my-profile', ['user' => $user, 'posts' => $posts]);
     }
 
-    public function postsIndex()
+    /**
+     * Display a listing of posts
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function posts()
     {
         $user = Auth::user();
         $posts = Post::where('user_id', $user->id)->orderBy('id', 'DESC')->get();
@@ -30,7 +38,12 @@ class MyProfileController extends Controller
         return view('9gag.my-profile', ['user' => $user, 'posts' => $posts]);
     }
 
-    public function upvotesIndex()
+    /**
+     * Display a listing of upvotes
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function upvotes()
     {
         $user = Auth::user();
         $points = Point::where('user_id', $user->id)->pluck('post_id');
@@ -39,7 +52,12 @@ class MyProfileController extends Controller
         return view('9gag.my-profile', ['user' => $user, 'posts' => $posts]);
     }
 
-    public function commentsIndex()
+    /**
+     * Display a listing of comments
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function comments()
     {
         $user = Auth::user();
         $comments = Comment::where('user_id', $user->id)->pluck('post_id');

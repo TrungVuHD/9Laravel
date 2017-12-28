@@ -25,10 +25,10 @@ Route::group(['prefix' => 'posts'], function () {
 });
 
 Route::group(['prefix' => '/my-profile', 'middleware' => 'auth'], function () {
-    Route::get('/', 'MyProfileController@index');
-    Route::get('/posts', 'MyProfileController@postsIndex');
-    Route::get('/upvotes', 'MyProfileController@upvotesIndex');
-    Route::get('/comments', 'MyProfileController@commentsIndex');
+    Route::get('/', 'ProfileController@index');
+    Route::get('/posts', 'ProfileController@postsIndex');
+    Route::get('/upvotes', 'ProfileController@upvotesIndex');
+    Route::get('/comments', 'ProfileController@commentsIndex');
 });
 
 Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
