@@ -14,17 +14,14 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        
+        View::composer('*', 'App\Http\ViewComposers\RequestComposer');
+        View::composer('includes/sidebar', 'App\Http\ViewComposers\SidebarPostsComposer');
         View::composer(
-            '*', 'App\Http\ViewComposers\RequestComposer'
-        );      
-
-        View::composer(
-            '*', 'App\Http\ViewComposers\CategoriesComposer'
-        );
-
-        View::composer(
-            '*', 'App\Http\ViewComposers\SidebarPostsComposer'
+            [
+                'includes/top-menu',
+                'includes/modals'
+            ],
+            'App\Http\ViewComposers\CategoriesComposer'
         );
     }
 
