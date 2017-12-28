@@ -13,8 +13,9 @@ class RequestComposer
      * @param View $view
      * @param Request $request
      */
-    public function compose(View $view, Request $request)
+    public function compose(View $view)
     {
+        $request = new Request();
         $view->with('request', $request);
     }
 }
