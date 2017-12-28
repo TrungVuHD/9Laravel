@@ -11,5 +11,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    /**
+     * The directory separator constant
+     */
     const DS = DIRECTORY_SEPARATOR;
 }

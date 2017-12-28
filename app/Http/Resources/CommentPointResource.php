@@ -16,7 +16,7 @@ class CommentPointResource extends Resource
     {
         return [
             'id' => $this->id,
-            'comment_id' => $this->post_id,
+            'comment_id' => $this->comment_id,
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at

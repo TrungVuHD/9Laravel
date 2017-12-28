@@ -11,11 +11,6 @@ use App\Point;
 
 class MyProfileController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
         $user = Auth::user();
@@ -31,6 +26,7 @@ class MyProfileController extends Controller
     {
         $user = Auth::user();
         $posts = Post::where('user_id', $user->id)->orderBy('id', 'DESC')->get();
+
         return view('9gag.my-profile', ['user' => $user, 'posts' => $posts]);
     }
 
@@ -39,7 +35,7 @@ class MyProfileController extends Controller
         $user = Auth::user();
         $points = Point::where('user_id', $user->id)->pluck('post_id');
         $posts = Post::whereIn('id', $points)->orderBy('id', 'DESC')->get();
-        
+
         return view('9gag.my-profile', ['user' => $user, 'posts' => $posts]);
     }
 
@@ -48,7 +44,7 @@ class MyProfileController extends Controller
         $user = Auth::user();
         $comments = Comment::where('user_id', $user->id)->pluck('post_id');
         $posts = Post::whereIn('id', $comments)->orderBy('id', 'DESC')->get();
-        
+
         return view('9gag.my-profile', ['user' => $user, 'posts' => $posts]);
     }
 }
