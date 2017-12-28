@@ -3,7 +3,7 @@
 @section('content')
   @foreach($posts as $post)
     <div class="home-item" data-post-id="{{ $post->id }}">
-      @if($post->is_gif)
+      @if($post->gif)
       <a href="{{ url('posts/'.$post->slug) }}">
         <h3 class="title">{{ $post->title }}</h3>
       </a>
@@ -41,10 +41,10 @@
       @endif
       <div class="description">
         <a class="points-wrapper" href="{{ url('posts/'.$post->slug) }}">
-          <span class="points">{{count($post->points)}}</span> points
+          <span class="points">{{ $post->points_count }}</span> points
         </a><span> &bull;</span>
         <a href="{{ url('posts'.'/'.$post->slug.'#comments') }}">
-          {{ $post->comments->count() }} comments
+          {{ $post->comments_count }} comments
         </a>
       </div>
 
@@ -88,7 +88,7 @@
   <script id="home-item-template" type="x-tmpl-mustache">
     @{{#posts}}
       <div class="home-item" data-post-id="@{{ id }}">
-        @{{ #is_gif }}
+        @{{ #gif }}
         <a href="{{ url('posts') }}/@{{ slug }}">
           <h3 class="title">@{{ title }}</h3>
         </a>
@@ -98,22 +98,22 @@
             <div class="gif-text">
               GIF
             </div>
-            <img src="{{ url('img/posts/600') }}/@{{ image }}" alt="" class="img-responsive">
+            <img src="{{ url('storage/posts/600') }}/@{{ image }}" alt="" class="img-responsive">
           </div>
         </a>
-        @{{ /is_gif}}
-        @{{ #isnt_gif }}
+        @{{ /gif}}
+        @{{ ^isnt_gif }}
         <a href="{{ url('posts') }}/@{{ slug }}">
           <h3 class="title">@{{ title }}</h3>
-          <img class="img-responsive" src="{{ url('img/posts/600') }}/@{{ image }}" alt="">
+          <img class="img-responsive" src="{{ url('storage/posts/600') }}/@{{ image }}" alt="">
         </a>
         @{{ /isnt_gif }}
         <div class="description">
           <a class="points-wrapper" href="{{ url('posts') }}/@{{ slug }}">
-            <span class="points">@{{ no_points }}</span> points
+            <span class="points">@{{ points_count }}</span> points
           </a><span> &bull;</span>
           <a href="{{ url('posts') }}/@{{ slug }}#comments">
-            @{{ no_comments }} comments
+            @{{ comments_count }} comments
           </a>
         </div>
         <div class="social-section">
