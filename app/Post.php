@@ -105,7 +105,7 @@ class Post extends Model
      */
     public function noPoints()
     {
-        return (int) count($this->points);
+        return (int) $this->points->count();
     }
 
     /**
@@ -117,8 +117,9 @@ class Post extends Model
     public function scopeHot($query)
     {
         return $query->join('points', 'points.post_id', '=', 'posts.id')
-            ->having(DB::raw('COUNT(points.id)'), '>=', 80)
-            ->groupBy('points.post_id');
+            ->groupBy(['posts.id', 'posts.title', 'posts.slug'])
+            ->havingRaw('COUNT(points.id) >= 80')
+            ->orderBy('posts.id', 'DESC');
     }
 
     /**
@@ -130,9 +131,9 @@ class Post extends Model
     public function scopeTrending($query)
     {
         return $query->join('points', 'points.post_id', '=', 'posts.id')
-            ->having(DB::raw('COUNT(points.id)'), '>=', 40)
-            ->having(DB::raw('COUNT(points.id)'), '<', 80)
-            ->groupBy('points.post_id');
+            ->groupBy('points.post_id')
+            ->havingRaw('COUNT(points.id) >= 40')
+            ->havingRaw('COUNT(points.id) < 80');
     }
 
     /**
@@ -144,8 +145,8 @@ class Post extends Model
     public function scopeNew($query)
     {
         return $query->join('points', 'points.post_id', '=', 'posts.id')
-            ->having(DB::raw('COUNT(points.id)'), '<', 40)
-            ->groupBy('points.post_id');
+            ->groupBy('points.post_id')
+            ->havingRaw('COUNT(points.id) < 40');
     }
 
     /**

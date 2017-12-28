@@ -24,7 +24,9 @@ class PostResource extends Resource
             'cat_id' => $this->cat_id,
             'user_id' => $this->user_id,
             'gif' => $this->gif,
-            'tall_image' => $this->tall_image
+            'tall_image' => $this->tall_image,
+            'points_count' => $this->points_count,
+            'comments_count' => $this->comments_count
         ];
     }
 }

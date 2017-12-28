@@ -46,7 +46,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::hot()->paginate(20);
+        $posts = Post::hot()->withCount([ 'comments', 'points' ])->paginate(20);
         $category = 'hot';
 
         return view('9gag.index', compact('category', 'posts'));
