@@ -57,7 +57,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function trendingIndex()
+    public function trending()
     {
         $posts = Post::trending()->paginate(20);
         $category = 'trending';
@@ -70,7 +70,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function freshIndex()
+    public function fresh()
     {
         $posts = Post::new()->paginate(20);
         $category = 'fresh';

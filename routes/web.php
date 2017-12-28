@@ -15,8 +15,8 @@ Route::get('/google/callback', 'SocialAuthController@googleCallback');
 
 
 Route::get('/', 'PostController@index');
-Route::get('/trending', 'PostController@trendingIndex');
-Route::get('/fresh', 'PostController@freshIndex');
+Route::get('/trending', 'PostController@trending');
+Route::get('/fresh', 'PostController@fresh');
 
 Route::group(['prefix' => 'posts'], function () {
     Route::get('/search', 'PostController@searchIndex');
@@ -24,8 +24,7 @@ Route::group(['prefix' => 'posts'], function () {
     Route::get('/{slug}', 'PostController@show');
 });
 
-Route::group(['prefix' => '/my-profile'], function () {
-
+Route::group(['prefix' => '/my-profile', 'middleware' => 'auth'], function () {
     Route::get('/', 'MyProfileController@index');
     Route::get('/posts', 'MyProfileController@postsIndex');
     Route::get('/upvotes', 'MyProfileController@upvotesIndex');
@@ -33,7 +32,6 @@ Route::group(['prefix' => '/my-profile'], function () {
 });
 
 Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
-
     Route::get('/', 'SettingController@showAccount');
     Route::get('/account', 'SettingController@showAccount');
     Route::get('/password', 'SettingController@showPassword');
@@ -42,10 +40,10 @@ Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
     Route::post('/password', 'SettingController@storePassword');
     Route::post('/profile', 'SettingController@storeProfile');
     Route::delete('/account', 'SettingController@destroy');
-
     Route::delete('/network/facebook', 'SettingController@destroyFacebook');
     Route::delete('/network/google', 'SettingController@destroyGoogle');
 });
+
 /*
 Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {
 
@@ -58,9 +56,7 @@ Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {
 });*/
 
 Route::group(['prefix' => 'ajax'], function () {
-
     Route::group(['middleware' => 'auth'], function () {
-
         Route::post('points/increment', 'PointController@incrementPoints');
         Route::post('points/decrement', 'PointController@decrementPoints');
         Route::post('comments/increment', 'CommentController@incrementPoints');
@@ -68,7 +64,6 @@ Route::group(['prefix' => 'ajax'], function () {
     });
 
     Route::group(['prefix' => 'posts'], function () {
-
         Route::get('/fresh/{offset}/{limit}', 'PostController@retrieveFreshAjax');
         Route::get('/trending/{offset}/{limit}', 'PostController@retrieveTrendingAjax');
         Route::get('/hot/{offset}/{limit}', 'PostController@retrieveHotAjax');
