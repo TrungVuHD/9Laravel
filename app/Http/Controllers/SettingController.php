@@ -37,7 +37,7 @@ class SettingController extends Controller
      *
      * @return array
      */
-    public function geCountries()
+    public function getCountries()
     {
         $location = storage_path('app/countries.txt');
         $countries = file_get_contents($location);
