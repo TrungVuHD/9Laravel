@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="home-item detail-home-item" data-post-id="{{ $post->id }}">
         <h3 class="title">{{ $post->title }}</h3>
         <div class="description">
@@ -34,14 +33,14 @@
             </a>
             @endif
         </div>
-        <img class="img-responsive" src="{{ url('img/posts/'.$post->image) }}" alt="">
+        <img class="img-responsive" src="{{ url('storage/posts/'.$post->image) }}" alt="">
         <div class="share-section row">
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                 <a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/gag/'.$post->slug) }}" class="share-network facebook">
                     Share on Facebook
                 </a>
             </div>
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                 <a href="https://twitter.com/home?status={{ url('/gag/'.$post->slug) }}" class="share-network twitter">
                     Share on Twitter
                 </a>

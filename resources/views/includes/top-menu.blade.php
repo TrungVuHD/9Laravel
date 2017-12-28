@@ -24,7 +24,7 @@
             <div class="sections-wrapper menu-item has-submenu">
                 Sections <span class="caret"></span>
                 <ul class="sub-menu hidden">
-                    @foreach ($menuPostCategories as $cat)
+                    @foreach ($menu_categories as $cat)
                     <li>
                         <a href="{{ url($cat->slug) }}">{{ $cat->title }}</a>
                     </li>
@@ -32,7 +32,7 @@
                 </ul>
             </div>
             <div class="sections hidden-xs hidden-sm">
-                @foreach ($menuVisiblePostCategories as $cat)
+                @foreach ($menu_visible_categories as $cat)
                 <div class="menu-item">
                     <a href="{{ url($cat->slug) }}">
                         {{ $cat->title }}

@@ -89,7 +89,7 @@ class PostController extends Controller
         $post = Post::slug($slug)->firstOrFail();
         $next_post = Post::next($post->id)->first();
         $comments = Comment::postComments($post->id)->with('subcomments')->get();
-        $sub_comments = Comment::postSubComments($post->id);
+        $sub_comments = Comment::postSubComments($post->id)->get();
         $no_points = $post->noPoints();
         $no_comments = $this->service->noComments($comments, $sub_comments);
         $thumb_up = Auth::check() ? Point::thumbUp($post->id)->first() : null;

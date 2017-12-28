@@ -175,7 +175,7 @@
             </div>
             <div class="modal-body">
                 <div class="post-category">
-                @foreach ($menuPostCategories as $cat)
+                @foreach ($menu_categories as $cat)
                     <label>
                         <img class="section-image" src="{{ url('img/categories/'.$cat->image) }}" />
                         <h4>{{ $cat->title }}</h4>

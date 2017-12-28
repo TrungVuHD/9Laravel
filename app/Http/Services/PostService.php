@@ -4,19 +4,20 @@ namespace App\Http\Services;
 
 use App\Comment;
 use App\Post;
+use Illuminate\Database\Eloquent\Collection;
 
 class PostService extends Service
 {
     /**
      * Return the number of comments
      *
-     * @param Comment $comments
-     * @param Comment $sub_comments
+     * @param Collection $comments
+     * @param Collection $sub_comments
      * @return int
      */
-    public function noComments(Comment $comments, Comment $sub_comments)
+    public function noComments(Collection $comments, Collection $sub_comments)
     {
-        return (int) ($comments->count() + $sub_comments->get()->count());
+        return (int) ($comments->count() + $sub_comments->count());
     }
 
     /**

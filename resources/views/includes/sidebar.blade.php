@@ -1,4 +1,4 @@
-@foreach($sidebarPosts as $post)
+@foreach($sidebar_posts as $post)
 <a href="{{ url('gag/'.$post->slug) }}" class="sidebar-item">
     @if ($post->gif)
       @php $image = substr($post->image, 0 , strpos($post->image, '.gif')).'.png'; @endphp
