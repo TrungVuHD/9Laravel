@@ -10,7 +10,6 @@
     cacheDom: function () {
       this.$upVote = $(".up-vote-comment");
       this.$downVote = $(".down-vote-comment");
-      this.baseUrl = $('#base-url').val();
     },
     bindEvents: function () {
       this.$upVote.on('click', this, this.upVoteComment);
@@ -20,9 +19,8 @@
       event.preventDefault();
 
       var $parentElement = $(this).parents('.comment');
-      var baseUrl = event.data.baseUrl;
       var request = $.ajax({
-        url: baseUrl+'/ajax/comments/increment',
+        url: window.Laravel.baseUrl + '/ajax/comments/increment',
         method: "POST",
         data: {
           'comment_id': $parentElement.attr('data-comment-id')
@@ -43,7 +41,7 @@
 
       request.fail(function (jqXHR) {
         if (jqXHR.status === 401) {
-          window.location.href = comments.baseUrl+'/login';
+          window.location.href = window.Laravel.baseUrl+'/login';
         }
       });
     },
@@ -51,12 +49,11 @@
       event.preventDefault();
 
       var $parentElement = $(this).parents('.comment');
-      var baseUrl = event.data.baseUrl;
       var data = {
         'comment_id': $parentElement.attr('data-comment-id')
       };
       var request = $.ajax({
-        url: baseUrl+'/ajax/comments/decrement',
+        url: window.Laravel.baseUrl + '/ajax/comments/decrement',
         method: "POST",
         data: data,
         dataType: 'json'
@@ -75,7 +72,7 @@
 
       request.fail(function (jqXHR) {
         if (jqXHR.status === 401) {
-          window.location.href = baseUrl+'/login';
+          window.location.href = window.Laravel.baseUrl + '/login';
         }
       });
     }

@@ -5,17 +5,9 @@
   var fileUploads = {
     images: [],
     init: function () {
-      this.enableCSRFToken();
       this.cacheDom();
       this.bindEvents();
       this.enableFileDrop();
-    },
-    enableCSRFToken: function () {
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-      });
     },
     cacheDom: function () {
       this.$uploadModal = $("#upload-modal");
@@ -25,7 +17,6 @@
       this.$attributeInput = $(".attribute-form-group");
       this.$uploadBtn = $("#upload-post-btn");
       this.$imagePreview = $("#set-title-image-preview");
-      this.baseUrl = $("#base-url").val();
       this.$validateSetTitle = $(".validate-set-post");
       this.$postTitle = $("#upload-post-description");
     },
@@ -37,14 +28,14 @@
     validateSetTitleModal: function (event) {
       var self = event.data;
 
-      if(self.$postTitle.val() === ""){
+      if (self.$postTitle.val() === "") {
         alert('Please provide a title for your post');
         self.$postTitle.focus();
         event.preventDefault();
         return false;
       }
 
-      if(self.$imagePreview.attr('href') === self.baseUrl+"/img/logo.png") {
+      if (self.$imagePreview.attr('href') === window.Laravel.baseUrl + "/img/logo.png") {
         alert('You haven\'t chosen an image yet');
         event.preventDefault();
         return false;
@@ -93,37 +84,29 @@
       var data = this.retrieveModalInput();
       var self = this;
 
-      if(data.cat_id === undefined){
+      if (data.cat_id === undefined) {
         alert('Please select a category.');
         return false;
       }
 
-      var request = $.ajax({
+      $.ajax({
         url: window.Laravel.baseUrl + '/posts',
         method: "POST",
         data: data,
-        dataType: 'json'
-      });
-
-      request.done(function( data ) {
+      })
+      .done(function () {
         self.$postTitle.val('');
         self.$pickSectionModal.modal('hide');
 
-        if(data.success === true) {
-          alert('Congratulations, you uploaded a post!');
-        } else {
-          alert("Error. Something went wrong with the file upload.");
-        }
-      });
-
-      request.fail(function() {
+        alert('Congratulations, you uploaded a post!');
+      })
+      .fail(function() {
         alert("Error. Something went wrong with the file upload.");
       });
     },
     toggleAtribbute: function (event) {
       var $self = event.data;
-
-      if($(this).is(':checked')) {
+      if ($(this).is(':checked')) {
         $self.$attributeInput.removeClass('hidden');
       } else {
         $self.$attributeInput.addClass('hidden');

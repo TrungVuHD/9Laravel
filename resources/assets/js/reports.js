@@ -12,42 +12,26 @@
       this.$content = $("#content");
       this.$reportModal = $("#report-modal");
       this.$sendReport = this.$reportModal.find("#send-report");
-      this.baseUrl = $("#base-url").val();
     },
     bindEvents: function () {
       this.$sendReport.on('click', this, this.reportPost);
     },
     reportPost: function (event) {
       event.preventDefault();
-
       var self  = event.data;
+      var url = window.Laravel.baseUrl + '/ajax/posts/report';
       var data = {
         post_id: self.$homeItem.attr('data-post-id'),
         reason: $('.report-input:checked').val()
       };
-      var request = $.ajax({
-        url: self.baseUrl+'/ajax/posts/report',
-        method: "POST",
-        data: data,
-        dataType: 'json'
-      });
 
-      request.done(function( data ) {
-        if(data.success === true) {
-
-          alert('You successfully reported this post.');
-        }
+      $.ajax({ url: url, method: "POST", data: data })
+      .done(function () {
+        alert('The post has been reported.');
         self.$reportModal.modal('hide');
-      });
-
-      request.fail(function(jqXHR) {
-        if(jqXHR.status === 401) {
-
-          window.location.href = points.baseUrl+'/login';
-        } else {
-          alert('There was a problem with the reporting.');
-        }
-
+      })
+      .fail(function () {
+        window.location.href = points.baseUrl+'/login';
         self.$reportModal.modal('hide');
       });
     }

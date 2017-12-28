@@ -21,11 +21,10 @@
       if (self.$urlInput.val().length === 0) {
         event.preventDefault();
         alert('Please fill the input with an image url');
-
       }
 
       self.imageExists(imageUrl, function(exists) {
-        if(exists) {
+        if (exists) {
           window.notBase64Image = true;
           $("#set-title-image-preview").attr('src', imageUrl);
         } else {

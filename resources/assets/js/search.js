@@ -36,7 +36,7 @@
     },
     search: function (event) {
       var searchKeyword = $(this).val();
-      var url = $("#base-url").val()+'/ajax/search';
+      var url = window.Laravel.baseUrl + '/ajax/search';
       var data = { keyword: searchKeyword };
       var self = event.data;
 
@@ -44,26 +44,13 @@
         return false;
       }
 
-      var request = $.ajax({
-        url: url,
-        method: "GET",
-        data: data,
-        dataType: 'json'
-      });
-
-      request.done(function( data ) {
-        var results = {
-            results: data
-        };
+      $.ajax({ url: url, data: data })
+      .done(function (data) {
         var template = $('#search-template').html();
-        var rendered = window.Mustache.render(template, results);
+        var rendered = window.Mustache.render(template, { results: data });
 
         self.$searchResults.html(rendered);
         self.$searchResults.addClass('visible');
-      });
-
-      request.fail(function( jqXHR, textStatus ) {
-        //alert( "Request failed: " + textStatus );
       });
     }
   };
