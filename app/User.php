@@ -3,11 +3,6 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\SocialAccount;
-use App\Comment;
-use App\Report;
-use App\Point;
-use App\Post;
 
 class User extends Authenticatable
 {
@@ -38,33 +33,53 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * The posts relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function posts()
     {
-
         return $this->hasMany(Post::class);
     }
 
+    /**
+     * The points relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function points()
     {
-
         return $this->hasMany(Point::class);
     }
 
+    /**
+     * The socialAccounts relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function socialAccounts()
     {
-
         return $this->hasMany(SocialAccount::class);
     }
 
+    /**
+     * The reports relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function reports()
     {
-
         return $this->hasMany(Report::class);
     }
 
+    /**
+     * The comments relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comments()
     {
-
         return $this->hasMany(Comment::class);
     }
 }
