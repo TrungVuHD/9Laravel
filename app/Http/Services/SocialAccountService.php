@@ -74,34 +74,55 @@ class SocialAccountService
      */
     protected function createUser(ProviderUser $providerUser)
     {
-        $avatar = $providerUser->getAvatar();
-        $image_dir = base_path().DS.'public'.DS.'img'.DS.'avatars'.DS;
-        $image_file = str_random(20).'.jpeg';
-        $image_location = $image_dir.$image_file;
-
-        if (!file_exists($image_dir)) {
-            mkdir($image_dir);
-        }
-
-        file_put_contents($image_location, file_get_contents($avatar));
-
-        $password = str_random(20);
-        $hashed_password = Hash::make($password);
+        $avatar_image = $this->storeAvatarImage($providerUser);
+        $password = $this->createPassword();
 
         $user = new User();
         $user->username = $this->createUsername($providerUser->getEmail());
         $user->email = $providerUser->getEmail();
         $user->name = $providerUser->getName();
-        $user->password = $hashed_password;
-        $user->avatar_image = $image_file;
+        $user->password = $password['hash'];
+        $user->avatar_image = $avatar_image['basename'];
 
         if (!$user->save()) {
             throw new \Exception("The user data was not stored");
         }
 
-        $this->sendUserCreationEmail($user, $password);
+        $this->sendUserCreationEmail($user, $password['raw']);
 
         return $user;
+    }
+
+    /**
+     * Store the user image in the filesystem
+     *
+     * @param ProviderUser $providerUser
+     * @return array
+     */
+    protected function storeAvatarImage(ProviderUser $providerUser)
+    {
+        $provider_avatar_location = $providerUser->getAvatar();
+        $image_dir = storage_path('app' . DS . 'public' . DS . User::IMG_DIR);
+        $provider_avatar = file_get_contents($provider_avatar_location);
+
+        $image = ImageService::storeImageFile($provider_avatar, $image_dir);
+        ImageService::multipleSizes($image['location'], ImageService::SIZES);
+
+        return $image;
+    }
+
+    /**
+     * Create a random user password
+     *
+     * @return array
+     */
+    protected function createPassword()
+    {
+        $data = [];
+        $data['raw'] = str_random(20);
+        $data['hash'] = Hash::make($data['raw']);
+
+        return $data;
     }
 
     /**

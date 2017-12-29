@@ -7,6 +7,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     /**
+     * The storage dir to store images
+     */
+    const IMG_DIR = 'avatars';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
