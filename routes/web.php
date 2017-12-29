@@ -31,7 +31,7 @@ Route::group(['prefix' => '/my-profile', 'middleware' => 'auth'], function () {
     Route::get('/comments', 'ProfileController@commentsIndex');
 });
 
-Route::group(['prefix' => '/settings', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => '/settings', 'middleware' => ['web', 'auth']], function () {
     Route::get('/', 'SettingController@showAccount');
     Route::get('/account', 'SettingController@showAccount');
     Route::get('/password', 'SettingController@showPassword');

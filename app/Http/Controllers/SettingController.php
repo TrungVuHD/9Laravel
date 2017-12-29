@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreAccountSettings;
 use App\Http\Requests\StorePasswordSettings;
 use App\Http\Requests\StoreProfileSettings;
 use App\Http\Requests\DestroyAccount;
 use App\Http\Services\ImageService;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 
 class SettingController extends Controller
@@ -19,17 +19,9 @@ class SettingController extends Controller
      */
     protected $countries;
 
-    /**
-     * The current logged in user
-     *
-     * @var \Illuminate\Contracts\Auth\Authenticatable|null
-     */
-    protected $user;
-
     public function __construct()
     {
         $this->countries = $this->getCountries();
-        $this->user = Auth::user();
     }
 
     /**
@@ -51,7 +43,7 @@ class SettingController extends Controller
      */
     public function showAccount()
     {
-        return view('settings.account', ['user' => $this->user]);
+        return view('settings.account', ['user' => Auth::user()]);
     }
 
     /**
@@ -73,7 +65,7 @@ class SettingController extends Controller
     {
         return view('settings.profile', [
             'countries' => $this->countries,
-            'user' => $this->user
+            'user' => Auth::user()
         ]);
     }
 
