@@ -5,17 +5,17 @@
                 <img src="{{ url('/img/logo.png') }}" alt="" />
             </a>
 
-            <div class="hot menu-item @if($request->is('/')) active @endif">
+            <div class="hot menu-item @if(active_route('/')) active @endif">
                 <a href="{{ url('/') }}">
                     Hot
                 </a>
             </div>
-            <div class="trending menu-item @if($request->is('trending')) active @endif">
+            <div class="trending menu-item @if(active_route('trending')) active @endif">
                 <a href="{{ url('/trending') }}">
                     Trending
                 </a>
             </div>
-            <div class="fresh menu-item @if($request->is('fresh')) active @endif">
+            <div class="fresh menu-item @if(active_route('fresh')) active @endif">
                 <a href="{{ url('/fresh') }}">
                     Fresh
                 </a>

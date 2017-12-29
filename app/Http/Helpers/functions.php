@@ -25,3 +25,13 @@ if (!function_exists('time_since')) {
         return '';
     }
 }
+
+/**
+ * Check to see if the current url is active
+ */
+if (!function_exists('active_route')) {
+    function active_route($route)
+    {
+        return \Request::is($route);
+    }
+}
