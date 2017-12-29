@@ -11,6 +11,7 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Post::class, 200)->create();
+        \App\Http\Services\PostService::createDirs();
+        factory(App\Post::class, 150)->create();
     }
 }

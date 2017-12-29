@@ -11,7 +11,7 @@ class PointsTableSeeder extends Seeder
      */
     public function run()
     {
-        $subjects = factory(App\Point::class, 10000)->make();
+        $subjects = factory(App\Point::class, 5000)->make();
 
         foreach ($subjects as $subject) {
             repeat:
