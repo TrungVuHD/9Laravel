@@ -153,7 +153,7 @@ class SocialAccountService
         $email_data['password'] = $password;
 
         Mail::send('emails.password', $email_data, function ($m) use ($user, $email_data) {
-            $from_email = "no-reply@" . env('MAIL_FROM_ADDRESS');
+            $from_email = "no-reply@" . env('MAIL_FROM_ADDRESS', '9laravel.superbrackets.com');
             $m->from($from_email, '9Laravel');
             $m->to($email_data['email'], $email_data['name'])->subject('Your 9Laravel user password');
         });
