@@ -6,10 +6,10 @@
     <div class="home-item" data-post-id="{{ $post->id }}">
 
         @if($post->is_gif)
-        <a href="{{ url('gag/'.$post->slug) }}">
+        <a href="{{ url('posts/'.$post->slug) }}">
             <h3 class="title">{{ $post->title }}</h3>
         </a>
-        <a class="gif-wrapper-link" href="{{ url('gag/'.$post->slug) }}">
+        <a class="gif-wrapper-link" href="{{ url('posts/'.$post->slug) }}">
             <div class="gif-wrapper">
                 <?php
                     $post->image = substr($post->image, 0 , strpos($post->image, '.gif')).'.png';
@@ -22,7 +22,7 @@
         </a>
         @else
             @if($post->is_img_huge)
-            <a href="{{ url('gag/'.$post->slug) }}">
+            <a href="{{ url('posts/'.$post->slug) }}">
                 <div class="huge-image-wrapper">
                     <img class="img-responsive" src="{{ url('storage/posts/600/'.$post->image) }}" alt="">
                 </div>
@@ -34,13 +34,13 @@
                 </div>
             </a>
             @else
-            <a href="{{ url('gag/'.$post->slug) }}">
+            <a href="{{ url('posts/'.$post->slug) }}">
                 <img class="img-responsive" src="{{ url('storage/posts/600/'.$post->image) }}" alt="">
             </a>
             @endif
         @endif
         <div class="description">
-            <a class="points-wrapper" href="{{ url('gag/'.$post->slug) }}">
+            <a class="points-wrapper" href="{{ url('posts/'.$post->slug) }}">
                 <span class="points">{{count($post->points)}}</span> points
             </a><span> &bull;</span>
             <a href="{{ url('gag'.'/'.$post->slug.'#comments') }}">
@@ -66,11 +66,11 @@
                 <i class="fa fa-comment" aria-hidden="true"></i>
             </a>
             <div class="pull-right">
-                <a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/gag/'.$post->slug) }}" class="facebook social-link">
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/posts/'.$post->slug) }}" class="facebook social-link">
                     <i class="fa fa-facebook" aria-hidden="true"></i>
                     <span>Facebook</span>
                 </a>
-                <a href="https://twitter.com/home?status={{ url('/gag/'.$post->slug) }}" class="twitter social-link">
+                <a href="https://twitter.com/home?status={{ url('/posts/'.$post->slug) }}" class="twitter social-link">
                     <i class="fa fa-twitter" aria-hidden="true"></i>
                     <span>Twitter</span>
                 </a>

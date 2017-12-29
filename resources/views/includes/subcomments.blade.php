@@ -1,15 +1,15 @@
 @foreach($comment->subcomments as $sub_comment)
   <div class="comment comment-small" data-comment-id="{{ $comment->id }}" data-parent-id="{{ $sub_comment->parent_id or 0 }}">
-    <img class="comment-avatar" src="{{ url('img/avatars/'.$sub_comment->user->avatar_image) }}" alt="" />
+    <img class="comment-avatar" src="{{ url('storage/avatars/'.$sub_comment->user->avatar_image) }}" alt="" />
     <div class="comment-description">
       <p class="desc">
         <a href="#" class="author">{{ $sub_comment->user->username }}</a>
         <span>
-                <span class="comment-points">{{ $sub_comment->points->count() }}</span> points &bull;
-              </span>
+          <span class="comment-points">{{ $sub_comment->points->count() }}</span> points &bull;
+        </span>
         <span>
-                {{ time_since($sub_comment->created_at->getTimestamp()) }}
-              </span>
+          {{ time_since($sub_comment->created_at->getTimestamp()) }}
+        </span>
       </p>
       <p class="message">
         {{ $sub_comment->comment }}

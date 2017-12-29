@@ -10,8 +10,8 @@
             <form class="profile-main-form" action="{{ url('settings/profile') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="form-group">
-                    <label class="avatarInputLabel" for="avatarInput">Avatar</label>
-                    <img class="profile-avatar-img" src="{{ url('img/avatars/'.$user->avatar_image) }}" alt="">
+                  <img class="profile-avatar-img" src="{{ url('storage/avatars/'.$user->avatar_image) }}" alt="">
+                  <label class="avatarInputLabel" for="avatarInput">Avatar</label>
                     <input type="file" id="avatarInput" name="avatar_image">
                 </div>
                 <div class="form-group">
