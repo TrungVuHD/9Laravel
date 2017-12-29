@@ -24,7 +24,7 @@ class CommentIncrementPoint extends FormRequest
     public function rules()
     {
         return [
-            'comment_id' => 'required|numeric|exits:comments,id'
+            'comment_id' => 'required|numeric|exists:comments,id'
         ];
     }
 }
