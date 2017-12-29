@@ -1,29 +1,34 @@
 <?php
-/*
+
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateCategory;
+use App\Http\Requests\StoreCategory;
 use App\Category;
 use App\Post;
 
 class CategoryController extends Controller
 {
-    protected $categoryRepository;
-
-    public function __construct(CategoryRepository $categoryRepository)
-    {
-        $this->categoryRepository = $categoryRepository;
-    }
-
+    /**
+     * Display a listing of records
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
-        $categories = $this->categoryRepository->paginate(15);
+        $categories = Category::paginate(20);
         return view('categories.index', compact('categories'));
     }
 
+    /**
+     * Show a record
+     *
+     * @param $slug
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function show($slug)
     {
-        $category_id = $this->categoryRepository->getIdBySlug($slug);
+        $category_id = Category::where('slug', $slug)->first()->id;
         $posts = Post::where('cat_id', $category_id)
             ->orderBy('id', 'DESC')
             ->paginate(20);
@@ -31,67 +36,70 @@ class CategoryController extends Controller
         return view('9gag.index', compact('category_id', 'posts'));
     }
 
+    /**
+     * Show the form for creating a record
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create()
     {
         return view('categories.create');
     }
 
-    public function store(Request $request)
+    /**
+     * Create a record
+     *
+     * @param StoreCategory $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(StoreCategory $request)
     {
-        $this->validate($request, [
-            'title' => 'required|max:255',
-            'description' => 'required',
-            'published' => 'required|integer',
-            'show_in_menu' => 'required|integer',
-            'image' => 'image',
-        ]);
-
-        // add the processed slug variable to the request array
-        $slug = str_slug($request->title);
-        $request->request->add(['slug' => $slug]);
-
         $category = new Category($request->all());
+        $category->slug = str_slug($request->title);
         $category->save();
 
-        return redirect()
-            ->back()
-            ->with('status', 'The category has been saved');
+        return back()->with('status', 'The category has been saved');
     }
 
+    /**
+     * Show the form for updating a record
+     *
+     * @param $category_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function edit($category_id)
     {
-        $category = $this->categoryRepository->getById($category_id);
+        $category = Category::find($category_id);
         return view('categories.create', compact('category'));
     }
 
-    public function update(Request $request, $category_id)
+    /**
+     * Update a record
+     *
+     * @param UpdateCategory $request
+     * @param $category_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(UpdateCategory $request, $category_id)
     {
-        $this->validate($request, [
-            'title' => 'required|max:255',
-            'description' => 'required',
-            'published' => 'required|integer',
-            'show_in_menu' => 'required|integer'
-        ]);
-
-        // add the processed slug variable to the request array
-        $slug = str_slug($request->title);
-        $request->request->add(['slug' => $slug]);
-
-        $category = $this->categoryRepository->getById($category_id);
+        $category = Category::find($category_id);
         $category->fill($request->all());
+        $category->slug = str_slug($request->title);
         $category->save();
 
-        return redirect()
-            ->back()
-            ->with('status', 'The category has been updated');
+        return back()->with('status', 'The category has been updated');
     }
 
+    /**
+     * Destroy a record
+     *
+     * @param $category_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy($category_id)
     {
-        $this->categoryRepository->destroy($category_id);
+        Category::find($category_id)->destroy();
 
-        return redirect()
-            ->back()
-            ->with('status', 'The category has been deleted.');
+        return back()->with('status', 'The category has been deleted.');
     }
-}*/
+}
