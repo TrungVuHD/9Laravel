@@ -21,7 +21,9 @@ class Post extends Model
         'tall_image',
         'gif',
         'attribution',
-        'cat_id'
+        'user_id',
+        'cat_id',
+        'slug'
     ];
 
     /**
@@ -116,7 +118,7 @@ class Post extends Model
      */
     public function scopeHot($query)
     {
-        return $query->join('points', 'points.post_id', '=', 'posts.id')
+        return $query->leftJoin('points', 'points.post_id', '=', 'posts.id')
             ->groupBy(['posts.id', 'posts.title', 'posts.slug'])
             ->havingRaw('COUNT(points.id) >= 40')
             ->orderBy('posts.id', 'DESC');
@@ -130,7 +132,7 @@ class Post extends Model
      */
     public function scopeTrending($query)
     {
-        return $query->join('points', 'points.post_id', '=', 'posts.id')
+        return $query->leftJoin('points', 'points.post_id', '=', 'posts.id')
             ->groupBy('points.post_id')
             ->havingRaw('COUNT(points.id) >= 25')
             ->havingRaw('COUNT(points.id) < 40');
@@ -144,7 +146,7 @@ class Post extends Model
      */
     public function scopeNew($query)
     {
-        return $query->join('points', 'points.post_id', '=', 'posts.id')
+        return $query->leftJoin('points', 'points.post_id', '=', 'posts.id')
             ->groupBy(['posts.id', 'posts.title', 'posts.slug'])
             ->havingRaw('COUNT(points.id) < 25')
             ->orderBy('posts.id', 'DESC');
