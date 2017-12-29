@@ -59,7 +59,7 @@ class PostController extends Controller
      */
     public function trending()
     {
-        $posts = Post::trending()->paginate(20);
+        $posts = Post::trending()->withCount([ 'comments', 'points' ])->paginate(20);
         $category = 'trending';
 
         return view('9gag.index', compact('category', 'posts'));
@@ -72,7 +72,7 @@ class PostController extends Controller
      */
     public function fresh()
     {
-        $posts = Post::new()->paginate(20);
+        $posts = Post::new()->withCount([ 'comments', 'points' ])->paginate(20);
         $category = 'fresh';
 
         return view('9gag.index', compact('category', 'posts'));
@@ -86,11 +86,11 @@ class PostController extends Controller
      */
     public function show($slug)
     {
-        $post = Post::slug($slug)->firstOrFail();
+        $post = Post::slug($slug)->withCount('points')->firstOrFail();
         $next_post = Post::next($post->id)->first();
         $comments = Comment::postComments($post->id)->with('subcomments')->get();
         $sub_comments = Comment::postSubComments($post->id)->get();
-        $no_points = $post->noPoints();
+        $no_points = $post->points_count;
         $no_comments = $this->service->noComments($comments, $sub_comments);
         $thumb_up = Auth::check() ? Point::thumbUp($post->id)->first() : null;
 
