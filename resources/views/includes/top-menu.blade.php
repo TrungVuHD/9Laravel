@@ -1,7 +1,6 @@
 <div class="top-menu row">
     <div class="col-sm-24">
         <div class="left-side">
-
             <a href="{{ url('/') }}" class="logo menu-item">
                 <img src="{{ url('/img/logo.png') }}" alt="" />
             </a>
@@ -21,26 +20,8 @@
                     Fresh
                 </a>
             </div>
-            <div class="sections-wrapper menu-item has-submenu">
-                Sections <span class="caret"></span>
-                <ul class="sub-menu hidden">
-                    @foreach ($menu_categories as $cat)
-                    <li>
-                        <a href="{{ url($cat->slug) }}">{{ $cat->title }}</a>
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
-            <div class="sections hidden-xs hidden-sm">
-                @foreach ($menu_visible_categories as $cat)
-                <div class="menu-item">
-                    <a href="{{ url($cat->slug) }}">
-                        {{ $cat->title }}
-                    </a>
-                </div>
-                @endforeach
-            </div>
-        </div> <!-- .left-side -->
+        </div>
+        <!-- .left-side -->
 
         <div class="right-side pull-right">
             @if(!Auth::check())
@@ -73,22 +54,6 @@
                     </form>
                     <div id="search-results">
 
-                    </div>
-                </div>
-                <div class="menu-notifications">
-                    <a href="">
-                        <i class="fa fa-bell" aria-hidden="true"></i>
-                    </a>
-                    <div class="notifications-wrapper hidden">
-                        <div class="notifications-header">
-                            Activities
-                        </div>
-                        <div class="notifications-body empty">
-                            You don't have any notifications
-                        </div>
-                        <a href="{{ url('/notifications') }}" class="notifications-footer">
-                            See All
-                        </a>
                     </div>
                 </div>
                 <div class="menu-avatar has-submenu">

@@ -87,8 +87,8 @@
     }
   }
   .report-post {
-    display: block;
-    text-align: right;
+    display: inline-block;
+    float: right;
     font-size: 11px;
     color: #999;
     margin-top: 10px;
