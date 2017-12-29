@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="menu-avatar has-submenu">
-                    <img class="img-responsive" src="{{ url( 'img/avatars/'.Auth::user()->avatar_image ) }}" alt="">
+                    <img class="img-responsive" src="{{ url( 'storage/avatars/'.Auth::user()->avatar_image ) }}" alt="">
                     <ul class="sub-menu hidden">
                         <li>
                             <a href="{{ url('/my-profile') }}">My Profile</a>

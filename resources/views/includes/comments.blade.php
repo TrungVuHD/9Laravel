@@ -9,7 +9,7 @@
   <div class="comments-body">
 
     @if(Auth::check())
-      <img class="comment-img" src="{{ url( 'img/avatars/'.Auth::user()->avatar_image ) }}" alt="">
+      <img class="comment-img" src="{{ url( 'storage/avatars/'.Auth::user()->avatar_image ) }}" alt="">
     @else
       <div class="comments-avatar">
         <i class="fa fa-user" aria-hidden="true"></i>
@@ -40,7 +40,7 @@
 
       <div class="comment" data-comment-id="{{ $comment->id }}">
 
-        <img class="comment-avatar" src="{{ url('img/avatars/'.$comment->user->avatar_image) }}" alt="" />
+        <img class="comment-avatar" src="{{ url('storage/avatars/'.$comment->user->avatar_image) }}" alt="" />
 
         <div class="comment-description">
           <p class="desc">
