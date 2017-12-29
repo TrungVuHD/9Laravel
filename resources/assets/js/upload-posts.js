@@ -77,7 +77,7 @@
         attribution: $("#post-attribute-input").val(),
         cat_id: $(".upload-post-category:checked").val(),
         image: $("#set-title-image-preview").attr('src'),
-        base_64: !window.notBase64Image,
+        base_64: window.notBase64Image === true ? 0 : 1,
       };
     },
     uploadFiles: function () {
