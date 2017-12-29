@@ -30,6 +30,7 @@ class CategoryController extends Controller
     {
         $category_id = Category::where('slug', $slug)->first()->id;
         $posts = Post::where('cat_id', $category_id)
+            ->withCount(['points', 'comments'])
             ->orderBy('id', 'DESC')
             ->paginate(20);
 

@@ -23,15 +23,15 @@
                     @foreach($categories as $cat)
                     <tr>
                         <td>
-                            <a target="_blank" href="{{ url($cat->slug) }}">
+                            <a target="_blank" href="{{ url('categories/'.$cat->slug) }}">
                                 {{ $cat->title }}
                             </a>
                         </td>
                         <td>{{ $cat->published == 1 ? "Yes" : "No" }}</td>
                         <td>{{ $cat->show_in_menu == 1 ? "Yes" : "No" }}</td>
                         <td>
-                            <a href="{{ url('categories/'.$cat->id.'/edit') }}" class="btn btn-primary">Edit</a>
-                            <form class="delete-form" action="{{ url('categories/'.$cat->id) }}" method="post">
+                            <a href="{{ url('settings/categories/'.$cat->id.'/edit') }}" class="btn btn-primary">Edit</a>
+                            <form class="delete-form" action="{{ url('settings/categories/'.$cat->id) }}" method="post">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                                 <button submit class="btn btn-danger">Delete</button>

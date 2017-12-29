@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 Auth::routes();
 
 Route::get('/logout', function () {
@@ -42,18 +45,16 @@ Route::group(['prefix' => '/settings', 'middleware' => ['web', 'auth']], functio
     Route::delete('/account', 'SettingController@destroy');
     Route::delete('/network/facebook', 'SocialAuthController@disconnectFacebook');
     Route::delete('/network/google', 'SocialAuthController@disconnectGoogle');
+
+    Route::group(['prefix' => '/categories'], function () {
+        Route::get('', 'CategoryController@index');
+        Route::get('/create', 'CategoryController@create');
+        Route::post('', 'CategoryController@store');
+        Route::get('/{category}/edit', 'CategoryController@edit');
+        Route::put('/{category}', 'CategoryController@update');
+        Route::delete('/{category}', 'CategoryController@destroy');
+    });
 });
-
-/*
-Route::group(['prefix' => '/categories', 'middleware' => 'auth'], function () {
-
-    Route::get('', 'CategoryController@index');
-    Route::get('/create', 'CategoryController@create');
-    Route::post('', 'CategoryController@store');
-    Route::get('/{category}/edit', 'CategoryController@edit');
-    Route::put('/{category}', 'CategoryController@update');
-    Route::delete('/{category}', 'CategoryController@destroy');
-});*/
 
 Route::group(['prefix' => 'ajax'], function () {
     Route::group(['middleware' => 'auth'], function () {
@@ -77,5 +78,4 @@ Route::group(['prefix' => 'ajax'], function () {
 Route::group(['prefix' => 'comments'], function () {
     Route::post('/', 'CommentController@store')->middleware('auth');
 });
-//Route::get('{category}', 'CategoryController@show');
-
+Route::get('categories/{category}', 'CategoryController@show');

@@ -9,7 +9,7 @@
             <h1>
                 Create Category
             </h1>
-            <form action="@if(isset($category)) {{ url('categories/'.$category->id) }} @else {{ url('categories') }} @endif" method="POST" enctype="multipart/form-data">
+            <form action="@if(isset($category)) {{ url('settings/categories/'.$category->id) }} @else {{ url('settings/categories') }} @endif" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
                 @if( isset($category) )
