@@ -118,7 +118,7 @@ class Post extends Model
     {
         return $query->join('points', 'points.post_id', '=', 'posts.id')
             ->groupBy(['posts.id', 'posts.title', 'posts.slug'])
-            ->havingRaw('COUNT(points.id) >= 80')
+            ->havingRaw('COUNT(points.id) >= 40')
             ->orderBy('posts.id', 'DESC');
     }
 
@@ -132,8 +132,8 @@ class Post extends Model
     {
         return $query->join('points', 'points.post_id', '=', 'posts.id')
             ->groupBy('points.post_id')
-            ->havingRaw('COUNT(points.id) >= 40')
-            ->havingRaw('COUNT(points.id) < 80');
+            ->havingRaw('COUNT(points.id) >= 25')
+            ->havingRaw('COUNT(points.id) < 40');
     }
 
     /**
@@ -145,8 +145,9 @@ class Post extends Model
     public function scopeNew($query)
     {
         return $query->join('points', 'points.post_id', '=', 'posts.id')
-            ->groupBy('points.post_id')
-            ->havingRaw('COUNT(points.id) < 40');
+            ->groupBy(['posts.id', 'posts.title', 'posts.slug'])
+            ->havingRaw('COUNT(points.id) < 25')
+            ->orderBy('posts.id', 'DESC');
     }
 
     /**
