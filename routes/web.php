@@ -74,6 +74,8 @@ Route::group(['prefix' => 'ajax'], function () {
     Route::get('search', 'PostController@search');
 });
 
-Route::post('/comments', 'CommentController@store');
+Route::group(['prefix' => 'comments'], function () {
+    Route::post('/', 'CommentController@store')->middleware('auth');
+});
 //Route::get('{category}', 'CategoryController@show');
 
