@@ -13,3 +13,6 @@ public/categories
 public/img/posts
 .env
 public/build
+.idea
+composer.lock
+package-lock.json

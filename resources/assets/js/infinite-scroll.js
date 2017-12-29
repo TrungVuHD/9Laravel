@@ -1,94 +1,73 @@
 (function () {
 
-	var infiniteScroll = {
-		init: function () {
+  "use strict";
 
-			this.cacheDom();
-			this.bindEvents();
-		},
-		cacheDom: function () {
+  var infiniteScroll = {
+    init: function () {
+      this.cacheDom();
+      this.bindEvents();
+    },
+    cacheDom: function () {
+      this.$window = $(window);
+      this.$doc = $(document);
+      this.$content = $("#content");
+      this.offset = 20;
+      this.limit = 20;
+      this.categoryId = $("#category-id").val();
+      this.postCategory = $("#posts-category").val();
+      this.template = $("#home-item-template").html();
+      this.lastAjaxCallWasEmpty = false;
+      this.waitForAjax = false;
+    },
+    bindEvents: function () {
+      this.$window.on('scroll', $.proxy(this.onWindowScroll, this));
+    },
+    onWindowScroll: function () {
+      var allowedEndpoints = [ 'fresh', 'trending', 'hot' ];
+      var self = this;
+      var ajaxPosition = this.$doc.height() - this.$window.height() - 200;
+      var allowedEndpoint = allowedEndpoints.indexOf(this.postCategory) !== -1;
+      var rendered = '';
+      var url;
 
-			this.$window = $(window);
-			this.$doc = $(document);
-			this.$content = $("#content");
-			this.start = 20;
-			this.noElements = 20;
-			this.categoryId = $("#category-id").val();
-			this.baseUrl = $('#base-url').val()+'/ajax/posts/';
-			this.postCategory = $("#posts-category").val();
-			this.template = $("#home-item-template").html();
-			this.lastAjaxCallWasEmpty = false;
-			this.waitForAjax = false;
-		},
-		bindEvents: function () {
-			
-			this.$window.on('scroll', $.proxy(this.onWindowScroll, this));
+      var undefinedVariables = this.postCategory === undefined && this.categoryId === undefined;
+      var emptyAjaxCall = this.lastAjaxCallWasEmpty === true;
+      var unsatisfiedScrollPosition = this.$window.scrollTop() < ajaxPosition || this.waitForAjax;
+      var undefinedCategoryId = !allowedEndpoint && this.categoryId === 0;
 
-		},
-		onWindowScroll: function () {
+      if (undefinedVariables || emptyAjaxCall || unsatisfiedScrollPosition || undefinedCategoryId) {
+        return false;
+      }
 
-			var self = this;
-			var ajaxPosition = this.$doc.height() - this.$window.height() - 200;
-			var url = '';
-			var rendered = '';
+      this.waitForAjax = true;
 
-			if( this.postCategory == undefined && this.categoryId == undefined) {
-				return false;
-			}
+      url = window.Laravel.ajaxUrl + 'posts/' + this.categoryId;
+      if (allowedEndpoint) {
+        url = window.Laravel.ajaxUrl + 'posts/' + this.postCategory;
+      }
 
-			if( this.lastAjaxCallWasEmpty == true ) {
-				return false;
-			}
+      $.ajax({
+        url: url,
+        method: "GET",
+        data: {
+          page: parseInt(this.offset / this.limit)
+        }
+      })
+      .done(function (response) {
+        var data = response.data;
+        window.Mustache.parse(self.template);
+        rendered = window.Mustache.render(self.template, { posts: data });
+        self.$content.append(rendered);
+        self.offset += self.limit;
+        self.waitForAjax = false;
 
-			switch(this.postCategory) {
-				case 'fresh':
-					url = this.baseUrl+'fresh/'+this.start+'/'+this.noElements;
-				break;
-				case 'trending':
-					url = this.baseUrl+'trending/'+this.start+'/'+this.noElements;
-				break;
-				case 'hot': 
-					url = this.baseUrl+'hot/'+this.start+'/'+this.noElements;
-				break;
-				default:
-					url = this.baseUrl+this.categoryId+'/'+this.start;
-				break;
-			}
+        if (data.length === 0) {
+          self.lastAjaxCallWasEmpty = true;
+        }
+      });
+    }
+  };
 
-			if( this.$window.scrollTop() >= ajaxPosition && !this.waitForAjax ) {
-				
-				this.waitForAjax = true;
-
-				var request = $.ajax({
-					url: url,
-					method: "GET",
-					dataType: 'json',
-				});
-
-				request.done(function( data ) {
-
-					if(data.success == true) {
-
-						processedData = {
-							posts: data.posts
-						};
-
-						Mustache.parse(self.template);
-						rendered = Mustache.render(self.template, processedData);
-						self.$content.append(rendered);
-						self.start += self.noElements;
-						self.waitForAjax = false;
-
-						if(data.posts.length == 0) {
-							self.lastAjaxCallWasEmpty = true;
-						}
-					}
-
-				});
-			}
-		}
-	};
-
-	infiniteScroll.init();
+  infiniteScroll.init();
 
 })();

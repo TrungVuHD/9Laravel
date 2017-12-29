@@ -3,22 +3,27 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Comment;
-use App\User;
 
 class CommentPoint extends Model
 {
-    
-	public function comment()
-	{
+    /**
+     * The comment relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class);
+    }
 
-		return $this->belongsTo(Comment::class);
-	}
-
-	public function user()
-	{
-
-		return $this->belongsTo(User::class);
-	}
+    /**
+     * The user relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

@@ -1,101 +1,83 @@
 (function () {
 
-	var votes = {
-		init: function () {
+  "use strict";
 
-			this.cacheDom();
-			this.bindEvents();
-		},
-		cacheDom: function () {
+  var votes = {
+    init: function () {
+      this.cacheDom();
+      this.bindEvents();
+    },
+    cacheDom: function () {
+      this.$upVote = $(".up-vote-comment");
+      this.$downVote = $(".down-vote-comment");
+    },
+    bindEvents: function () {
+      this.$upVote.on('click', this, this.upVoteComment);
+      this.$downVote.on('click', this, this.downVoteComment);
+    },
+    upVoteComment: function (event) {
+      event.preventDefault();
 
-			this.$upVote = $(".up-vote-comment");
-			this.$downVote = $(".down-vote-comment");
-			this.baseUrl = $('#base-url').val();
-		},
-		bindEvents: function () {
+      var $parentElement = $(this).parents('.comment');
+      var request = $.ajax({
+        url: window.Laravel.baseUrl + '/ajax/comments/increment',
+        method: "POST",
+        data: {
+          'comment_id': $parentElement.attr('data-comment-id')
+        },
+        dataType: 'json'
+      });
 
-			this.$upVote.on('click', this, this.upVoteComment);
-			this.$downVote.on('click', this, this.downVoteComment);
-		},
-		upVoteComment: function (event) {
+      request.done(function(data) {
+        if (data.success === true) {
+          var $points = $parentElement.find('.comment-points');
+          var noPoints = parseInt($points.html());
+          var $upVoteElement = $parentElement.find('.up-vote-comment');
 
-			event.preventDefault();
+          $points.html(noPoints+1);
+          $upVoteElement.addClass('active');
+        }
+      });
 
-			var $parentElement = $(this).parents('.comment');
-			var baseUrl = event.data.baseUrl;
-			var data = {
-				'comment_id': $parentElement.attr('data-comment-id')
-			};
+      request.fail(function (jqXHR) {
+        if (jqXHR.status === 401) {
+          window.location.href = window.Laravel.baseUrl+'/login';
+        }
+      });
+    },
+    downVoteComment: function (event) {
+      event.preventDefault();
 
-			var request = $.ajax({
-				url: baseUrl+'/ajax/comments/increment',
-				method: "POST",
-				data: data,
-				dataType: 'json'
-			});
+      var $parentElement = $(this).parents('.comment');
+      var data = {
+        'comment_id': $parentElement.attr('data-comment-id')
+      };
+      var request = $.ajax({
+        url: window.Laravel.baseUrl + '/ajax/comments/decrement',
+        method: "POST",
+        data: data,
+        dataType: 'json'
+      });
 
-			request.done(function( data ) {
+      request.done(function (data) {
+        if (data.success === true) {
+          var $points = $parentElement.find('.comment-points');
+          var noPoints = parseInt($points.html());
+          var $upVoteElement = $parentElement.find('.up-vote-comment');
 
-				if(data.success == true) {
+          $points.html(noPoints-1);
+          $upVoteElement.removeClass('active');
+        }
+      });
 
-					var $points = $parentElement.find('.comment-points');
-					var noPoints = parseInt($points.html());
-					var $upVoteElement = $parentElement.find('.up-vote-comment');
+      request.fail(function (jqXHR) {
+        if (jqXHR.status === 401) {
+          window.location.href = window.Laravel.baseUrl + '/login';
+        }
+      });
+    }
+  };
 
-					$points.html(noPoints+1);
-					$upVoteElement.addClass('active');
-				}
-			});
-
-			request.fail(function( jqXHR, textStatus ) {
-
-				if(jqXHR.status == 401) {
-
-					window.location.href = comments.baseUrl+'/login';
-
-				}
-			});
-		},
-		downVoteComment: function (event) {
-
-			event.preventDefault();
-
-			var $parentElement = $(this).parents('.comment');
-			var baseUrl = event.data.baseUrl;
-			var data = {
-				'comment_id': $parentElement.attr('data-comment-id')
-			};
-
-			var request = $.ajax({
-				url: baseUrl+'/ajax/comments/decrement',
-				method: "POST",
-				data: data,
-				dataType: 'json'
-			});
-
-			request.done(function( data ) {
-
-				if(data.success == true) {
-
-					var $points = $parentElement.find('.comment-points');
-					var noPoints = parseInt($points.html());
-					var $upVoteElement = $parentElement.find('.up-vote-comment');
-
-					$points.html(noPoints-1);
-					$upVoteElement.removeClass('active');
-				}
-			});
-
-			request.fail(function( jqXHR, textStatus ) {
-
-				if(jqXHR.status == 401) {
-
-					window.location.href = comments.baseUrl+'/login';
-				}
-			});
-		}
-	};
-
-	votes.init();
+  votes.init();
 
 })();

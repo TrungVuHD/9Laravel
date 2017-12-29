@@ -1,13 +1,17 @@
-// Core variables and mixins
-@import "variables";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+// Globals
+@import "globals/variables";
+@import "globals/general";
+
+// Libraries
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "node_modules/font-awesome/scss/font-awesome";
-@import "../js/libraries/FileDrop-master/filedrop";
-@import "general";
-@import "top-menu";
-@import "sidebar";
-@import "home";
-@import "post";
-@import "modals";
-@import "admin";
-@import "search";
+@import "node_modules/filedrop/filedrop";
+
+// Partials
+@import "partials/top-menu";
+@import "partials/sidebar";
+@import "partials/home";
+@import "partials/post";
+@import "partials/modals";
+@import "partials/admin";
+@import "partials/search";

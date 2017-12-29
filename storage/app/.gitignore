@@ -1,3 +1,5 @@
 *
 !public/
 !.gitignore
+!countries.txt
+!publuc/avatars/default.png

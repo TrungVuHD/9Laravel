@@ -1,65 +1,42 @@
 (function () {
 
-	var reports = {
-		init: function () {
+  "use strict";
 
-			this.cacheDom();
-			this.bindEvents();
-		},
-		cacheDom: function () {
+  var reports = {
+    init: function () {
+      this.cacheDom();
+      this.bindEvents();
+    },
+    cacheDom: function () {
+      this.$homeItem = $(".detail-home-item");
+      this.$content = $("#content");
+      this.$reportModal = $("#report-modal");
+      this.$sendReport = this.$reportModal.find("#send-report");
+    },
+    bindEvents: function () {
+      this.$sendReport.on('click', this, this.reportPost);
+    },
+    reportPost: function (event) {
+      event.preventDefault();
+      var self  = event.data;
+      var url = window.Laravel.baseUrl + '/ajax/posts/report';
+      var data = {
+        post_id: self.$homeItem.attr('data-post-id'),
+        reason: $('.report-input:checked').val()
+      };
 
-			this.$homeItem = $(".detail-home-item");
-			this.$reportInput = $("#content .report-input");
-			this.$reportModal = $("#report-modal");
-			this.$sendReport = this.$reportModal.find("#send-report");
-			this.baseUrl = $("#base-url").val();
-		},
-		bindEvents: function () {
+      $.ajax({ url: url, method: "POST", data: data })
+      .done(function () {
+        alert('The post has been reported.');
+        self.$reportModal.modal('hide');
+      })
+      .fail(function () {
+        window.location.href = points.baseUrl+'/login';
+        self.$reportModal.modal('hide');
+      });
+    }
+  };
 
-			this.$sendReport.on('click', this, this.reportPost);
-		},
-		reportPost: function (event) {
-
-			var self  = event.data;
-
-			event.preventDefault();
-
-			var data = {
-				post_id: self.$homeItem.attr('data-post-id'),
-				reason: $('.report-input:checked').val()
-			};
-
-			var request = $.ajax({
-				url: self.baseUrl+'/ajax/posts/report',
-				method: "POST",
-				data: data,
-				dataType: 'json'
-			});
-
-			request.done(function( data ) {
-
-				if(data.success == true) {
-
-					alert('You successfully reported this post.');
-				}
-				self.$reportModal.modal('hide');
-			});
-
-			request.fail(function( jqXHR, textStatus ) {
-
-				if(jqXHR.status == 401) {
-
-					window.location.href = points.baseUrl+'/login';
-				} else {
-					alert('There was a problem with the reporting.');
-				}
-
-				self.$reportModal.modal('hide');
-			});
-
-		}
-	};
-
-	reports.init();
+  reports.init();
 
 })();

@@ -3,21 +3,30 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\SocialAccount;
-use App\Comment;
-use App\Report;
-use App\Point;
-use App\Post;
 
 class User extends Authenticatable
 {
+    /**
+     * The storage dir to store images
+     */
+    const IMG_DIR = 'avatars';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'gender',
+        'country',
+        'description',
+        'birthday_year',
+        'birthday_month',
+        'birthday_day',
+        'email',
+        'username',
+        'user_image'
     ];
 
     /**
@@ -29,33 +38,53 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * The posts relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function posts()
     {
-
         return $this->hasMany(Post::class);
     }
 
+    /**
+     * The points relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function points()
     {
-
         return $this->hasMany(Point::class);
     }
 
-    public function socialAccounts() 
+    /**
+     * The socialAccounts relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function socialAccounts()
     {
-        
         return $this->hasMany(SocialAccount::class);
     }
 
-    public function reports() 
+    /**
+     * The reports relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reports()
     {
-
         return $this->hasMany(Report::class);
     }
 
+    /**
+     * The comments relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comments()
     {
-
         return $this->hasMany(Comment::class);
     }
 }

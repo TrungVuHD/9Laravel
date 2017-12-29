@@ -13,7 +13,7 @@ class UpdateUsersTable2 extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            
+
             $table->unique('username');
         });
     }
@@ -26,8 +26,8 @@ class UpdateUsersTable2 extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            
-            $table->dropUnique('username');
+
+            $table->dropUnique('users_username_unique');
         });
     }
 }

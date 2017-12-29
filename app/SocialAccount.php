@@ -6,12 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class SocialAccount extends Model
 {
+    /**
+     * @var array The mass-assignable property
+     */
     protected $fillable = [
-    	'user_id', 'provider_user_id', 'provider'
+        'user_id',
+        'provider_user_id',
+        'provider'
     ];
 
-    public function user() 
+    /**
+     * The user relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
     {
-    	return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }
