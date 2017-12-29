@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use App\SocialAccountService;
+use App\Http\Services\SocialAccountService;
 use Laravel\Socialite\Facades\Socialite;
 use App\SocialAccount;
 
@@ -38,7 +38,8 @@ class SocialAuthController extends Controller
     public function facebookCallback(SocialAccountService $service)
     {
         $provider = Socialite::driver('facebook')->user();
-        $user = $service->createOrGetUser($provider, 'facebook');
+        Auth::logout();
+        $user = $service->findOrCreateAccount($provider, 'facebook');
         Auth::login($user);
 
         return redirect('/');
@@ -53,7 +54,8 @@ class SocialAuthController extends Controller
     public function googleCallback(SocialAccountService $service)
     {
         $provider = Socialite::driver('google')->user();
-        $user = $service->createOrGetUser($provider, 'google');
+        Auth::logout();
+        $user = $service->findOrCreateAccount($provider, 'google');
         Auth::login($user);
 
         return redirect('/');
