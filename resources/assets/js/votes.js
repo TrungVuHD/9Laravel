@@ -19,29 +19,25 @@
       event.preventDefault();
 
       var $parentElement = $(this).parents('.comment');
-      var request = $.ajax({
+
+      $.ajax({
         url: window.Laravel.baseUrl + '/ajax/comments/increment',
         method: "POST",
         data: {
           'comment_id': $parentElement.attr('data-comment-id')
         },
-        dataType: 'json'
-      });
+      })
+      .done(function() {
+        var $points = $parentElement.find('.comment-points');
+        var noPoints = parseInt($points.html());
+        var $upVoteElement = $parentElement.find('.up-vote-comment');
 
-      request.done(function(data) {
-        if (data.success === true) {
-          var $points = $parentElement.find('.comment-points');
-          var noPoints = parseInt($points.html());
-          var $upVoteElement = $parentElement.find('.up-vote-comment');
-
-          $points.html(noPoints+1);
-          $upVoteElement.addClass('active');
-        }
-      });
-
-      request.fail(function (jqXHR) {
-        if (jqXHR.status === 401) {
-          window.location.href = window.Laravel.baseUrl+'/login';
+        $points.html(noPoints+1);
+        $upVoteElement.addClass('active');
+      })
+      .fail(function (response) {
+        if (response.status === 401) {
+          window.location.href = window.Laravel.baseUrl + '/login';
         }
       });
     },
@@ -52,26 +48,31 @@
       var data = {
         'comment_id': $parentElement.attr('data-comment-id')
       };
-      var request = $.ajax({
+
+      $.ajax({
         url: window.Laravel.baseUrl + '/ajax/comments/decrement',
         method: "POST",
         data: data,
-        dataType: 'json'
-      });
+      })
+      .done(function (response) {
+        var $points = $parentElement.find('.comment-points');
+        var noPoints = parseInt($points.html());
+        var $upVoteElement = $parentElement.find('.up-vote-comment');
 
-      request.done(function (data) {
-        if (data.success === true) {
-          var $points = $parentElement.find('.comment-points');
-          var noPoints = parseInt($points.html());
-          var $upVoteElement = $parentElement.find('.up-vote-comment');
-
-          $points.html(noPoints-1);
-          $upVoteElement.removeClass('active');
+        if (response.data.id === null) {
+          return false;
         }
-      });
 
-      request.fail(function (jqXHR) {
-        if (jqXHR.status === 401) {
+        if (noPoints === 0) {
+          $upVoteElement.removeClass('active');
+          return false;
+        }
+
+        $points.html(noPoints-1);
+        $upVoteElement.removeClass('active');
+      })
+      .fail(function (response) {
+        if (response.status === 401) {
           window.location.href = window.Laravel.baseUrl + '/login';
         }
       });

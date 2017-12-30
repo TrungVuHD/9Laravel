@@ -29,13 +29,17 @@ class PointController extends Controller
      * Decrement the number of points for a post
      *
      * @param PointIncrement $request
-     * @return PointResource
+     * @return PointResource|\Illuminate\Http\JsonResponse
      */
     public function decrement(PointIncrement $request)
     {
         $point = Point::where('user_id', Auth::id())
-            ->where('post_id', $request->postId)
-            ->delete();
+            ->where('post_id', $request->post_id)
+            ->first();
+
+        if ($point) {
+            $point->delete();
+        }
 
         return new PointResource($point);
     }

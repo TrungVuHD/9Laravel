@@ -58,8 +58,8 @@ Route::group(['prefix' => '/settings', 'middleware' => ['web', 'auth']], functio
 
 Route::group(['prefix' => 'ajax'], function () {
     Route::group(['middleware' => 'auth'], function () {
-        Route::post('points/increment', 'PointController@incrementPoints');
-        Route::post('points/decrement', 'PointController@decrementPoints');
+        Route::post('points/increment', 'PointController@increment');
+        Route::post('points/decrement', 'PointController@decrement');
         Route::post('comments/increment', 'CommentController@incrementPoints');
         Route::post('comments/decrement', 'CommentController@decrementPoints');
     });

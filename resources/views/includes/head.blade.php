@@ -8,7 +8,7 @@
 <script>
   window.Laravel = {!! json_encode([
     'csrfToken' => csrf_token(),
-    'baseUrl' => url('/') . '/',
-    'ajaxUrl' => url('/ajax/') . '/'
+    'baseUrl' => url('/'),
+    'ajaxUrl' => url('/ajax')
   ]) !!};
 </script>
