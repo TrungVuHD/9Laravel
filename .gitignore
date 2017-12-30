@@ -16,3 +16,4 @@ public/build
 .idea
 composer.lock
 package-lock.json
+mix-manifest.json
