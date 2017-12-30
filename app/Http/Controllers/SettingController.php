@@ -123,10 +123,7 @@ class SettingController extends Controller
 
         // store the avatar
         if ($request->hasFile('avatar_image')) {
-            $image_dir = storage_path('app' . DS . 'public' . DS . 'avatars');
-            $image_data = ImageService::storeImageFile($request->file('avatar_image'), $image_dir);
-            ImageService::multipleSizes($image_data['location'], ImageService::SIZES);
-
+            $image_data = ImageService::storeImageFile($request->file('avatar_image'), 'avatars');
             $user->avatar_image = $image_data['basename'];
         }
 
