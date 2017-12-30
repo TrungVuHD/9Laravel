@@ -35,3 +35,13 @@ if (!function_exists('active_route')) {
         return \Request::is($route);
     }
 }
+
+/**
+ * Check if a given string represents a valid url
+ */
+if (!function_exists('is_url')) {
+    function is_url(string $string)
+    {
+        return filter_var($string, FILTER_VALIDATE_URL) === true;
+    }
+}
