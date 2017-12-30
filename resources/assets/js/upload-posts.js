@@ -98,6 +98,7 @@
         self.$postTitle.val('');
         self.$pickSectionModal.modal('hide');
 
+        window.location = window.Laravel.baseUrl + '/fresh';
         alert('Congratulations, you uploaded a post!');
       })
       .fail(function() {
