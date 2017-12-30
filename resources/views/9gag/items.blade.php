@@ -32,11 +32,11 @@
             <i class="fa fa-comment" aria-hidden="true"></i>
         </a>
         <div class="pull-right">
-            <a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/gag/'.$post->slug) }}" class="facebook social-link">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/posts/'.$post->slug) }}" class="facebook social-link">
                 <i class="fa fa-facebook" aria-hidden="true"></i>
                 <span>Facebook</span>
             </a>
-            <a href="https://twitter.com/home?status={{ url('/gag/'.$post->slug) }}" class="twitter social-link">
+            <a href="https://twitter.com/home?status={{ url('/posts/'.$post->slug) }}" class="twitter social-link">
                 <i class="fa fa-twitter" aria-hidden="true"></i>
                 <span>Twitter</span>
             </a>

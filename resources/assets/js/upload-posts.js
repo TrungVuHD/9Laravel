@@ -60,7 +60,7 @@
               $("#set-title-image-preview").attr('src', uri);
             },
             function () {
-              alert('Ph, noes! Cannot read your image.')
+              alert('Oups! Cannot read your image.');
             },
             'uri'
           );
@@ -98,6 +98,7 @@
         self.$postTitle.val('');
         self.$pickSectionModal.modal('hide');
 
+        window.location = window.Laravel.baseUrl + '/fresh';
         alert('Congratulations, you uploaded a post!');
       })
       .fail(function() {

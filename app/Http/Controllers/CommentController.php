@@ -54,7 +54,11 @@ class CommentController extends Controller
     {
         $point = CommentPoint::where('comment_id', $request->comment_id)
             ->where('user_id', Auth::id())
-            ->delete();
+            ->first();
+
+        if ($point) {
+            $point->delete();
+        }
 
         return new CommentPointResource($point);
     }

@@ -8,11 +8,11 @@
       this.bindEvents();
     },
     cacheDom: function () {
-      this.$content = $("#content");
+      this.$doc = $(document);
     },
     bindEvents: function () {
-      this.$content.on('click', '.thumbs-up', this, this.incrementPoints);
-      this.$content.on('click', '.thumbs-down', this, this.decrementPoints);
+      this.$doc.on('click', '.thumbs-up', this, this.incrementPoints);
+      this.$doc.on('click', '.thumbs-down', this, this.decrementPoints);
     },
     incrementPoints: function (event) {
       event.preventDefault();
@@ -32,8 +32,10 @@
         $points.html(noPoints+1);
         $thumbsUpElement.addClass('active');
       })
-      .fail(function () {
-        window.location.href = window.Laravel.baseUrl + '/login';
+      .fail(function (response) {
+        if (response.status === 401) {
+          window.location.href = window.Laravel.baseUrl + '/login';
+        }
       });
     },
     decrementPoints: function (event) {
@@ -54,8 +56,10 @@
         $points.html(noPoints-1);
         $activeElement.removeClass('active');
       })
-      .fail(function() {
-        window.location.href = window.Laravel.baseUrl + '/login';
+      .fail(function(response) {
+        if (response.status === 401) {
+          window.location.href = window.Laravel.baseUrl + '/login';
+        }
       });
     }
   };

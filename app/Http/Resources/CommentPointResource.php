@@ -15,11 +15,11 @@ class CommentPointResource extends Resource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'comment_id' => $this->comment_id,
-            'user_id' => $this->user_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'id' => $this->id ?? null,
+            'comment_id' => $this->comment_id ?? null,
+            'user_id' => $this->user_id ?? null,
+            'created_at' => $this->created_at ?? null,
+            'updated_at' => $this->updated_at ?? null
         ];
     }
 }

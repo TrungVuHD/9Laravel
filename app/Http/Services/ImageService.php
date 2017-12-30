@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use grandt\ResizeGif\ResizeGif;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Image;
 
@@ -27,15 +28,30 @@ class ImageService extends Service
     public static function storeImageFile($image, $directory)
     {
         $extension = self::fileExtension($image);
-
         if ($extension === false) {
             return [];
         }
 
-        // store the file
-        $image_location = Storage::putFile($directory, $image);
+        $file_name = str_random(40);
+        $file_name = str_slug($file_name) . "{$extension}";
+        $file_location = $directory . DS . $file_name;
 
-        return self::createReturnData($image_location, $extension);
+        if (starts_with($image, 'http')) {
+            $image = file_get_contents($image);
+        }
+
+        if (is_a($image, UploadedFile::class)) {
+            // store the file
+            $new_img_location = Storage::putFile($directory, $image);
+            $file_location = $directory . DS . basename($new_img_location);
+            $was_stored = $new_img_location === $file_location;
+        } else {
+            // store the file
+            $was_stored = Storage::put($file_location, $image);
+        }
+
+
+        return self::createReturnData($file_location, $was_stored);
     }
 
     /**
@@ -54,42 +70,45 @@ class ImageService extends Service
         }
 
         // create the base64 string to be stored
-        $file_name = str_random(20) . "{$extension}";
+        $file_name = str_random(40);
+        $file_name = str_slug($file_name). "{$extension}";
         $file_location = $directory . DIRECTORY_SEPARATOR . $file_name;
         $image_data = explode(',', $image);
         $base_64_data = base64_decode($image_data[1]);
 
         // store the string
-        $saved = Storage::put($file_location, $base_64_data);
+        $was_stored = Storage::put($file_location, $base_64_data);
 
-        if ($saved) {
-            $absolute_path = storage_path('app' . DS . 'public' . DS . $file_location);
-            return self::createReturnData($absolute_path, $extension);
-        }
-
-        return [];
+        return self::createReturnData($file_location, $was_stored);
     }
 
     /**
      * Create an array containing all the data regarding an image store
      *
-     * @param $image_location
-     * @param $extension
+     * @param $storage_path
+     * @param $success
      * @return array
      */
-    protected static function createReturnData($image_location, $extension)
+    protected static function createReturnData($storage_path, $success)
     {
-        $data = [];
-        $data['location'] = $image_location;
-        $data['image'] = $data['basename'] = basename($image_location);
-        $data['tall_image'] = self::isTall($image_location);
+        if (!$success) {
+            return [];
+        }
 
-        if ($extension === ".gif") {
-            $data['gif'] = true;
-            self::multipleGifSizes($image_location, self::SIZES);
+        $data = [];
+        $absolute_path = storage_path('app' . DS . 'public' . DS . $storage_path);
+        $extension = pathinfo($absolute_path, PATHINFO_EXTENSION);
+        $data['location'] = $storage_path;
+        $data['absolute_location'] = $absolute_path;
+        $data['image'] = $data['basename'] = basename($absolute_path);
+        $data['tall_image'] = self::isTall($absolute_path);
+        $data['gif'] = $extension === "gif";
+
+
+        if ($extension === "gif") {
+            self::multipleGifSizes($absolute_path, self::SIZES);
         } else {
-            $data['gif'] = false;
-            self::multipleSizes($image_location, self::SIZES);
+            self::multipleSizes($absolute_path, self::SIZES);
         }
 
         return $data;
@@ -155,6 +174,13 @@ class ImageService extends Service
         $img = Image::make($location);
         $height = $img->height();
         $width = $img->width();
+        unset($img);
+
+        try {
+            $division = ($height / $width);
+        } catch (\Exception $e) {
+            $division = 0;
+        }
 
         return ($height / $width) > 3;
     }
@@ -170,6 +196,7 @@ class ImageService extends Service
     {
         $dir = dirname($path);
         $file = basename($path);
+        $regular_versions = self::multipleSizes($path, $sizes);
         $versions = [];
 
         array_walk($sizes, function ($size) use ($path, $dir, $file, $versions) {
@@ -181,7 +208,7 @@ class ImageService extends Service
             ];
         });
 
-        return $versions + self::multipleSizes($path, $sizes);
+        return $versions + $regular_versions;
     }
 
     /**
@@ -198,7 +225,13 @@ class ImageService extends Service
         $versions = [];
 
         array_walk($sizes, function ($size) use ($path, $dir, $file, $versions) {
+            clearstatcache();
+
             $store_path = $dir . DS . $size . DS . $file;
+            $parent_dir = dirname($store_path);
+            if (!file_exists($parent_dir)) {
+                mkdir($parent_dir, 0755, true);
+            }
             $img = Image::make($path);
             $img->resize((int)$size, null, function ($constraint) {
                 $constraint->aspectRatio();
