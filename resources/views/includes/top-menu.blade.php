@@ -49,8 +49,8 @@
                     <p class="text-right">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </p>
-                    <form action="{{ url('search') }}">
-                        <input type="text" name="query" class="menu-search-input hidden" placeholder="Type to search" autocomplete="off" />
+                    <form action="{{ url('posts/search') }}">
+                        <input type="text" name="keyword" class="menu-search-input hidden" placeholder="Type to search" autocomplete="off" />
                     </form>
                     <div id="search-results">
 
@@ -85,7 +85,7 @@
 <!-- search template -->
 <script id="search-template" type="x-tmpl-mustache">
     @{{#results}}
-    <a class='search-result' href="{{ url('/gag') }}/@{{slug}}">
+    <a class='search-result' href="{{ url('/posts') }}/@{{slug}}">
         @{{title}}
     </a>
     @{{/results}}

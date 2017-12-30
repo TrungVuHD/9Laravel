@@ -16,7 +16,6 @@
       this.$searchWrapper.on('click', this, this.showSearch);
       this.$searchInput.on('click', this.stopClickPropagation);
       this.$searchInput.on('blur', this, this.hideSearch);
-      this.$searchInput.on('keypress', this, this.search);
     },
     showSearch: function (event) {
       var $searchInput = event.data.$searchInput;
@@ -33,25 +32,6 @@
     stopClickPropagation: function (event) {
       event.stopPropagation();
       event.preventDefault();
-    },
-    search: function (event) {
-      var searchKeyword = $(this).val();
-      var url = window.Laravel.baseUrl + '/ajax/search';
-      var data = { keyword: searchKeyword };
-      var self = event.data;
-
-      if (searchKeyword.length < 1) {
-        return false;
-      }
-
-      $.ajax({ url: url, data: data })
-      .done(function (data) {
-        var template = $('#search-template').html();
-        var rendered = window.Mustache.render(template, { results: data });
-
-        self.$searchResults.html(rendered);
-        self.$searchResults.addClass('visible');
-      });
     }
   };
 

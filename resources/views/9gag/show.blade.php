@@ -19,11 +19,11 @@
             <a href="#" class="thumbs-down social-item">
                 <i class="fa fa-arrow-down" aria-hidden="true"></i>
             </a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/gag/'.$post->slug) }}" class="facebook social-link">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/posts/'.$post->slug) }}" class="facebook social-link">
                 <i class="fa fa-facebook" aria-hidden="true"></i>
                 <span>Facebook</span>
             </a>
-            <a href="https://twitter.com/home?status={{ url('/gag/'.$post->slug) }}" class="twitter social-link">
+            <a href="https://twitter.com/home?status={{ url('/posts/'.$post->slug) }}" class="twitter social-link">
                 <i class="fa fa-twitter" aria-hidden="true"></i>
                 <span>Twitter</span>
             </a>
@@ -36,12 +36,12 @@
         <img class="img-responsive" src="{{ url('storage/posts/'.$post->image) }}" alt="">
         <div class="share-section row">
             <div class="col-sm-6">
-                <a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/gag/'.$post->slug) }}" class="share-network facebook">
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ url('/posts/'.$post->slug) }}" class="share-network facebook">
                     Share on Facebook
                 </a>
             </div>
             <div class="col-sm-6">
-                <a href="https://twitter.com/home?status={{ url('/gag/'.$post->slug) }}" class="share-network twitter">
+                <a href="https://twitter.com/home?status={{ url('/posts/'.$post->slug) }}" class="share-network twitter">
                     Share on Twitter
                 </a>
             </div>

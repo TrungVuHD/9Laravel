@@ -126,19 +126,6 @@ class PostController extends Controller
     }
 
     /**
-     * Search the records and return a collection
-     *
-     * @param PostSearch $request
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
-    public function search(PostSearch $request)
-    {
-        $posts = Post::search($request->keyword)->paginate(20);
-
-        return PostResource::collection($posts);
-    }
-
-    /**
      * Search the records and return a view
      *
      * @param PostSearch $request
@@ -147,7 +134,7 @@ class PostController extends Controller
     public function searchIndex(PostSearch $request)
     {
         $keyword = $request->keyword;
-        $posts = Post::search($keyword)->paginate(20);
+        $posts = Post::search($keyword)->withCount('points')->paginate(20);
         $no_posts = $posts->count();
 
         return view('9gag.search', compact('posts', 'no_posts', 'keyword'));

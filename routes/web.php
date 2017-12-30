@@ -71,8 +71,6 @@ Route::group(['prefix' => 'ajax'], function () {
         Route::get('/categories/{id}', 'PostController@retrieveCategoryAjax');
         Route::post('/report', 'ReportController@store');
     });
-
-    Route::get('search', 'PostController@search');
 });
 
 Route::group(['prefix' => 'comments'], function () {
