@@ -38,6 +38,7 @@ Note: The Bootstrap grid consist of 24 columns instead of the regular 12.
 * Run in terminal `php artisan key:generate`
 * Run in terminal `php artisan storage:link`
 * Run in terminal `php artisan migrate:refresh --seed`
+* Update the `domain` key in `config/session.php`
 
 ## Authors
 
