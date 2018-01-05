@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('migrate:fresh --seed')->daily();
-        $schedule->command('storage:empty')->daily()->withoutOverlapping();
+        $schedule->command('storage:empty')->dailyAt('23:00');
+        $schedule->command('migrate:fresh --seed')->dailyAt('23:10');
     }
 }
